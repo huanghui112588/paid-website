@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付会员费</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>精英会员俱乐部</h1>
+            <nav>
+                <a href="{{ url_for('logout') }}">退出</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="payment-container">
+            <h2>支付会员费</h2>
+            <p class="price">费用: ${{ price }}</p>
+
+            {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="payment-instructions">
+                <h3>支付步骤:</h3>
+                <ol>
+                    <li>使用支付宝或微信扫描下方二维码支付 ${{ price }}</li>
+                    <li>支付完成后，请截图支付成功页面</li>
+                    <li>在下方表单中提交您的支付截图或交易信息</li>
+                    <li>我们会在24小时内审核并开通您的会员权限</li>
+                </ol>
+            </div>
+
+            <div class="qr-codes">
+                <div class="qr-code">
+                    <h4>支付宝收款码</h4>
+                    <img src="{{ url_for('static', filename='alipay_qr.png') }}" alt="支付宝收款码" class="qr-img">
+                    <p>请支付 ${{ price }}</p>
+                </div>
+
+                <div class="qr-code">
+                    <h4>微信支付收款码</h4>
+                    <img src="{{ url_for('static', filename='wechat_qr.png') }}" alt="微信支付收款码" class="qr-img">
+                    <p>请支付 ${{ price }}</p>
+                </div>
+            </div>
+
+            <div class="payment-proof-form">
+                <h3>提交支付凭证</h3>
+                <form action="{{ url_for('submit_payment_proof') }}" method="POST">
+                    <div class="form-group">
+                        <label for="payment_proof">支付截图或说明:</label>
+                        <textarea id="payment_proof" name="payment_proof" rows="4" required
+                            placeholder="请描述您的支付信息，例如: '支付宝转账$9.99，交易号尾数1234'"></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">提交支付凭证</button>
+                </form>
+            </div>
+
+            <div class="contact-info">
+                <p>如有问题，请联系: <a href="mailto:{{ admin_email }}">{{ admin_email }}</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 精英会员俱乐部</p>
+        </div>
+    </footer>
+</body>
+
+</html>

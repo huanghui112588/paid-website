@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付凭证已提交</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>精英会员俱乐部</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="success-container">
+            <div class="success-icon">✓</div>
+            <h2>支付凭证已提交</h2>
+            <p>感谢您提交支付凭证！我们会在24小时内审核并开通您的会员权限。</p>
+            <p>审核通过后，您将可以访问所有会员专属内容。</p>
+
+            <div class="actions">
+                <a href="{{ url_for('check_payment_status') }}" class="cta-button">检查审核状态</a>
+                <a href="{{ url_for('index') }}" class="secondary-button">返回首页</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 精英会员俱乐部</p>
+        </div>
+    </footer>
+</body>
+
+</html>

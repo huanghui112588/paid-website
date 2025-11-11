@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员审核</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>支付审核管理</h1>
+            <nav>
+                <a href="{{ url_for('index') }}">返回网站</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-container">
+            <h2>待审核支付</h2>
+
+            {% if payments %}
+            <div class="payments-list">
+                {% for payment in payments %}
+                <div class="feature-card">
+                    <div class="payment-info">
+                        <h3>用户: {{ payment[1] }}</h3>
+                        <p>邮箱: {{ payment[2] }}</p>
+                        <p>支付凭证: {{ payment[3] }}</p>
+                        <p>提交时间: {{ payment[4] }}</p>
+                    </div>
+                    <div class="payment-actions">
+                        <a href="{{ url_for('admin_approve_payment', payment_id=payment[0]) }}?password=admin123"
+                            class="cta-button" style="background-color: #4bb543;">批准</a>
+                        <a href="{{ url_for('admin_reject_payment', payment_id=payment[0]) }}?password=admin123"
+                            class="secondary-button" style="background-color: #dc3545;">拒绝</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="success-container">
+                <p>暂无待审核的支付</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+
+</html>

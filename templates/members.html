@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员专区</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>精英会员俱乐部</h1>
+            <nav>
+                <span>欢迎, {{ session.user }}!</span>
+                <a href="{{ url_for('logout') }}">退出</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="members-container">
+            <h2>会员专属内容</h2>
+            <p class="welcome-message">恭喜您已成为我们的会员！以下是您的专属内容：</p>
+
+            <div class="exclusive-content">
+                <div class="feature-card">
+                    <h3>独家教程 #1</h3>
+                    <p>这里是您的第一个独家教程内容。作为会员，您可以访问所有我们精心准备的高质量内容。</p>
+                    <div class="content-placeholder">
+                        <p>📚 教程内容将在这里显示</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>视频课程 #1</h3>
+                    <p>观看我们的独家视频课程，学习专业知识和技能。</p>
+                    <div class="content-placeholder">
+                        <p>🎥 视频内容将在这里显示</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>资源下载</h3>
+                    <p>下载我们为您准备的独家资源和工具。</p>
+                    <div class="content-placeholder">
+                        <p>📥 下载链接将在这里显示</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <h3>您的会员权益</h3>
+                <ul class="benefits">
+                    <li>✓ 永久访问所有现有内容</li>
+                    <li>✓ 免费获取未来更新</li>
+                    <li>✓ 优先客户支持</li>
+                    <li>✓ 专属社区访问权限</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 精英会员俱乐部</p>
+        </div>
+    </footer>
+</body>
+
+</html>
