@@ -17,6 +17,7 @@
                 <a href="{{ url_for('members') }}">会员专区</a>
                 <a href="{{ url_for('logout') }}">退出</a>
                 {% else %}
+                <a href="{{ url_for('login') }}">登录</a>
                 <a href="{{ url_for('register') }}">注册</a>
                 {% endif %}
             </nav>

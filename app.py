@@ -87,6 +87,37 @@ def register():
     
     return render_template('register.html')
 
+# ========== 在这里添加登录路由 ==========
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # 简单的验证
+        if not username or not password:
+            return render_template('login.html', error="请填写用户名和密码")
+        
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        user = c.fetchone()
+        conn.close()
+        
+        if user:
+            session['user'] = username
+            session['email'] = user[2]  # 邮箱字段
+            # 检查是否已支付
+            if user[4] == 1:  # paid字段
+                return redirect(url_for('members'))
+            else:
+                return redirect(url_for('payment_manual'))
+        else:
+            return render_template('login.html', error="用户名或密码错误")
+    
+    return render_template('login.html')
+# ========== 登录路由结束 ==========
+
 @app.route('/payment-manual')
 @login_required
 def payment_manual():
