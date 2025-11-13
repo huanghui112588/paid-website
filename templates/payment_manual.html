@@ -21,7 +21,7 @@
     <main class="container">
         <div class="payment-container">
             <h2>支付会员费</h2>
-            <p class="price">费用: ${{ price }}</p>
+            <p class="price">费用: ¥{{ price }}</p>
 
             {% if error %}
             <div class="error-message">
@@ -32,7 +32,7 @@
             <div class="payment-instructions">
                 <h3>支付步骤:</h3>
                 <ol>
-                    <li>使用支付宝或微信扫描下方二维码支付 ${{ price }}</li>
+                    <li>使用支付宝或微信扫描下方二维码支付 ¥{{ price }}</li>
                     <li>支付完成后，请截图支付成功页面</li>
                     <li>在下方表单中提交您的支付截图或交易信息</li>
                     <li>我们会在24小时内审核并开通您的会员权限</li>
@@ -43,13 +43,13 @@
                 <div class="qr-code">
                     <h4>支付宝收款码</h4>
                     <img src="{{ url_for('static', filename='alipay_qr.png') }}" alt="支付宝收款码" class="qr-img">
-                    <p>请支付 ${{ price }}</p>
+                    <p>请支付 ¥{{ price }}</p>
                 </div>
 
                 <div class="qr-code">
                     <h4>微信支付收款码</h4>
                     <img src="{{ url_for('static', filename='wechat_qr.png') }}" alt="微信支付收款码" class="qr-img">
-                    <p>请支付 ${{ price }}</p>
+                    <p>请支付 ¥{{ price }}</p>
                 </div>
             </div>
 
@@ -59,7 +59,7 @@
                     <div class="form-group">
                         <label for="payment_proof">支付截图或说明:</label>
                         <textarea id="payment_proof" name="payment_proof" rows="4" required
-                            placeholder="请描述您的支付信息，例如: '支付宝转账$9.99，交易号尾数1234'"></textarea>
+                            placeholder="请描述您的支付信息，例如: '支付宝转账¥9.99，交易号尾数1234'"></textarea>
                     </div>
                     <button type="submit" class="cta-button">提交支付凭证</button>
                 </form>

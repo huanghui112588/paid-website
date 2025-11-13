@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = "your-secret-key-123"  # 可以稍后更改
 
 # 配置
-MEMBERSHIP_PRICE = "9.99"
+MEMBERSHIP_PRICE = "29.9"
 ADMIN_EMAIL = "your-email@example.com"
 
 def init_db():
