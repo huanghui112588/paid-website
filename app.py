@@ -222,6 +222,23 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('index'))
 
+# ========== 会员专属内容路由 ==========
+@app.route('/member-content')
+@payment_required
+def member_content():
+    content_list = [
+        {'type': 'video', 'title': '独家教程视频#1', 'url': '/static/member/videos/tutorial1.mp4', 'description': '这里是你的第一个独家视频教程的详细描述。'},
+        {'type': 'image', 'title': '精选资料图#1', 'url': '/static/member/images/resource1.jpg', 'description': '高清示意图解，帮助你更好地理解知识点。'},
+        {'type': 'article', 'title': '深度解析文章#1', 'content': '这里是你的第一篇深度文章的完整内容...', 'description': '透彻分析核心问题，提供实用解决方案。'}
+    ]
+    return render_template('member_content.html', contents=content_list)
+# ========== 会员内容路由结束 ==========
+
+if __name__ == '__main__':
+    init_db()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)

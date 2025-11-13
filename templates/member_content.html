@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会员专属内容 - 上岸翻身营</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .content-item {
+            background: white;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-item h3 {
+            color: #4361ee;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .content-description {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .video-player,
+        .image-preview {
+            width: 100%;
+            max-width: 800px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .article-content {
+            line-height: 1.8;
+            padding: 15px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4361ee;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .content-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>上岸翻身营</h1>
+            <nav>
+                <span>欢迎, {{ session.user }}!</span>
+                <a href="{{ url_for('members') }}">会员首页</a>
+                <a href="{{ url_for('logout') }}">退出</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="content-container">
+            <div class="content-header">
+                <h2>🎯 会员专属内容库</h2>
+                <p>以下是为你准备的独家学习资料，将持续更新</p>
+            </div>
+
+            {% for item in contents %}
+            <div class="content-item">
+                <h3>{{ item.title }}</h3>
+                <p class="content-description">{{ item.description }}</p>
+
+                {% if item.type == 'video' %}
+                <div style="text-align: center;">
+                    <video class="video-player" controls controlsList="nodownload">
+                        <source src="{{ item.url }}" type="video/mp4">
+                        你的浏览器不支持视频播放，请升级浏览器。
+                    </video>
+                    <p><small>提示：右键视频可选择下载（会员特权）</small></p>
+                </div>
+                {% elif item.type == 'image' %}
+                <div style="text-align: center;">
+                    <img src="{{ item.url }}" alt="{{ item.title }}" class="image-preview">
+                    <p><small>点击图片可查看大图</small></p>
+                </div>
+                {% elif item.type == 'article' %}
+                <div class="article-content">
+                    {{ item.content | safe }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="{{ url_for('members') }}" class="back-link">← 返回会员首页</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 上岸翻身营</p>
+        </div>
+    </footer>
+</body>
+
+</html>
