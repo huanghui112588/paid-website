@@ -415,7 +415,24 @@ def init_db():
         tables = inspector.get_table_names()
         print(f"=== 数据库中的表: {tables} ===")
     
-    
+   # 在现有路由之前添加这个简单测试
+@app.route('/')
+def indexi():
+    return """
+    <html>
+    <head><title>SESEYYDS</title></head>
+    <body>
+        <h1>🚀 SESEYYDS 网站已部署成功！</h1>
+        <p><strong>测试链接：</strong></p>
+        <ul>
+            <li><a href="/admin">管理员系统</a></li>
+            <li><a href="/health">健康检查</a></li>
+            <li><a href="/admin/users">用户管理</a></li>
+        </ul>
+        <p>如果这些链接能工作，说明路由配置正确。</p>
+    </body>
+    </html>
+    """
 # ============ 只保留一个启动块 ============
 if __name__ == '__main__':
     init_db()
