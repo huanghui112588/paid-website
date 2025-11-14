@@ -4,250 +4,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会员专属内容</title>
+    <title>会员专属内容 | 专业学习平台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
+        /* 顶部导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd);
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
         }
 
-        h2 {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, #6a11cb, #2575fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        .logo i {
+            font-size: 1.8rem;
         }
 
-        .welcome-message {
-            font-size: 1.3rem;
-            color: #555;
-            max-width: 700px;
-            margin: 0 auto;
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .user-info {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .user-details {
-            text-align: left;
+            flex-direction: column;
         }
 
         .user-name {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #333;
-        }
-
-        .membership-level {
-            color: #6a11cb;
             font-weight: 600;
+            font-size: 1.1rem;
         }
 
-        .exclusive-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+        .user-status {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 500;
         }
 
-        .feature-card {
+        /* 页面标题区域 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 内容区域 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
             height: 100%;
         }
 
-        .feature-card:hover {
+        .content-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .card-header {
-            padding: 20px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: white;
+            padding: 24px 24px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid var(--gray-light);
         }
 
-        .card-header h3 {
+        .card-title {
             font-size: 1.5rem;
-            margin: 0;
+            font-weight: 600;
+            color: var(--dark);
         }
 
-        .card-icon {
-            font-size: 1.8rem;
-            opacity: 0.8;
+        .card-badge {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .card-content {
-            padding: 25px 20px;
+            padding: 20px 24px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
-        .card-content p {
+        .card-description {
+            color: var(--gray);
             margin-bottom: 20px;
-            color: #555;
-            font-size: 1.05rem;
+            line-height: 1.7;
         }
 
-        .content-placeholder {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 25px 20px;
-            text-align: center;
-            color: #777;
-            flex-grow: 1;
+        .video-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .stats-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--light);
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            display: flex;
             flex-direction: column;
-            border: 2px dashed #ddd;
-            transition: all 0.3s ease;
+            align-items: center;
+            flex: 1;
         }
 
-        .feature-card:hover .content-placeholder {
-            border-color: #6a11cb;
-            background-color: #f0f4ff;
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
         }
 
-        .placeholder-icon {
-            font-size: 2.5rem;
-            color: #6a11cb;
-            margin-bottom: 15px;
-            opacity: 0.7;
-        }
-
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-left: 10px;
-            vertical-align: middle;
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 4px;
         }
 
         .progress-container {
-            margin-top: 20px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
         }
 
         .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            height: 8px;
+            background: var(--gray-light);
             border-radius: 10px;
-            width: 65%;
+            overflow: hidden;
         }
 
-        .stats {
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .card-actions {
             display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #666;
+            gap: 12px;
+            margin-top: auto;
         }
 
-        .action-button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 10px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            text-align: center;
             text-decoration: none;
+            transition: var(--transition);
+            flex: 1;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            gap: 8px;
         }
 
-        .action-button:hover {
-            background: linear-gradient(135deg, #5a0db8, #1c68e8);
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
         }
 
-        footer {
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 页脚 */
+        .footer {
             text-align: center;
-            margin-top: 50px;
-            padding: 25px;
+            padding: 30px 20px;
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.95rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .footer-links {
@@ -260,7 +316,7 @@
         .footer-links a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: var(--transition);
         }
 
         .footer-links a:hover {
@@ -268,22 +324,45 @@
             text-decoration: underline;
         }
 
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
-            .exclusive-content {
+            .content-grid {
                 grid-template-columns: 1fr;
             }
 
-            h2 {
+            .page-title {
                 font-size: 2.2rem;
             }
 
-            .user-info {
+            .navbar {
                 flex-direction: column;
-                text-align: center;
+                gap: 16px;
             }
 
-            .user-details {
-                text-align: center;
+            .card-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
             }
         }
     </style>
@@ -291,173 +370,277 @@
 
 <body>
     <div class="container">
-        <header>
-            <h2>会员专属内容</h2>
-            <p class="welcome-message">恭喜您已成为我们的尊贵会员！以下是您的专属内容，我们持续为您提供高质量的学习资源。</p>
-
-            <div class="user-info">
+        <!-- 顶部导航栏 -->
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>学海无涯</span>
+            </div>
+            <div class="user-menu">
                 <div class="user-avatar">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="user-details">
+                <div class="user-info">
                     <div class="user-name">*会员</div>
-                    <div class="membership-level">您是活动期注册的会员 有效期是永久</div>
+                    <div class="user-status">永久会员 · 有效期至 8888年8月8日</div>
                 </div>
             </div>
+        </nav>
+
+        <!-- 页面标题区域 -->
+        <header class="page-header">
+            <h1 class="page-title">会员专属内容库</h1>
+            <p class="page-subtitle">以下是专为您准备的独家学习资源，持续更新中。作为尊贵会员，您可以无限制访问所有内容。</p>
         </header>
 
-        <div class="exclusive-content">
-            <div class="feature-card">
+        <!-- 内容区域 -->
+        <main class="content-grid">
+            <!-- 独家教程 #1 -->
+            <article class="content-card">
                 <div class="card-header">
-                    <h3>独家教程 #1 <span class="badge">新</span></h3>
-                    <div class="card-icon">
-                        <i class="fas fa-book"></i>
-                    </div>
+                    <h2 class="card-title">独家教程 #1</h2>
+                    <span class="card-badge">新内容</span>
                 </div>
                 <div class="card-content">
-                    <p>这里是您的第一个独家教程内容。作为会员，您可以访问所有我们精心准备的进阶学习材料，包括详细步骤和实用技巧。</p>
-                    <div class="content-placeholder">
-                        <div class="placeholder-icon">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                        <p>教程内容将在这里显示</p>
-                    </div>
-                    <div class="stats">
-                        <span>学习进度</span>
-                        <span>65%</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar"></div>
-                    </div>
-                    <a href="#" class="action-button">继续学习</a>
-                </div>
-            </div>
-
-            <div class="feature-card">
-                <div class="card-header">
-                    <h3>视频课程 #1</h3>
-                    <p class="content-description">观看我们的独家视频课程，学习专业知识和技能。这些课程由行业专家精心制作，涵盖最新技术和最佳实践。</p>
+                    <p class="card-description">这里是您的第一个独家教程内容。作为会员，您可以访问所有我们精心准备的进阶学习材料，包括详细步骤和实用技巧。</p>
 
                     <div class="video-container">
-                        <video class="video-player" controls>
+                        <video class="video-player" controls
+                            poster="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80">
                             <source src="/static/videos/video1.mp4" type="video/mp4">
                             您的浏览器不支持视频播放，请升级浏览器。
                         </video>
                     </div>
-                    <p class="download-note">提示：右键视频可选择下载（会员特权）</p>
-                    <p>视频内容将在这里显示</p>
-                </div>
-                <div class="stats">
-                    <span>已观看</span>
-                    <span>8/12 课程</span>
-                </div>
-                <a href="#" class="action-button">观看视频</a>
-            </div>
-        </div>
 
-        <div class="feature-card">
-            <div class="card-header">
-                <h3>高级资源库 <span class="badge">独家</span></h3>
-                <div class="card-icon">
-                    <i class="fas fa-download"></i>
-                </div>
-            </div>
-            <div class="card-content">
-                <p>访问我们的高级资源库，下载专业模板、工具和资源文件，助您事半功倍。每周更新最新资源。</p>
-                <div class="content-placeholder">
-                    <div class="placeholder-icon">
-                        <i class="fas fa-archive"></i>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-value">65%</span>
+                            <span class="stat-label">学习进度</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">3.5h</span>
+                            <span class="stat-label">已学习</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">章节</span>
+                        </div>
                     </div>
-                    <p>资源内容将在这里显示</p>
-                </div>
-                <div class="stats">
-                    <span>资源数量</span>
-                    <span>127 个项目</span>
-                </div>
-                <a href="#" class="action-button">浏览资源</a>
-            </div>
-        </div>
 
-        <div class="feature-card">
-            <div class="card-header">
-                <h3>专家问答</h3>
-                <div class="card-icon">
-                    <i class="fas fa-comments"></i>
-                </div>
-            </div>
-            <div class="card-content">
-                <p>直接向行业专家提问，获得个性化指导和建议，解决您在学习中遇到的难题。24小时内回复保证。</p>
-                <div class="content-placeholder">
-                    <div class="placeholder-icon">
-                        <i class="fas fa-question-circle"></i>
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>课程进度</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
                     </div>
-                    <p>问答内容将在这里显示</p>
-                </div>
-                <div class="stats">
-                    <span>已回答问题</span>
-                    <span>23 个</span>
-                </div>
-                <a href="#" class="action-button">提问专家</a>
-            </div>
-        </div>
 
-        <div class="feature-card">
-            <div class="card-header">
-                <h3>会员社区</h3>
-                <div class="card-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-            </div>
-            <div class="card-content">
-                <p>加入专属会员社区，与志同道合的学习者交流心得，分享经验，建立有价值的专业人脉网络。</p>
-                <div class="content-placeholder">
-                    <div class="placeholder-icon">
-                        <i class="fas fa-user-friends"></i>
+                    <div class="card-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play-circle"></i>
+                            继续学习
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-download"></i>
+                            下载资源
+                        </button>
                     </div>
-                    <p>社区内容将在这里显示</p>
                 </div>
-                <div class="stats">
-                    <span>社区成员</span>
-                    <span>1,248 人</span>
-                </div>
-                <a href="#" class="action-button">进入社区</a>
-            </div>
-        </div>
+            </article>
 
-        <div class="feature-card">
-            <div class="card-header">
-                <h3>直播课程</h3>
-                <div class="card-icon">
-                    <i class="fas fa-broadcast-tower"></i>
+            <!-- 视频课程 #1 -->
+            <article class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">视频课程 #1</h2>
+                    <span class="card-badge">热门</span>
                 </div>
-            </div>
-            <div class="card-content">
-                <p>参与会员专属直播课程，与讲师实时互动，获得即时反馈。所有直播均提供回放功能。</p>
-                <div class="content-placeholder">
-                    <div class="placeholder-icon">
-                        <i class="fas fa-video"></i>
+                <div class="card-content">
+                    <p class="card-description">观看我们的独家视频课程，学习专业知识和技能。这些课程由行业专家精心制作，涵盖最新技术和最佳实践。</p>
+
+                    <div class="video-container">
+                        <video class="video-player" controls
+                            poster="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80">
+                            <source src="/static/videos/video1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放，请升级浏览器。
+                        </video>
                     </div>
-                    <p>直播内容将在这里显示</p>
+
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-value">8/12</span>
+                            <span class="stat-label">已观看</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">4.8</span>
+                            <span class="stat-label">评分</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">6h</span>
+                            <span class="stat-label">总时长</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            观看视频
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-list"></i>
+                            课程列表
+                        </button>
+                    </div>
                 </div>
-                <div class="stats">
-                    <span>下次直播</span>
-                    <span>2天后</span>
+            </article>
+
+            <!-- 高级资源库 -->
+            <article class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">高级资源库</h2>
+                    <span class="card-badge">独家</span>
                 </div>
-                <a href="#" class="action-button">查看日程</a>
+                <div class="card-content">
+                    <p class="card-description">访问我们的高级资源库，下载专业模板、工具和资源文件，助您事半功倍。每周更新最新资源。</p>
+
+                    <div
+                        style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; padding: 40px 20px; text-align: center; color: white; margin-bottom: 20px;">
+                        <i class="fas fa-archive" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                        <h3 style="margin-bottom: 8px;">资源库</h3>
+                        <p>包含模板、工具和资源文件</p>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-value">127</span>
+                            <span class="stat-label">资源数量</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">24</span>
+                            <span class="stat-label">本周新增</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">1.2GB</span>
+                            <span class="stat-label">总大小</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-folder-open"></i>
+                            浏览资源
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-search"></i>
+                            搜索资源
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 专家问答 -->
+            <article class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">专家问答</h2>
+                    <span class="card-badge">实时</span>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">直接向行业专家提问，获得个性化指导和建议，解决您在学习中遇到的难题。24小时内回复保证。</p>
+
+                    <div
+                        style="background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 12px; padding: 40px 20px; text-align: center; color: white; margin-bottom: 20px;">
+                        <i class="fas fa-comments" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                        <h3 style="margin-bottom: 8px;">专家在线答疑</h3>
+                        <p>24小时内回复保证</p>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-value">23</span>
+                            <span class="stat-label">已回答</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">5</span>
+                            <span class="stat-label">专家在线</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">98%</span>
+                            <span class="stat-label">满意度</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-question-circle"></i>
+                            提问专家
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-history"></i>
+                            问答历史
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>© 2025 上岸会员平台 | 保留所有权利</p>
+            <div class="footer-links">
+                <a href="#">使用条款</a>
+                <a href="#">隐私政策</a>
+                <a href="#">会员协议</a>
+                <a href="#">联系我们</a>
             </div>
-        </div>
+        </footer>
     </div>
 
-    <footer>
-        <p>© 2025 会员专属平台 | 保留所有权利</p>
-        <div class="footer-links">
-            <a href="#">使用条款</a>
-            <a href="#">隐私政策</a>
-            <a href="#">会员协议</a>
-            <a href="#">联系我们</a>
-        </div>
-    </footer>
-    </div>
+    <script>
+        // 简单的交互功能
+        document.addEventListener('DOMContentLoaded', function () {
+            // 为所有按钮添加点击效果
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // 添加点击反馈
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+
+                    // 在实际应用中，这里可以添加具体的功能逻辑
+                    const buttonText = this.textContent.trim();
+                    console.log(`点击了: ${buttonText}`);
+                });
+            });
+
+            // 视频播放进度跟踪
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.addEventListener('timeupdate', function () {
+                    const progress = (this.currentTime / this.duration) * 100;
+                    // 在实际应用中，这里可以保存进度到服务器
+                });
+
+                video.addEventListener('ended', function () {
+                    // 视频播放完成处理
+                    console.log('视频播放完成');
+                });
+            });
+
+            // 模拟资源下载功能
+            const downloadButtons = document.querySelectorAll('.btn-outline');
+            downloadButtons.forEach(button => {
+                if (button.textContent.includes('下载')) {
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        alert('会员特权：资源下载链接已发送到您的账户！');
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
