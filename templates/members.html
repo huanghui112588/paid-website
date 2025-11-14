@@ -298,6 +298,111 @@
             color: white;
         }
 
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .resource-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .resource-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-name {
+            font-weight: 500;
+        }
+
+        .resource-download {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
         /* 页脚 */
         .footer {
             text-align: center;
@@ -363,6 +468,10 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 12px;
+            }
+
+            .modal-content {
+                padding: 20px;
             }
         }
     </style>
@@ -438,11 +547,11 @@
                     </div>
 
                     <div class="card-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" onclick="continueLearning()">
                             <i class="fas fa-play-circle"></i>
                             继续学习
                         </button>
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" onclick="downloadResources()">
                             <i class="fas fa-download"></i>
                             下载资源
                         </button>
@@ -483,11 +592,11 @@
                     </div>
 
                     <div class="card-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" onclick="watchVideo()">
                             <i class="fas fa-play"></i>
                             观看视频
                         </button>
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" onclick="showCourseList()">
                             <i class="fas fa-list"></i>
                             课程列表
                         </button>
@@ -527,11 +636,11 @@
                     </div>
 
                     <div class="card-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" onclick="browseResources()">
                             <i class="fas fa-folder-open"></i>
                             浏览资源
                         </button>
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" onclick="searchResources()">
                             <i class="fas fa-search"></i>
                             搜索资源
                         </button>
@@ -571,11 +680,11 @@
                     </div>
 
                     <div class="card-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" onclick="askExpert()">
                             <i class="fas fa-question-circle"></i>
                             提问专家
                         </button>
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" onclick="showQaHistory()">
                             <i class="fas fa-history"></i>
                             问答历史
                         </button>
@@ -586,7 +695,7 @@
 
         <!-- 页脚 -->
         <footer class="footer">
-            <p>© 2025 上岸会员平台 | 保留所有权利</p>
+            <p>© 2023 学海无涯会员平台 | 保留所有权利</p>
             <div class="footer-links">
                 <a href="#">使用条款</a>
                 <a href="#">隐私政策</a>
@@ -596,7 +705,199 @@
         </footer>
     </div>
 
+    <!-- 提问专家模态框 -->
+    <div id="askExpertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">向专家提问</h3>
+                <button class="close-modal" onclick="closeModal('askExpertModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">问题标题</label>
+                    <input type="text" class="form-input" id="questionTitle" placeholder="请输入您的问题标题">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">问题描述</label>
+                    <textarea class="form-textarea" id="questionDescription"
+                        placeholder="请详细描述您的问题，专家将根据描述提供专业解答"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">问题分类</label>
+                    <select class="form-input" id="questionCategory">
+                        <option value="">请选择问题分类</option>
+                        <option value="technical">技术问题</option>
+                        <option value="conceptual">概念理解</option>
+                        <option value="implementation">实现方案</option>
+                        <option value="other">其他问题</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="btn btn-primary" onclick="submitQuestion()">提交问题</button>
+                <button class="btn btn-outline" onclick="closeModal('askExpertModal')">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 问答历史模态框 -->
+    <div id="qaHistoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">问答历史</h3>
+                <button class="close-modal" onclick="closeModal('qaHistoryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="resource-list">
+                    <div class="resource-item">
+                        <div>
+                            <div class="resource-name">如何优化Python代码性能？</div>
+                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-10</div>
+                        </div>
+                        <button class="resource-download" onclick="viewAnswer(1)">查看</button>
+                    </div>
+                    <div class="resource-item">
+                        <div>
+                            <div class="resource-name">Django与Flask的适用场景对比</div>
+                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-08</div>
+                        </div>
+                        <button class="resource-download" onclick="viewAnswer(2)">查看</button>
+                    </div>
+                    <div class="resource-item">
+                        <div>
+                            <div class="resource-name">前端框架选择建议</div>
+                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-05</div>
+                        </div>
+                        <button class="resource-download" onclick="viewAnswer(3)">查看</button>
+                    </div>
+                    <div class="resource-item">
+                        <div>
+                            <div class="resource-name">数据库设计最佳实践</div>
+                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-01</div>
+                        </div>
+                        <button class="resource-download" onclick="viewAnswer(4)">查看</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 资源浏览模态框 -->
+    <div id="resourcesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">资源库</h3>
+                <button class="close-modal" onclick="closeModal('resourcesModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="resource-list">
+                    <div class="resource-item">
+                        <div class="resource-name">Python高级编程模板</div>
+                        <button class="resource-download" onclick="downloadResource('python_template')">下载</button>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-name">Web开发项目结构</div>
+                        <button class="resource-download" onclick="downloadResource('web_structure')">下载</button>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-name">数据库设计规范文档</div>
+                        <button class="resource-download" onclick="downloadResource('db_design')">下载</button>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-name">API设计最佳实践</div>
+                        <button class="resource-download" onclick="downloadResource('api_design')">下载</button>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-name">前端组件库</div>
+                        <button class="resource-download" onclick="downloadResource('frontend_components')">下载</button>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-name">部署配置模板</div>
+                        <button class="resource-download" onclick="downloadResource('deployment_config')">下载</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // 模态框控制函数
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // 按钮功能实现
+        function continueLearning() {
+            alert('跳转到课程继续学习页面...');
+            // 实际应用中这里可以跳转到具体课程页面
+        }
+
+        function downloadResources() {
+            alert('会员特权：课程资源已添加到您的下载列表！');
+        }
+
+        function watchVideo() {
+            alert('开始播放视频课程...');
+            // 实际应用中这里可以控制视频播放
+        }
+
+        function showCourseList() {
+            alert('显示所有可用课程列表...');
+            // 实际应用中这里可以显示课程目录
+        }
+
+        function browseResources() {
+            openModal('resourcesModal');
+        }
+
+        function searchResources() {
+            const searchTerm = prompt('请输入要搜索的资源关键词:');
+            if (searchTerm) {
+                alert(`正在搜索: ${searchTerm}\n搜索结果将显示在资源列表中。`);
+            }
+        }
+
+        function askExpert() {
+            openModal('askExpertModal');
+        }
+
+        function showQaHistory() {
+            openModal('qaHistoryModal');
+        }
+
+        function submitQuestion() {
+            const title = document.getElementById('questionTitle').value;
+            const description = document.getElementById('questionDescription').value;
+            const category = document.getElementById('questionCategory').value;
+
+            if (!title || !description || !category) {
+                alert('请填写所有必填字段！');
+                return;
+            }
+
+            alert('问题已提交！专家将在24小时内回复您。');
+            closeModal('askExpertModal');
+
+            // 清空表单
+            document.getElementById('questionTitle').value = '';
+            document.getElementById('questionDescription').value = '';
+            document.getElementById('questionCategory').value = '';
+        }
+
+        function viewAnswer(id) {
+            alert(`正在加载问答详情 #${id}...`);
+            // 实际应用中这里可以跳转到问答详情页面
+        }
+
+        function downloadResource(resourceName) {
+            alert(`开始下载资源: ${resourceName}`);
+            // 实际应用中这里可以触发文件下载
+        }
+
         // 简单的交互功能
         document.addEventListener('DOMContentLoaded', function () {
             // 为所有按钮添加点击效果
@@ -608,10 +909,6 @@
                     setTimeout(() => {
                         this.style.transform = '';
                     }, 150);
-
-                    // 在实际应用中，这里可以添加具体的功能逻辑
-                    const buttonText = this.textContent.trim();
-                    console.log(`点击了: ${buttonText}`);
                 });
             });
 
@@ -629,15 +926,14 @@
                 });
             });
 
-            // 模拟资源下载功能
-            const downloadButtons = document.querySelectorAll('.btn-outline');
-            downloadButtons.forEach(button => {
-                if (button.textContent.includes('下载')) {
-                    button.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        alert('会员特权：资源下载链接已发送到您的账户！');
-                    });
-                }
+            // 点击模态框外部关闭
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
             });
         });
     </script>
