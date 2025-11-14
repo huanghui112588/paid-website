@@ -223,7 +223,7 @@ def logout():
     return redirect(url_for('index'))
 
 # ========== 会员专属内容路由 ==========
-@app.route('/member-content')
+@app.route('/members')
 @payment_required
 def member_content():
     content_list = [

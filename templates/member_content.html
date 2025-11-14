@@ -1,127 +1,410 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会员专属内容 - 上岸翻身营</title>
+    <title>会员专属内容库</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .content-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        /* 会员页面特有样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
             padding: 20px;
         }
 
-        .content-item {
-            background: white;
-            margin-bottom: 30px;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .content-item h3 {
-            color: #4361ee;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 10px;
-        }
-
-        .content-description {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-
-        .video-player,
-        .image-preview {
-            width: 100%;
-            max-width: 800px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-
-        .article-content {
-            line-height: 1.8;
-            padding: 15px 0;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #4361ee;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .content-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd);
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-details {
+            text-align: left;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .membership-level {
+            color: #6a11cb;
+            font-weight: 600;
+        }
+
+        .content-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .content-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 25px;
+        }
+
+        .content-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .content-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-left: 4px solid #6a11cb;
+            padding-left: 15px;
+        }
+
+        .content-description {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .video-container {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .video-placeholder i {
+            font-size: 3rem;
+            opacity: 0.8;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .progress-container {
+            margin-top: 10px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border-radius: 10px;
+        }
+
+        .download-note {
+            text-align: center;
+            color: #6a11cb;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .action-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(135deg, #5a0db8, #1c68e8);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 2.2rem;
+            }
+
+            .user-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-details {
+                text-align: center;
+            }
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1>上岸翻身营</h1>
-            <nav>
-                <span>欢迎, {{ session.user }}!</span>
-                <a href="{{ url_for('members') }}">会员首页</a>
-                <a href="{{ url_for('logout') }}">退出</a>
-            </nav>
-        </div>
-    </header>
-
     <main class="container">
+        <div class="content-header">
+            <h2>会员专属内容库</h2>
+            <p>以下是为你准备的独家学习资料，将持续更新</p>
+
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="user-details">
+                    <div class="user-name">*会员</div>
+                    <div class="membership-level">您是永久会员 有效期至 8888年8月8日</div>
+                </div>
+            </div>
+        </div>
+
         <div class="content-container">
-            <div class="content-header">
-                <h2>🎯 会员专属内容库</h2>
-                <p>以下是为你准备的独家学习资料，将持续更新</p>
-            </div>
-
-            {% for item in contents %}
+            <!-- 独家教程 #1 -->
             <div class="content-item">
-                <h3>{{ item.title }}</h3>
-                <p class="content-description">{{ item.description }}</p>
+                <h3>独家教程 #1</h3>
+                <p class="content-description">这里是您的第一个独家教程内容。作为会员，您可以访问所有我们精心准备的进阶学习材料，包括详细步骤和实用技巧。</p>
 
-                {% if item.type == 'video' %}
-                <div style="text-align: center;">
-                    <video class="video-player" controls controlsList="nodownload">
-                        <source src="{{ item.url }}" type="video/mp4">
-                        你的浏览器不支持视频播放，请升级浏览器。
+                <div class="video-container">
+                    <video class="video-player" controls>
+                        <source src="{{ url_for('static', filename='videos/video1.mp4') }}" type="video/mp4">
+                        您的浏览器不支持视频播放，请升级浏览器。
                     </video>
-                    <p><small>提示：右键视频可选择下载（会员特权）</small></p>
                 </div>
-                {% elif item.type == 'image' %}
-                <div style="text-align: center;">
-                    <img src="{{ item.url }}" alt="{{ item.title }}" class="image-preview">
-                    <p><small>点击图片可查看大图</small></p>
-                </div>
-                {% elif item.type == 'article' %}
-                <div class="article-content">
-                    {{ item.content | safe }}
-                </div>
-                {% endif %}
-            </div>
-            {% endfor %}
+                <p class="download-note">提示：右键视频可选择下载（会员特权）</p>
 
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="{{ url_for('members') }}" class="back-link">← 返回会员首页</a>
+                <div class="stats">
+                    <span>学习进度</span>
+                    <span>65%</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 65%"></div>
+                </div>
+
+                <a href="#" class="action-button">继续学习</a>
+            </div>
+
+            <!-- 视频课程 #1 -->
+            <div class="content-item">
+                <h3>视频课程 #1</h3>
+                <p class="content-description">观看我们的独家视频课程，学习专业知识和技能。这些课程由行业专家精心制作，涵盖最新技术和最佳实践。</p>
+
+                <div class="video-container">
+                    <video class="video-player" controls>
+                        <source src="{{ url_for('static', filename='videos/video1.mp4') }}" type="video/mp4">
+                        您的浏览器不支持视频播放，请升级浏览器。
+                    </video>
+                </div>
+
+                <div class="stats">
+                    <span>已观看</span>
+                    <span>8/12 课程</span>
+                </div>
+
+                <a href="#" class="action-button">观看视频</a>
+            </div>
+
+            <!-- 专家问答 -->
+            <div class="content-item">
+                <h3>专家问答</h3>
+                <p class="content-description">直接向行业专家提问，获得个性化指导和建议，解决您在学习中遇到的难题。24小时内回复保证。</p>
+
+                <div class="video-placeholder">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+
+                <div class="stats">
+                    <span>已回答问题</span>
+                    <span>23 个</span>
+                </div>
+
+                <a href="#" class="action-button">提问专家</a>
+            </div>
+
+            <!-- 高级资源库 -->
+            <div class="content-item">
+                <h3>高级资源库</h3>
+                <p class="content-description">访问我们的高级资源库，下载专业模板、工具和资源文件，助您事半功倍。每周更新最新资源。</p>
+
+                <div class="video-placeholder">
+                    <i class="fas fa-archive"></i>
+                </div>
+
+                <div class="stats">
+                    <span>资源数量</span>
+                    <span>127 个项目</span>
+                </div>
+
+                <a href="#" class="action-button">浏览资源</a>
+            </div>
+
+            <!-- 会员社区 -->
+            <div class="content-item">
+                <h3>会员社区</h3>
+                <p class="content-description">加入专属会员社区，与志同道合的学习者交流心得，分享经验，建立有价值的专业人脉网络。</p>
+
+                <div class="video-placeholder">
+                    <i class="fas fa-users"></i>
+                </div>
+
+                <div class="stats">
+                    <span>社区成员</span>
+                    <span>1,248 人</span>
+                </div>
+
+                <a href="#" class="action-button">进入社区</a>
+            </div>
+
+            <!-- 直播课程 -->
+            <div class="content-item">
+                <h3>直播课程</h3>
+                <p class="content-description">参与会员专属直播课程，与讲师实时互动，获得即时反馈。所有直播均提供回放功能。</p>
+
+                <div class="video-placeholder">
+                    <i class="fas fa-broadcast-tower"></i>
+                </div>
+
+                <div class="stats">
+                    <span>下次直播</span>
+                    <span>2天后</span>
+                </div>
+
+                <a href="#" class="action-button">查看日程</a>
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 上岸翻身营</p>
-        </div>
-    </footer>
+    <script>
+        // 简单的视频播放控制
+        document.addEventListener('DOMContentLoaded', function () {
+            const videos = document.querySelectorAll('video');
+
+            videos.forEach(video => {
+                // 视频播放时更新进度
+                video.addEventListener('timeupdate', function () {
+                    const progress = (this.currentTime / this.duration) * 100;
+                    // 在实际应用中，这里可以发送进度到服务器
+                    console.log(`视频进度: ${progress.toFixed(2)}%`);
+                });
+
+                // 视频结束时的处理
+                video.addEventListener('ended', function () {
+                    // 在实际应用中，这里可以标记课程为已完成
+                    console.log('视频播放完成');
+                });
+            });
+
+            // 模拟下载功能
+            document.querySelectorAll('.download-note').forEach(note => {
+                note.addEventListener('click', function () {
+                    alert('会员特权：视频下载链接已发送到您的邮箱！');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
