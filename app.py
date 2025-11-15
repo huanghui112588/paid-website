@@ -182,24 +182,82 @@ def payment_manual():
 @login_required
 def submit_payment_proof():
     if request.method == 'POST':
-        payment_proof = request.form['payment_proof']
+        payment_proof = request.form.get('payment_proof', '')
         
         if not payment_proof:
-            return render_template('payment_manual.html', 
-                                 error="请提供支付凭证",
-                                 price=MEMBERSHIP_PRICE,
-                                 admin_email=ADMIN_EMAIL)
+            return render_template('payment_manual.html',
+                                error="请提供支付凭证",
+                                price=MEMBERSHIP_PRICE,
+                                admin_email=ADMIN_EMAIL)
         
-        conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        c.execute("INSERT INTO pending_payments (username, email, payment_proof, submitted_date) VALUES (?, ?, ?, ?)",
-                 (session['user'], session['email'], payment_proof, datetime.now().isoformat()))
-        conn.commit()
-        conn.close()
-        
-        return render_template('payment_submitted.html')
+        try:
+            # 方法1：使用属性赋值（推荐）
+            new_payment = Payment()
+            new_payment.user_id = session.get('user_id')
+            new_payment.amount = float(MEMBERSHIP_PRICE)
+            new_payment.payment_method = 'manual'
+            new_payment.status = 'pending'
+            new_payment.create_time = datetime.now()
+            new_payment.notes = f"支付凭证: {payment_proof}"
+            
+            # 保存到数据库
+            db.session.add(new_payment)
+            db.session.commit()
+            
+            # 重定向到支付提交成功页面
+            return render_template('payment_submitted.html')
+            
+        except Exception as e:
+            db.session.rollback()
+            return render_template('payment_manual.html',
+                                error=f"提交失败，请重试: {str(e)}",
+                                price=MEMBERSHIP_PRICE,
+                                admin_email=ADMIN_EMAIL)
     
-    return redirect(url_for('payment_manual'))
+    # 如果不是 POST 请求，返回错误
+    return redirect(url_for('payment_page'))
+        
+@app.route('/check-payment-status')
+@login_required
+def check_payment_status():
+    """检查用户支付状态"""
+    user_id = session.get('user_id')
+    
+    # 获取用户的所有支付记录
+    payments = Payment.query.filter_by(user_id=user_id).order_by(Payment.create_time.desc()).all()
+    
+    # 检查是否有已通过的支付
+    has_approved_payment = any(payment.status == 'approved' for payment in payments)
+    
+    return render_template('payment_status.html', 
+                         payments=payments,
+                         has_approved_payment=has_approved_payment,
+                         MEMBERSHIP_PRICE=MEMBERSHIP_PRICE)
+
+@app.route('/members')
+@login_required
+def member_content():
+    """会员专属内容页面"""
+    user_id = session.get('user_id')
+    
+    # 检查用户是否有已通过的支付
+    approved_payment = Payment.query.filter_by(
+        user_id=user_id, 
+        status='approved'
+    ).first()
+    
+    if not approved_payment:
+        flash('您需要成为会员才能访问此内容')
+        return redirect(url_for('payment_page'))
+    
+    # 会员内容列表
+    content_list = [
+        {'type': 'video', 'title': '村口情报处#1', 'url': '/static/member/videos/video1.mp4'},
+        {'type': 'image', 'title': '精选资料图#1', 'url': '/static/member/images/resources/image1.jpg'},
+        {'type': 'article', 'title': '深度解析文章#1', 'content': '这里是你的第一篇深度解析文章内容。'}
+    ]
+    
+    return render_template('member_content.html', contents=content_list)
 
 @app.route('/admin/verify-payments')
 def admin_verify_payments():
@@ -255,19 +313,6 @@ def admin_reject_payment(payment_id):
 def members():
     return render_template('members.html')
 
-@app.route('/check-payment-status')
-@login_required
-def check_payment_status():
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
-    c.execute("SELECT paid FROM users WHERE username=?", (session['user'],))
-    user = c.fetchone()
-    conn.close()
-    
-    if user and user[0] == 1:
-        return redirect(url_for('members'))
-    else:
-        return render_template('payment_pending.html')
 
 @app.route('/logout')
 def logout():
@@ -275,15 +320,37 @@ def logout():
     session.pop('email', None)
     return redirect(url_for('index'))
 
-# ============ 新增的管理员路由 ============
-
-# 设为管理员
-@app.route('/admin/make-admin/<int:user_id>', methods=['POST'])
+# 支付审核页面
+@app.route('/admin/payments')
 @admin_required
-def make_admin(user_id):
-    user = User.query.get_or_404(user_id)
-    user.is_admin = True
+def admin_payments():
+    payments = Payment.query.order_by(Payment.create_time.desc()).all()
+    return render_template('admin_payments.html', payments=payments)
+
+# 更新支付状态
+@app.route('/admin/update-payment/<int:payment_id>', methods=['POST'])
+@admin_required
+def update_payment_status(payment_id):
+    payment = Payment.query.get_or_404(payment_id)
+    new_status = request.form['status']
+    
+    payment.status = new_status
+    payment.process_time = datetime.now()
+    
     db.session.commit()
+    
+    flash(f'支付状态已更新')
+    return redirect(url_for('admin_payments'))
+    
+    # 根据状态显示不同的消息
+    if new_status == 'approved':
+        flash(f'支付 #{payment_id} 已通过审核')
+    elif new_status == 'rejected':
+        flash(f'支付 #{payment_id} 已被拒绝')
+    else:
+        flash(f'支付 #{payment_id} 状态已重置')
+    
+    return redirect(url_for('admin_payments'))
     
     return jsonify({'success': True, 'message': '用户已设为管理员'})
 
@@ -393,12 +460,6 @@ def admin_questions():
     questions = Question.query.order_by(Question.create_time.desc()).all()
     return render_template('admin_questions.html', questions=questions)
 
-# 支付管理路由
-@app.route('/admin/payments')
-@admin_required
-def admin_payments():
-    payments = Payment.query.order_by(Payment.create_time.desc()).all()
-    return render_template('admin_payments.html', payments=payments)
 
 # 创建数据库表
 def init_db():
@@ -415,24 +476,7 @@ def init_db():
         tables = inspector.get_table_names()
         print(f"=== 数据库中的表: {tables} ===")
     
-   # 在现有路由之前添加这个简单测试
-@app.route('/')
-def indexi():
-    return """
-    <html>
-    <head><title>SESEYYDS</title></head>
-    <body>
-        <h1>🚀 SESEYYDS 网站已部署成功！</h1>
-        <p><strong>测试链接：</strong></p>
-        <ul>
-            <li><a href="/admin">管理员系统</a></li>
-            <li><a href="/health">健康检查</a></li>
-            <li><a href="/admin/users">用户管理</a></li>
-        </ul>
-        <p>如果这些链接能工作，说明路由配置正确。</p>
-    </body>
-    </html>
-    """
+  
 # ============ 只保留一个启动块 ============
 if __name__ == '__main__':
     init_db()
