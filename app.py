@@ -18,6 +18,10 @@ db = SQLAlchemy(app)
 MEMBERSHIP_PRICE = 29.9
 ADMIN_EMAIL = "admin@example.com"
 
+# 添加网站名称配置
+SITE_NAME = "上岸翻身营"
+ADMIN_SITE_NAME = f"{SITE_NAME}管理后台"
+
 # ============ 数据模型 ============
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -430,17 +434,17 @@ def init_db():
         db.create_all()
         
         # 创建默认管理员账户
-        admin_user = User.query.filter_by(username='admin').first()
+        admin_user = User.query.filter_by(username='huang').first()
         if not admin_user:
             admin_user = User(
-                username='admin',
-                email='admin@example.com',
-                password=generate_password_hash('admin123'),
+                username='huang',
+                email='942521233qq.com',
+                password=generate_password_hash('112588'),
                 is_admin=True
             )
             db.session.add(admin_user)
             db.session.commit()
-            print("默认管理员账户已创建: admin / admin123")
+            print("默认管理员账户已创建: huang / 112588")
         
         print("数据库初始化完成")
 
