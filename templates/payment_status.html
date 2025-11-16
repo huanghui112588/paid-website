@@ -4,159 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>支付状态查询 - SESEYYDS</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .payment-item {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .status-pending {
-            border-left: 5px solid #ffc107;
-            background-color: #fff3cd;
-        }
-
-        .status-approved {
-            border-left: 5px solid #28a745;
-            background-color: #d4edda;
-        }
-
-        .status-rejected {
-            border-left: 5px solid #dc3545;
-            background-color: #f8d7da;
-        }
-
-        .payment-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .payment-info p {
-            margin: 5px 0;
-        }
-
-        .actions {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background: #007bff;
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .no-payments {
-            text-align: center;
-            color: #6c757d;
-            padding: 40px 0;
-        }
-
-        .membership-active {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-    </style>
+    <title>支付状态查询 - 上岸翻身营</title>
+    <!-- 使用统一的外部样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-    <div class="container">
-        <h1>支付状态查询</h1>
-
-        {% if has_approved_payment %}
-        <div class="membership-active">
-            <h3>🎉 会员权限已激活</h3>
-            <p>您的会员权限已开通，现在可以访问所有会员专属内容。</p>
-            <a href="{{ url_for('member_content') }}" class="btn btn-primary">访问会员内容</a>
+    <header>
+        <div class="container">
+            <h1>上岸翻身营</h1>
+            <nav>
+                <a href="{{ url_for('index') }}">首页</a>
+                <a href="{{ url_for('logout') }}">退出</a>
+            </nav>
         </div>
-        {% endif %}
+    </header>
 
-        {% if payments %}
-        {% for payment in payments %}
-        <div class="payment-item status-{{ payment.status }}">
-            <div class="payment-info">
-                <p><strong>支付ID：</strong>#{{ payment.id }}</p>
-                <p><strong>金额：</strong>¥{{ "%.2f"|format(payment.amount) }}</p>
-                <p><strong>支付方式：</strong>
-                    {% if payment.payment_method == 'manual' %}手动支付{% else %}{{ payment.payment_method }}{% endif %}
-                </p>
-                <p><strong>提交时间：</strong>{{ payment.create_time.strftime('%Y-%m-%d %H:%M') }}</p>
+    <main class="container">
+        <div class="payment-status-container">
+            <h2>支付状态查询</h2>
+
+            {% if has_approved_payment %}
+            <div class="membership-active">
+                <h3>🎉 会员权限已激活</h3>
+                <p>您的会员权限已开通，现在可以访问所有会员专属内容。</p>
+                <!-- 修复：使用正确的路由名称 -->
+                <a href="{{ url_for('members') }}" class="cta-button">访问会员内容</a>
             </div>
+            {% endif %}
 
-            <div class="payment-status">
-                <p><strong>审核状态：</strong>
-                    {% if payment.status == 'pending' %}
-                    <span style="color: #856404;">审核中</span>
-                <p>我们会在24小时内完成审核。审核通过后您将可以访问会员内容。</p>
-                {% elif payment.status == 'approved' %}
-                <span style="color: #155724;">已通过 ✓</span>
-                <p>恭喜！您的会员权限已开通。</p>
-                {% elif payment.status == 'rejected' %}
-                <span style="color: #721c24;">已拒绝 ✗</span>
-                {% if payment.notes %}
-                <p><strong>备注：</strong>{{ payment.notes }}</p>
-                {% endif %}
-                {% endif %}
-                </p>
+            {% if payments %}
+            {% for payment in payments %}
+            <div class="payment-item status-{{ payment.status }}">
+                <div class="payment-info">
+                    <p><strong>支付ID：</strong>#{{ payment.id }}</p>
+                    <p><strong>金额：</strong>¥{{ "%.2f"|format(payment.amount) }}</p>
+                    <p><strong>支付方式：</strong>
+                        {% if payment.payment_method == 'manual' %}手动支付{% else %}{{ payment.payment_method }}{% endif %}
+                    </p>
+                    <p><strong>提交时间：</strong>{{ payment.create_time.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+
+                <div class="payment-status">
+                    <p><strong>审核状态：</strong>
+                        {% if payment.status == 'pending' %}
+                        <span class="status-pending-text">审核中</span>
+                    <p>我们会在24小时内完成审核。审核通过后您将可以访问会员内容。</p>
+                    {% elif payment.status == 'approved' %}
+                    <span class="status-approved-text">已通过 ✓</span>
+                    <p>恭喜！您的会员权限已开通。</p>
+                    {% elif payment.status == 'rejected' %}
+                    <span class="status-rejected-text">已拒绝 ✗</span>
+                    {% if payment.notes %}
+                    <p><strong>备注：</strong>{{ payment.notes }}</p>
+                    {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-payments">
+                <p>暂无支付记录</p>
+                <p>请先提交支付凭证</p>
+            </div>
+            {% endif %}
+
+            <div class="actions">
+                <!-- 修复：确保这个链接正确 -->
+                <a href="{{ url_for('payment_manual') }}" class="cta-button">提交新的支付凭证</a>
+                <a href="{{ url_for('index') }}" class="secondary-button">返回首页</a>
             </div>
         </div>
-        {% endfor %}
-        {% else %}
-        <div class="no-payments">
-            <p>暂无支付记录</p>
-            <p>请先提交支付凭证</p>
-        </div>
-        {% endif %}
+    </main>
 
-        <div class="actions">
-            <a href="/payment" class="btn btn-primary">提交新的支付凭证</a>
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">返回首页</a>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 上岸翻身营</p>
         </div>
-    </div>
+    </footer>
 </body>
 
 </html>

@@ -207,6 +207,9 @@ def payment_manual():
 @app.route('/submit-payment-proof', methods=['POST'])
 @login_required
 def submit_payment_proof():
+    # 添加处理中的状态提示
+    flash('支付凭证提交中...', 'info')
+          
     """提交支付凭证"""
     payment_proof = request.form.get('payment_proof', '').strip()
     

@@ -342,3 +342,88 @@ footer {
         flex-direction: column;
     }
 }
+
+/* 支付状态页面特定样式 */
+.payment-status-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.payment-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.status-pending {
+    border-left: 5px solid var(--warning-color);
+    background-color: #fff3cd;
+}
+
+.status-approved {
+    border-left: 5px solid var(--success-color);
+    background-color: #d4edda;
+}
+
+.status-rejected {
+    border-left: 5px solid var(--danger-color);
+    background-color: #f8d7da;
+}
+
+.status-pending-text {
+    color: #856404;
+}
+
+.status-approved-text {
+    color: #155724;
+}
+
+.status-rejected-text {
+    color: #721c24;
+}
+
+.payment-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.payment-info p {
+    margin: 5px 0;
+}
+
+.membership-active {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.no-payments {
+    text-align: center;
+    color: var(--gray-color);
+    padding: 40px 0;
+}
+
+.secondary-button {
+    display: inline-block;
+    background-color: var(--gray-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    margin: 0 0.5rem;
+}
+
+.secondary-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
