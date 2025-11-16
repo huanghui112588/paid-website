@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import os
 from datetime import datetime, timedelta
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from typing import Optional, List, Any
+from typing import Optional
 
 # ============ 初始化应用 ============
 app = Flask(__name__)
@@ -84,17 +84,9 @@ def login_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        print(f"=== 管理员权限检查 ===")
-        print(f"请求路径: {request.path}")
-        print(f"管理员登录状态: {session.get('admin_logged_in')}")
-        print(f"管理员用户名: {session.get('admin_username')}")
-        
         if not session.get('admin_logged_in'):
-            print("❌ 未登录管理员，重定向到登录页")
             flash('请先登录管理员账号', 'warning')
             return redirect(url_for('admin_login'))
-        
-        print("✅ 管理员权限验证通过")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -248,9 +240,6 @@ def payment_manual():
 @app.route('/submit-payment-proof', methods=['POST'])
 @login_required
 def submit_payment_proof():
-    # 添加处理中的状态提示
-    flash('支付凭证提交中...', 'info')
-          
     """提交支付凭证"""
     payment_proof = request.form.get('payment_proof', '').strip()
     
@@ -303,7 +292,6 @@ def members():
 def admin_login():
     """管理员登录"""
     if session.get('admin_logged_in'):
-        print("管理员已登录，直接跳转仪表板")
         return redirect(url_for('admin_dashboard'))
     
     if request.method == 'POST':
@@ -314,11 +302,9 @@ def admin_login():
         if username == 'admin' and password == 'admin123':
             session['admin_logged_in'] = True
             session['admin_username'] = username
-            print("✅ 管理员登录成功，设置会话")
             flash('管理员登录成功！', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            print("❌ 管理员登录失败")
             flash('管理员账号或密码错误', 'error')
     
     return render_template('admin_login.html')
@@ -362,30 +348,65 @@ def update_payment_status(payment_id):
 def admin_users():
     """用户管理"""
     try:
-        print("=== 用户管理路由执行 ===")
-        
         users = User.query.order_by(User.create_time.desc()).all()
-        print(f"查询到 {len(users)} 个用户")
-        
-        current_time = datetime.now()
-        print(f"当前时间: {current_time}")
-        print(f"当前日期: {current_time.date()}")
-        
-        # 测试模板测试函数
-        test_result1 = date_equal_test(current_time, current_time.date())
-        test_result2 = date_ge_test(current_time, current_time.date())
-        print(f"测试结果 - date_equal: {test_result1}, date_ge: {test_result2}")
-        
         return render_template('admin_users.html', 
                              users=users, 
-                             now=current_time, 
+                             now=datetime.now(), 
                              timedelta=timedelta)
-                             
     except Exception as e:
-        print(f"❌ 用户管理页面错误: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return f"用户管理页面错误: {str(e)}", 500
+        flash(f'用户管理页面加载失败: {str(e)}', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete-user/<int:user_id>', methods=['DELETE'])
+@admin_required
+def delete_user(user_id):
+    """删除用户"""
+    try:
+        # 防止删除自己
+        if user_id == session.get('user_id'):
+            return jsonify({'success': False, 'message': '不能删除自己的账户'})
+        
+        user = User.query.get_or_404(user_id)
+        
+        # 防止删除最后一个管理员
+        if user.is_admin:
+            admin_count = User.query.filter_by(is_admin=True).count()
+            if admin_count <= 1:
+                return jsonify({'success': False, 'message': '不能删除最后一个管理员'})
+        
+        # 删除用户相关的所有数据
+        Payment.query.filter_by(user_id=user_id).delete()
+        Question.query.filter_by(user_id=user_id).delete()
+        
+        # 删除用户
+        db.session.delete(user)
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': '用户已删除'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'删除失败: {str(e)}'})
+
+@app.route('/admin/make-admin/<int:user_id>', methods=['POST'])
+@admin_required
+def make_admin(user_id):
+    """将用户设为管理员"""
+    try:
+        user = User.query.get_or_404(user_id)
+        
+        # 检查是否已经是管理员
+        if user.is_admin:
+            return jsonify({'success': False, 'message': '用户已经是管理员'})
+        
+        user.is_admin = True
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': '用户已设为管理员'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'操作失败: {str(e)}'})
 
 @app.route('/admin/questions')
 @admin_required
