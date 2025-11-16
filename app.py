@@ -18,7 +18,7 @@ db = SQLAlchemy(app)
 MEMBERSHIP_PRICE = 29.9
 ADMIN_EMAIL = "admin@example.com"
 
-# ============ 数据模型（修复类型注解） ============
+# ============ 数据模型 ============
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -27,7 +27,7 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     create_time = db.Column(db.DateTime, default=datetime.now)
     
-    # 关系 - 移除类型注解避免冲突
+    # 关系
     payments = db.relationship('Payment', backref='user', lazy=True)
     questions = db.relationship('Question', backref='user', lazy=True)
     
@@ -84,9 +84,17 @@ def login_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        print(f"=== 管理员权限检查 ===")
+        print(f"请求路径: {request.path}")
+        print(f"管理员登录状态: {session.get('admin_logged_in')}")
+        print(f"管理员用户名: {session.get('admin_username')}")
+        
         if not session.get('admin_logged_in'):
+            print("❌ 未登录管理员，重定向到登录页")
             flash('请先登录管理员账号', 'warning')
             return redirect(url_for('admin_login'))
+        
+        print("✅ 管理员权限验证通过")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -107,6 +115,39 @@ def payment_required(f):
             return redirect(url_for('payment_manual'))
         return f(*args, **kwargs)
     return decorated_function
+
+# ============ 模板测试 ============
+@app.template_test('date_equal')
+def date_equal_test(dt, date_str_or_date):
+    """日期相等判断测试"""
+    if not isinstance(dt, datetime):
+        return False
+    
+    # 处理 date_str_or_date 参数，可能是字符串或 date 对象
+    if isinstance(date_str_or_date, str):
+        # 如果是字符串，解析为日期
+        compare_date = datetime.strptime(date_str_or_date, '%Y-%m-%d').date()
+    else:
+        # 如果已经是 date 对象，直接使用
+        compare_date = date_str_or_date
+    
+    return dt.date() == compare_date
+
+@app.template_test('date_ge')
+def date_ge_test(dt, date_str_or_date):
+    """日期大于等于判断测试"""
+    if not isinstance(dt, datetime):
+        return False
+    
+    # 处理 date_str_or_date 参数，可能是字符串或 date 对象
+    if isinstance(date_str_or_date, str):
+        # 如果是字符串，解析为日期
+        compare_date = datetime.strptime(date_str_or_date, '%Y-%m-%d').date()
+    else:
+        # 如果已经是 date 对象，直接使用
+        compare_date = date_str_or_date
+    
+    return dt.date() >= compare_date
 
 # ============ 用户路由 ============
 @app.route('/')
@@ -262,6 +303,7 @@ def members():
 def admin_login():
     """管理员登录"""
     if session.get('admin_logged_in'):
+        print("管理员已登录，直接跳转仪表板")
         return redirect(url_for('admin_dashboard'))
     
     if request.method == 'POST':
@@ -272,9 +314,11 @@ def admin_login():
         if username == 'admin' and password == 'admin123':
             session['admin_logged_in'] = True
             session['admin_username'] = username
+            print("✅ 管理员登录成功，设置会话")
             flash('管理员登录成功！', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
+            print("❌ 管理员登录失败")
             flash('管理员账号或密码错误', 'error')
     
     return render_template('admin_login.html')
@@ -317,18 +361,36 @@ def update_payment_status(payment_id):
 @admin_required
 def admin_users():
     """用户管理"""
-    # 修复：使用正确的排序方式
-    users = User.query.order_by(User.create_time.desc()).all()
-    return render_template('admin_users.html', 
-                         users=users, 
-                         now=datetime.now(), 
-                         timedelta=timedelta)
+    try:
+        print("=== 用户管理路由执行 ===")
+        
+        users = User.query.order_by(User.create_time.desc()).all()
+        print(f"查询到 {len(users)} 个用户")
+        
+        current_time = datetime.now()
+        print(f"当前时间: {current_time}")
+        print(f"当前日期: {current_time.date()}")
+        
+        # 测试模板测试函数
+        test_result1 = date_equal_test(current_time, current_time.date())
+        test_result2 = date_ge_test(current_time, current_time.date())
+        print(f"测试结果 - date_equal: {test_result1}, date_ge: {test_result2}")
+        
+        return render_template('admin_users.html', 
+                             users=users, 
+                             now=current_time, 
+                             timedelta=timedelta)
+                             
+    except Exception as e:
+        print(f"❌ 用户管理页面错误: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return f"用户管理页面错误: {str(e)}", 500
 
 @app.route('/admin/questions')
 @admin_required
 def admin_questions():
     """问题管理"""
-    # 修复：使用正确的排序方式
     questions = Question.query.order_by(Question.create_time.desc()).all()
     return render_template('admin_questions.html', questions=questions)
 
@@ -339,21 +401,6 @@ def admin_logout():
     session.pop('admin_username', None)
     flash('已退出管理员账号', 'info')
     return redirect(url_for('admin_login'))
-
-# ============ 工具函数和过滤器 ============
-@app.template_filter('date_equal')
-def date_equal_filter(dt, date_str):
-    """日期相等判断过滤器"""
-    if isinstance(dt, datetime):
-        return dt.date() == datetime.strptime(date_str, '%Y-%m-%d').date()
-    return False
-
-@app.template_filter('date_ge')
-def date_ge_filter(dt, date_str):
-    """日期大于等于判断过滤器"""
-    if isinstance(dt, datetime):
-        return dt.date() >= datetime.strptime(date_str, '%Y-%m-%d').date()
-    return False
 
 # ============ 初始化应用 ============
 def init_db():
