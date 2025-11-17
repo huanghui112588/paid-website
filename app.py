@@ -432,61 +432,36 @@ def admin_logout():
 
 # ============ 初始化应用 ============
 def init_db():
-    """初始化数据库"""
+    """初始化数据库 - 兼容Render环境"""
     with app.app_context():
-        db.create_all()
-        
-        # 创建默认管理员账户
-        admin_user = User.query.filter_by(username='huang').first()
-        if not admin_user:
-            admin_user = User(
-                username='huang',
-                email='942521233@qq.com',  # 修复邮箱格式
-                password=generate_password_hash('112588'),
-                is_admin=True
-            )
-            db.session.add(admin_user)
-            db.session.commit()
-            print("默认管理员账户已创建: huang / 112588")
-        
-        print("数据库初始化完成")
-
-def create_admin_user(username, password, email):
-    """创建新的管理员账户"""
-    with app.app_context():
-        # 检查用户名是否已存在
-        if User.query.filter_by(username=username).first():
-            print(f"错误：用户名 '{username}' 已存在")
-            return False
-        
-        # 检查邮箱是否已存在
-        if User.query.filter_by(email=email).first():
-            print(f"错误：邮箱 '{email}' 已被注册")
-            return False
-        
         try:
-            new_admin = User(
-                username=username,
-                email=email,
-                password=generate_password_hash(password),
-                is_admin=True
-            )
-            db.session.add(new_admin)
-            db.session.commit()
-            print(f"管理员账户 '{username}' 创建成功")
-            return True
+            db.create_all()
+            
+            # 创建默认管理员账户
+            admin_user = User.query.filter_by(username='huang').first()
+            if not admin_user:
+                admin_user = User(
+                    username='huang',
+                    email='942521233@qq.com',
+                    password=generate_password_hash('112588'),
+                    is_admin=True
+                )
+                db.session.add(admin_user)
+                db.session.commit()
+                print("✅ 默认管理员账户已创建: huang / 112588")
+            
+            print("✅ 数据库初始化完成")
+            
         except Exception as e:
-            db.session.rollback()
-            print(f"创建管理员账户失败: {str(e)}")
-            return False
-        
-# 使用示例（取消注释来创建新的管理员）
-# if __name__ == '__main__':
-#     create_admin_user('newadmin', 'securepassword123', 'newadmin@example.com')
+            print(f"❌ 数据库初始化失败: {str(e)}")
+            # 在Render环境中，可能需要使用不同的数据库配置
+            if os.environ.get('RENDER'):
+                print("⚠️  Render环境检测到，尝试使用SQLite内存数据库")
+                app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+                db.create_all()
 
 # ============ 启动应用 ============
 if __name__ == '__main__':
     init_db()
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True) 
- 
+    app.run(host='0.0.0.0', port=port, debug=True)
