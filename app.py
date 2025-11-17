@@ -6,16 +6,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from typing import Optional
-from datetime import datetime, timedelta
 
 # ============ 初始化应用 ============
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-123")
 
 # ============ 数据库配置 ============
-import os
-
-# 使用你提供的PostgreSQL连接字符串
+# 使用您提供的PostgreSQL连接字符串
 database_url = "postgresql://paid_user:zgevvYEGo2MaqkEjoC3LOdid5esaFSM7@dpg-d4dj33ndiees73ckpk3g-a.singapore-postgres.render.com/paid_website"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
