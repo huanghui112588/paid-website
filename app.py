@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from typing import Optional
+from datetime import datetime, timedelta
 
 # ============ 初始化应用 ============
 app = Flask(__name__)
@@ -327,7 +328,84 @@ def admin_dashboard():
         'total_users': User.query.count()
     }
     
-    return render_template('admin_dashboard.html', **stats)
+    return render_template('admin_dashboard.html', **stats) 
+
+# ============ 专家问答路由 ============
+
+@app.route('/submit-question', methods=['POST'])
+@payment_required
+def submit_question():
+    """用户提交问题"""
+    content = request.form.get('content', '').strip()
+    
+    if not content:
+        return jsonify({'success': False, 'message': '问题内容不能为空'})
+    
+    try:
+        new_question = Question(
+            user_id=session['user_id'],
+            content=content
+        )
+        
+        db.session.add(new_question)
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': '问题提交成功！专家将在24小时内回复'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'提交失败: {str(e)}'})
+
+@app.route('/get-my-questions')
+@payment_required
+def get_my_questions():
+    """获取用户自己的问题列表"""
+    questions = Question.query.filter_by(user_id=session['user_id'])\
+                             .order_by(Question.create_time.desc()).all()
+    
+    questions_data = []
+    for q in questions:
+        questions_data.append({
+            'id': q.id,
+            'content': q.content,
+            'answer': q.answer,
+            'answered': q.answered,
+            'create_time': q.create_time.strftime('%Y-%m-%d %H:%M'),
+            'answer_time': q.answer_time.strftime('%Y-%m-%d %H:%M') if q.answer_time else None
+        })
+    
+    return jsonify({'success': True, 'questions': questions_data})
+
+@app.route('/admin/answer-question/<int:question_id>', methods=['POST'])
+@admin_required
+def answer_question(question_id):
+    """管理员回答问题"""
+    question = Question.query.get_or_404(question_id)
+    
+    # 安全的 JSON 数据获取
+    if not request.is_json:
+        return jsonify({'success': False, 'message': '请求必须是JSON格式'})
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'message': '无效的JSON数据'})
+    
+    answer_content = data.get('answer', '').strip()
+    
+    if not answer_content:
+        return jsonify({'success': False, 'message': '回答内容不能为空'})
+    
+    try:
+        question.answer = answer_content
+        question.answered = True
+        question.answer_time = datetime.now()
+        
+        db.session.commit()
+        return jsonify({'success': True, 'message': '回答提交成功'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'回答失败: {str(e)}'})
 
 @app.route('/admin/payments')
 @admin_required
@@ -459,6 +537,7 @@ def init_db():
                 print("⚠️  Render环境检测到，尝试使用SQLite内存数据库")
                 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
                 db.create_all()
+
 
 # ============ 启动应用 ============
 if __name__ == '__main__':

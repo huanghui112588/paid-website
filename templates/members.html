@@ -740,44 +740,25 @@
         </div>
     </div>
 
-    <!-- 问答历史模态框 -->
+    <!-- 动态问答历史模态框 -->
     <div id="qaHistoryModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">问答历史</h3>
+                <h3 class="modal-title">我的问答历史</h3>
                 <button class="close-modal" onclick="closeModal('qaHistoryModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="resource-list">
-                    <div class="resource-item">
-                        <div>
-                            <div class="resource-name">如何优化Python代码性能？</div>
-                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-10</div>
-                        </div>
-                        <button class="resource-download" onclick="viewAnswer(1)">查看</button>
-                    </div>
-                    <div class="resource-item">
-                        <div>
-                            <div class="resource-name">Django与Flask的适用场景对比</div>
-                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-08</div>
-                        </div>
-                        <button class="resource-download" onclick="viewAnswer(2)">查看</button>
-                    </div>
-                    <div class="resource-item">
-                        <div>
-                            <div class="resource-name">前端框架选择建议</div>
-                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-05</div>
-                        </div>
-                        <button class="resource-download" onclick="viewAnswer(3)">查看</button>
-                    </div>
-                    <div class="resource-item">
-                        <div>
-                            <div class="resource-name">数据库设计最佳实践</div>
-                            <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">已回答 · 2023-11-01</div>
-                        </div>
-                        <button class="resource-download" onclick="viewAnswer(4)">查看</button>
+                <div id="dynamicQaHistory" class="resource-list">
+                    <!-- 动态内容将通过JavaScript加载 -->
+                    <div class="text-center py-4">
+                        <p class="text-muted">加载中...</p>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid var(--gray-light); padding-top: 20px;">
+                <button class="btn btn-outline" onclick="refreshQaHistory()">
+                    <i class="fas fa-sync-alt"></i> 刷新列表
+                </button>
             </div>
         </div>
     </div>
@@ -830,6 +811,173 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
+        // 获取用户的问答历史
+        function loadMyQuestions() {
+            fetch('/get-my-questions')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayQuestions(data.questions);
+                        displayModalQuestions(data.questions); // 同时更新模态框
+                    } else {
+                        showError('加载失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('加载失败，请重试');
+                });
+        }
+
+        // 在页面显示问答历史
+        function displayQuestions(questions) {
+            const container = document.getElementById('qaHistoryContainer');
+            if (!container) return;
+
+            if (!questions || questions.length === 0) {
+                container.innerHTML = `
+            <div class="text-center py-4">
+                <i class="fas fa-comments fa-2x text-muted mb-3"></i>
+                <p class="text-muted">您还没有提问过任何问题</p>
+                <p class="text-muted small">点击"提问专家"开始您的第一个问题</p>
+            </div>
+        `;
+                return;
+            }
+
+            let html = '';
+            questions.forEach(q => {
+                const questionTime = new Date(q.create_time).toLocaleString('zh-CN');
+                const answerTime = q.answer_time ? new Date(q.answer_time).toLocaleString('zh-CN') : '尚未回答';
+
+                html += `
+            <div class="qa-item" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                <div class="question-section" style="margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                        <strong style="color: #374151;">我的提问</strong>
+                        <span class="badge ${q.answered ? 'bg-success' : 'bg-warning'}" 
+                              style="font-size: 0.75rem; padding: 4px 8px; border-radius: 12px; color: white;">
+                            ${q.answered ? '已回答' : '待回答'}
+                        </span>
+                    </div>
+                    <p style="margin: 0; color: #4b5563; line-height: 1.5; white-space: pre-wrap;">${q.content}</p>
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-top: 8px;">
+                        <i class="fas fa-clock"></i> ${questionTime}
+                    </div>
+                </div>
+                
+                ${q.answered ? `
+                <div class="answer-section" style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                        <strong style="color: #059669;">专家回答</strong>
+                        <span style="font-size: 0.75rem; color: #6b7280;">
+                            <i class="fas fa-check-circle"></i> 已解答
+                        </span>
+                    </div>
+                    <p style="margin: 0; color: #374151; line-height: 1.5; background: #f0fdf4; padding: 12px; border-radius: 6px; white-space: pre-wrap;">${q.answer}</p>
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-top: 8px;">
+                        <i class="fas fa-clock"></i> ${answerTime}
+                    </div>
+                </div>
+                ` : `
+                <div class="answer-section" style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
+                    <div style="text-align: center; padding: 16px;">
+                        <i class="fas fa-hourglass-half fa-lg text-warning mb-2"></i>
+                        <p style="margin: 0; color: #92400e; font-size: 0.875rem;">
+                            专家正在审核您的问题，通常会在24小时内回复
+                        </p>
+                    </div>
+                </div>
+                `}
+            </div>
+        `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // 在模态框中显示问答历史
+        function displayModalQuestions(questions) {
+            const modalContainer = document.getElementById('dynamicQaHistory');
+            if (!modalContainer) return;
+
+            if (!questions || questions.length === 0) {
+                modalContainer.innerHTML = `
+            <div class="text-center py-4">
+                <i class="fas fa-comments fa-2x text-muted mb-3"></i>
+                <p class="text-muted">您还没有提问过任何问题</p>
+            </div>
+        `;
+                return;
+            }
+
+            let html = '';
+            questions.forEach(q => {
+                const questionTime = new Date(q.create_time).toLocaleString('zh-CN');
+
+                html += `
+            <div class="resource-item">
+                <div>
+                    <div class="resource-name">${q.content.split('\n')[0].substring(0, 50)}${q.content.split('\n')[0].length > 50 ? '...' : ''}</div>
+                    <div style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">
+                        ${q.answered ? '已回答' : '待回答'} · ${questionTime}
+                    </div>
+                    ${q.answered ? `
+                    <div style="font-size: 0.85rem; color: #059669; margin-top: 4px;">
+                        <strong>专家回答:</strong> ${q.answer.substring(0, 80)}${q.answer.length > 80 ? '...' : ''}
+                    </div>
+                    ` : ''}
+                </div>
+                <button class="resource-download" onclick="viewQuestionDetail(${q.id})">查看</button>
+            </div>
+        `;
+            });
+
+            modalContainer.innerHTML = html;
+        }
+
+        // 刷新问答历史
+        function refreshQaHistory() {
+            const containers = ['qaHistoryContainer', 'dynamicQaHistory'];
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = '<div class="text-center py-4"><p class="text-muted">刷新中...</p></div>';
+                }
+            });
+
+            loadMyQuestions();
+        }
+
+        // 查看问题详情
+        function viewQuestionDetail(questionId) {
+            // 这里可以实现查看单个问题详情的功能
+            alert('查看问题详情功能开发中...');
+        }
+
+        // 错误显示
+        function showError(message) {
+            const containers = ['qaHistoryContainer', 'dynamicQaHistory'];
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    container.innerHTML = `<div class="text-center py-4"><p class="text-muted">${message}</p></div>`;
+                }
+            });
+        }
+
+        // 修改现有的 showQaHistory 函数
+        function showQaHistory() {
+            loadMyQuestions(); // 先加载数据
+            openModal('qaHistoryModal');
+        }
+
+        // 页面加载时自动加载问答历史
+        document.addEventListener('DOMContentLoaded', function () {
+            // 延迟加载问答历史
+            setTimeout(loadMyQuestions, 1000);
+        });
+
         // 按钮功能实现
         function continueLearning() {
             alert('跳转到课程继续学习页面...');
@@ -879,13 +1027,34 @@
                 return;
             }
 
-            alert('问题已提交！专家将在24小时内回复您。');
-            closeModal('askExpertModal');
+            // 组合问题内容
+            const content = `【${category}】${title}\n\n${description}`;
 
-            // 清空表单
-            document.getElementById('questionTitle').value = '';
-            document.getElementById('questionDescription').value = '';
-            document.getElementById('questionCategory').value = '';
+            // 提交到后端
+            fetch('/submit-question', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `content=${encodeURIComponent(content)}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        closeModal('askExpertModal');
+                        // 清空表单
+                        document.getElementById('questionTitle').value = '';
+                        document.getElementById('questionDescription').value = '';
+                        document.getElementById('questionCategory').value = '';
+                    } else {
+                        alert('提交失败: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('提交失败，请重试');
+                });
         }
 
         function viewAnswer(id) {
