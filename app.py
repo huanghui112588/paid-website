@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-123")
 
 # ============ 数据库配置 ============
-# 使用您提供的PostgreSQL连接字符串
+# 使用 PostgreSQL
 database_url = "postgresql://paid_user:zgevvYEGo2MaqkEjoC3LOdid5esaFSM7@dpg-d4dj33ndiees73ckpk3g-a.singapore-postgres.render.com/paid_website"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
