@@ -11,8 +11,20 @@ from datetime import datetime, timedelta
 # ============ 初始化应用 ============
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-123")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+# ============ 数据库配置 ============
+import os
+
+# 使用你提供的PostgreSQL连接字符串
+database_url = "postgresql://paid_user:zgevvYEGo2MaqkEjoC3LOdid5esaFSM7@dpg-d4dj33ndiees73ckpk3g-a.singapore-postgres.render.com/paid_website"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_recycle': 300,
+    'pool_pre_ping': True
+}
+
 db = SQLAlchemy(app)
 
 # ============ 配置常量 ============
@@ -462,16 +474,65 @@ def delete_user(user_id):
         # 删除用户相关的所有数据
         Payment.query.filter_by(user_id=user_id).delete()
         Question.query.filter_by(user_id=user_id).delete()
-        
-        # 删除用户
         db.session.delete(user)
         db.session.commit()
-        
         return jsonify({'success': True, 'message': '用户已删除'})
-        
     except Exception as e:
         db.session.rollback()
         return jsonify({'success': False, 'message': f'删除失败: {str(e)}'})
+
+# ============ 初始化应用 ============
+def init_db():
+    """初始化数据库 - PostgreSQL专用版本"""
+    with app.app_context():
+        try:
+            print("🔄 开始初始化PostgreSQL数据库...")
+            
+            # 创建所有表
+            db.create_all()
+            print("✅ 数据库表创建完成")
+            
+            # 创建默认管理员账户
+            admin_user = User.query.filter_by(username='huang').first()
+            if not admin_user:
+                admin_user = User(
+                    username='huang',
+                    email='942521233@qq.com',
+                    password=generate_password_hash('112588'),
+                    is_admin=True
+                )
+                db.session.add(admin_user)
+                print("✅ 默认管理员账户已创建: huang / 112588")
+            else:
+                print("✅ 管理员账户已存在")
+            
+            # 创建测试用户（方便测试）
+            test_user = User.query.filter_by(username='testuser').first()
+            if not test_user:
+                test_user = User(
+                    username='testuser',
+                    email='test@example.com',
+                    password=generate_password_hash('test123'),
+                    is_admin=False
+                )
+                db.session.add(test_user)
+                print("✅ 测试用户已创建: testuser / test123")
+            
+            db.session.commit()
+            print("🎉 PostgreSQL数据库初始化完成！")
+            print("💾 用户数据现在将永久保存，不再因部署而丢失！")
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"❌ 数据库初始化错误: {str(e)}")
+            
+            # 如果是连接错误，提供具体建议
+            if "connection" in str(e).lower():
+                print("🔧 请检查PostgreSQL连接字符串和网络连接")
+            elif "already exists" in str(e).lower():
+                print("⚠️  表已存在，可以忽略此错误")
+            else:
+                raise
 
 @app.route('/admin/make-admin/<int:user_id>', methods=['POST'])
 @admin_required
@@ -508,35 +569,7 @@ def admin_logout():
     flash('已退出管理员账号', 'info')
     return redirect(url_for('admin_login'))
 
-# ============ 初始化应用 ============
-def init_db():
-    """初始化数据库 - 兼容Render环境"""
-    with app.app_context():
-        try:
-            db.create_all()
-            
-            # 创建默认管理员账户
-            admin_user = User.query.filter_by(username='huang').first()
-            if not admin_user:
-                admin_user = User(
-                    username='huang',
-                    email='942521233@qq.com',
-                    password=generate_password_hash('112588'),
-                    is_admin=True
-                )
-                db.session.add(admin_user)
-                db.session.commit()
-                print("✅ 默认管理员账户已创建: huang / 112588")
-            
-            print("✅ 数据库初始化完成")
-            
-        except Exception as e:
-            print(f"❌ 数据库初始化失败: {str(e)}")
-            # 在Render环境中，可能需要使用不同的数据库配置
-            if os.environ.get('RENDER'):
-                print("⚠️  Render环境检测到，尝试使用SQLite内存数据库")
-                app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-                db.create_all()
+
 
 
 # ============ 启动应用 ============
