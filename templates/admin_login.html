@@ -69,6 +69,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
         .btn-login:hover {
@@ -83,6 +84,7 @@
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 10px;
+            text-align: center;
         }
 
         .flash-message.error {
@@ -96,6 +98,17 @@
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+
+        .security-notice {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            color: #856404;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -107,10 +120,10 @@
         </div>
 
         <div class="flash-messages">
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-            {% for message in messages %}
-            <div class="flash-message {% if '错误' in message %}error{% else %}success{% endif %}">
+            {% for category, message in messages %}
+            <div class="flash-message {{ 'error' if category == 'error' else 'success' }}">
                 {{ message }}
             </div>
             {% endfor %}
@@ -121,19 +134,20 @@
         <form method="POST">
             <div class="form-group">
                 <label for="username">管理员账号</label>
-                <input type="text" id="username" name="username" required value="admin">
+                <input type="text" id="username" name="username" required placeholder="请输入管理员账号">
             </div>
 
             <div class="form-group">
                 <label for="password">密码</label>
-                <input type="password" id="password" name="password" required value="admin123">
+                <input type="password" id="password" name="password" required placeholder="请输入密码">
             </div>
 
             <button type="submit" class="btn-login">登录管理系统</button>
         </form>
 
-        <div style="text-align: center; margin-top: 20px; color: #666;">
-            <p>默认账号: huang / 112588</p>
+        <div class="security-notice">
+            <p>⚠️ 请使用授权的管理员账号登录</p>
+            <p><small>系统已启用安全验证机制</small></p>
         </div>
     </div>
 </body>

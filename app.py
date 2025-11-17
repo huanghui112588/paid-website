@@ -18,9 +18,6 @@ db = SQLAlchemy(app)
 MEMBERSHIP_PRICE = 29.9
 ADMIN_EMAIL = "admin@example.com"
 
-# 添加网站名称配置
-SITE_NAME = "上岸翻身营"
-ADMIN_SITE_NAME = f"{SITE_NAME}管理后台"
 
 # ============ 数据模型 ============
 class User(db.Model):
@@ -294,7 +291,7 @@ def members():
 # ============ 管理员路由 ============
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
-    """管理员登录"""
+    """管理员登录 - 安全版本"""
     if session.get('admin_logged_in'):
         return redirect(url_for('admin_dashboard'))
     
@@ -302,8 +299,14 @@ def admin_login():
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
         
-        # 验证管理员凭据
-        if username == 'admin' and password == 'admin123':
+        if not all([username, password]):
+            flash('请填写用户名和密码', 'error')
+            return render_template('admin_login.html')
+        
+        # 从数据库验证管理员
+        admin_user = User.query.filter_by(username=username, is_admin=True).first()
+        
+        if admin_user and check_password_hash(admin_user.password, password):
             session['admin_logged_in'] = True
             session['admin_username'] = username
             flash('管理员登录成功！', 'success')
@@ -438,7 +441,7 @@ def init_db():
         if not admin_user:
             admin_user = User(
                 username='huang',
-                email='942521233qq.com',
+                email='942521233@qq.com',  # 修复邮箱格式
                 password=generate_password_hash('112588'),
                 is_admin=True
             )
@@ -447,6 +450,39 @@ def init_db():
             print("默认管理员账户已创建: huang / 112588")
         
         print("数据库初始化完成")
+
+def create_admin_user(username, password, email):
+    """创建新的管理员账户"""
+    with app.app_context():
+        # 检查用户名是否已存在
+        if User.query.filter_by(username=username).first():
+            print(f"错误：用户名 '{username}' 已存在")
+            return False
+        
+        # 检查邮箱是否已存在
+        if User.query.filter_by(email=email).first():
+            print(f"错误：邮箱 '{email}' 已被注册")
+            return False
+        
+        try:
+            new_admin = User(
+                username=username,
+                email=email,
+                password=generate_password_hash(password),
+                is_admin=True
+            )
+            db.session.add(new_admin)
+            db.session.commit()
+            print(f"管理员账户 '{username}' 创建成功")
+            return True
+        except Exception as e:
+            db.session.rollback()
+            print(f"创建管理员账户失败: {str(e)}")
+            return False
+
+# 使用示例（取消注释来创建新的管理员）
+# if __name__ == '__main__':
+#     create_admin_user('newadmin', 'securepassword123', 'newadmin@example.com')
 
 # ============ 启动应用 ============
 if __name__ == '__main__':
