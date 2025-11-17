@@ -480,7 +480,6 @@ def create_admin_user(username, password, email):
             print(f"创建管理员账户失败: {str(e)}")
             return False
         
-
 # 使用示例（取消注释来创建新的管理员）
 # if __name__ == '__main__':
 #     create_admin_user('newadmin', 'securepassword123', 'newadmin@example.com')
@@ -489,7 +488,5 @@ def create_admin_user(username, password, email):
 if __name__ == '__main__':
     init_db()
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
- 
-  
+    app.run(host='0.0.0.0', port=port, debug=True) 
  
