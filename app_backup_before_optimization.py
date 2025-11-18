@@ -5,45 +5,27 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from typing import Optional, List  # 确保导入 List
-
-# ============ 加载环境变量 ============
-try:
-    from dotenv import load_dotenv
-    load_dotenv()  # 加载 .env 文件中的环境变量
-    print("✅ 环境变量加载成功")
-except ImportError:
-    print("⚠️  python-dotenv 未安装，跳过环境变量加载")
+from typing import Optional
 
 # ============ 安全初始化应用 ============
 app = Flask(__name__)
 
-# 🔐 安全密钥配置 - 支持开发和生成环境
+# 🔐 强制要求环境变量，不提供fallback
 app.secret_key = os.environ.get("SECRET_KEY")
 if not app.secret_key:
-    if os.environ.get("FLASK_ENV") == "production":
-        raise ValueError("❌ SECRET_KEY environment variable is required for production")
-    else:
-        # 开发环境使用一个默认密钥（不要在生产环境使用！）
-        app.secret_key = "dev-secret-key-for-local-development-only-123456"
-        print("⚠️  使用开发环境密钥，生产环境请设置 SECRET_KEY 环境变量")
+    raise ValueError("❌ SECRET_KEY environment variable is required for production")
 
 # ============ 安全数据库配置 ============
 # 从环境变量获取数据库URL
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
-    # 开发环境回退到硬编码的数据库URL
-    database_url = "postgresql://paid_user:zgevvYEGo2MaqkEjoC3LOdid5esaFSM7@dpg-d4dj33ndiees73ckpk3g-a.singapore-postgres.render.com/paid_website"
-    print("⚠️  使用默认数据库URL，生产环境请设置 DATABASE_URL 环境变量")
+    raise ValueError("❌ DATABASE_URL environment variable is required")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_recycle': 300,           # 5分钟回收连接
-    'pool_pre_ping': True,         # 连接前检查
-    'pool_size': 10,               # 连接池大小
-    'max_overflow': 20,            # 最大溢出连接数
-    'pool_timeout': 30,            # 获取连接超时时间
+    'pool_recycle': 300,
+    'pool_pre_ping': True
 }
 
 # 🔐 会话安全配置
@@ -58,22 +40,21 @@ db = SQLAlchemy(app)
 
 # ============ 配置常量 ============
 MEMBERSHIP_PRICE = 29.9
-ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "942521233@qq.com")  # 从环境变量获取
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")  # 从环境变量获取
 
-# ============ 数据模型（兼容版本） ============
+
+# ============ 数据模型 ============
 class User(db.Model):
-    __tablename__ = "user"
-    
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False, index=True)
-    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False, nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.now, nullable=False, index=True)
+    is_admin = db.Column(db.Boolean, default=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
     
     # 关系
-    payments = db.relationship('Payment', backref='user', lazy=True, cascade='all, delete-orphan')
-    questions = db.relationship('Question', backref='user', lazy=True, cascade='all, delete-orphan')
+    payments = db.relationship('Payment', backref='user', lazy=True)
+    questions = db.relationship('Question', backref='user', lazy=True)
     
     def __init__(self, username: str, email: str, password: str, is_admin: bool = False):
         self.username = username
@@ -82,14 +63,12 @@ class User(db.Model):
         self.is_admin = is_admin
 
 class Payment(db.Model):
-    __tablename__ = "payment"
-    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    payment_method = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(20), default='pending', nullable=False, index=True)
-    create_time = db.Column(db.DateTime, default=datetime.now, nullable=False, index=True)
+    payment_method = db.Column(db.String(50))
+    status = db.Column(db.String(20), default='pending')  # pending, approved, rejected
+    create_time = db.Column(db.DateTime, default=datetime.now)
     process_time = db.Column(db.DateTime)
     notes = db.Column(db.Text)
     
@@ -102,14 +81,12 @@ class Payment(db.Model):
         self.notes = notes
 
 class Question(db.Model):
-    __tablename__ = "question"
-    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     answer = db.Column(db.Text)
-    answered = db.Column(db.Boolean, default=False, nullable=False, index=True)
-    create_time = db.Column(db.DateTime, default=datetime.now, nullable=False, index=True)
+    answered = db.Column(db.Boolean, default=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
     answer_time = db.Column(db.DateTime)
     
     def __init__(self, user_id: int, content: str, answer: Optional[str] = None, 
@@ -118,28 +95,6 @@ class Question(db.Model):
         self.content = content
         self.answer = answer
         self.answered = answered
-
-# ============ 优化查询方法 ============
-
-def get_pending_payments() -> List[Payment]:  # 现在 List 已导入
-    """优化：获取待审核支付（使用索引）"""
-    return db.session.query(Payment).filter_by(status='pending')\
-                       .order_by(Payment.create_time.asc())\
-                       .options(db.joinedload(Payment.user))\
-                       .all()
-
-def get_unanswered_questions() -> List[Question]:
-    """优化：获取未回答问题（使用索引）"""
-    return db.session.query(Question).filter_by(answered=False)\
-                        .order_by(Question.create_time.asc())\
-                        .options(db.joinedload(Question.user))\
-                        .all()
-
-def get_user_questions(user_id: int) -> List[Question]:
-    """优化：获取用户问题列表"""
-    return db.session.query(Question).filter_by(user_id=user_id)\
-                        .order_by(Question.create_time.desc())\
-                        .all()
 
 # ============ 装饰器 ============
 def login_required(f):
@@ -478,11 +433,8 @@ def answer_question(question_id):
 @app.route('/admin/payments')
 @admin_required
 def admin_payments():
-    """支付管理 - 优化版本"""
-    # 使用优化后的查询方法
-    payments = db.session.query(Payment).order_by(Payment.create_time.desc())\
-                           .options(db.joinedload(Payment.user))\
-                           .all()
+    """支付管理"""
+    payments = Payment.query.order_by(Payment.create_time.desc()).all()
     return render_template('admin_payments.html', payments=payments)
 
 @app.route('/admin/update-payment/<int:payment_id>', methods=['POST'])
@@ -616,11 +568,8 @@ def make_admin(user_id):
 @app.route('/admin/questions')
 @admin_required
 def admin_questions():
-    """问题管理 - 优化版本"""
-    # 使用优化后的查询方法
-    questions = db.session.query(Question).order_by(Question.create_time.desc())\
-                             .options(db.joinedload(Question.user))\
-                             .all()
+    """问题管理"""
+    questions = Question.query.order_by(Question.create_time.desc()).all()
     return render_template('admin_questions.html', questions=questions)
 
 @app.route('/admin/logout')
@@ -639,4 +588,3 @@ if __name__ == '__main__':
     init_db()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-    """支付管理"""
