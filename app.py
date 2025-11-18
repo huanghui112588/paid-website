@@ -7,13 +7,19 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from typing import Optional
 
-# ============ 初始化应用 ============
+# ============ 安全初始化应用 ============
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-123")
 
-# ============ 数据库配置 ============
-# 使用 PostgreSQL
-database_url = "postgresql://paid_user:zgevvYEGo2MaqkEjoC3LOdid5esaFSM7@dpg-d4dj33ndiees73ckpk3g-a.singapore-postgres.render.com/paid_website"
+# 🔐 强制要求环境变量，不提供fallback
+app.secret_key = os.environ.get("SECRET_KEY")
+if not app.secret_key:
+    raise ValueError("❌ SECRET_KEY environment variable is required for production")
+
+# ============ 安全数据库配置 ============
+# 从环境变量获取数据库URL
+database_url = os.environ.get("DATABASE_URL")
+if not database_url:
+    raise ValueError("❌ DATABASE_URL environment variable is required")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -22,11 +28,19 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_pre_ping': True
 }
 
+# 🔐 会话安全配置
+app.config.update(
+    SESSION_COOKIE_SECURE=True,      # 仅HTTPS传输
+    SESSION_COOKIE_HTTPONLY=True,    # 防止XSS读取
+    SESSION_COOKIE_SAMESITE='Lax',   # CSRF保护
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=1)  # 会话1小时后过期
+)
+
 db = SQLAlchemy(app)
 
 # ============ 配置常量 ============
 MEMBERSHIP_PRICE = 29.9
-ADMIN_EMAIL = "admin@example.com"
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@example.com")  # 从环境变量获取
 
 
 # ============ 数据模型 ============
