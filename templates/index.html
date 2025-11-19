@@ -1,42 +1,526 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>上岸翻身营</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>上岸翻身营 - 专业学习平台，助您事业腾飞</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero-section {
+            background: var(--gradient);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card {
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .stats-counter {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .trust-badges {
+            background: var(--light);
+            padding: 40px 0;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+
+            .display-4 {
+                font-size: 2.5rem;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
         <div class="container">
-            <h1>上岸翻身营</h1>
-            <nav>
+            <a class="navbar-brand fw-bold text-primary" href="{{ url_for('index') }}">
+                <i class="fas fa-graduation-cap me-2"></i>
+                上岸翻身营
+            </a>
+            <div class="navbar-nav ms-auto">
                 {% if session.user %}
-                <a href="{{ url_for('members') }}">会员专区</a>
-                <a href="{{ url_for('logout') }}">退出</a>
+                <a class="nav-link" href="{{ url_for('members') }}">会员专区</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">退出</a>
                 {% else %}
-                <a href="{{ url_for('login') }}">登录</a>
-                <a href="{{ url_for('register') }}">注册</a>
+                <a class="nav-link" href="{{ url_for('login') }}">登录</a>
+                <a class="nav-link" href="{{ url_for('register') }}">注册</a>
                 {% endif %}
-            </nav>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container">
-        <section class="hero">
-            <h2>解锁独家内容</h2>
-            <p>一次性支付 ¥29.9 获得永久访问权限</p>
-            <a href="{{ url_for('register') }}" class="cta-button">立即加入</a>
-        </section>
-    </main>
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+        <div class="container position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">改变命运，从这一刻开始</h1>
+                    <p class="lead mb-4">专业导师团队，系统化上岸路径，助您快速调整心态，找回快乐的自己</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        {% if not session.user %}
+                        <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+                            <i class="fas fa-rocket me-2"></i>立即启程
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+                            <i class="fas fa-tachometer-alt me-2"></i>进入会员区
+                        </a>
+                        {% endif %}
+                        <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3">
+                            <i class="fas fa-play-circle me-2"></i>了解更多
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                            alt="成功学员" class="img-fluid rounded-3 shadow-lg">
+                        <div class="position-absolute bottom-0 start-0 m-4">
+                            <div class="bg-white rounded-3 p-3 shadow">
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <small class="text-muted">5000+ 学员推荐</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <footer>
+    <!-- 信任指标 -->
+    <section class="trust-badges">
         <div class="container">
-            <p>&copy; 2025 上岸翻身营</p>
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stats-counter">5000+</div>
+                    <div class="text-muted">成功学员</div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stats-counter">98%</div>
+                    <div class="text-muted">满意度</div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stats-counter">24/7</div>
+                    <div class="text-muted">专业支持</div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stats-counter">100%</div>
+                    <div class="text-muted">实战内容</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心特色 -->
+    <section id="features" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">为什么选择我们？</h2>
+                <p class="lead text-muted">专业的内容，贴心的服务，了解更多的人性与路子</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-user-graduate fa-3x text-primary"></i>
+                            </div>
+                            <h4 class="fw-bold">专业导师团队</h4>
+                            <p class="text-muted">资深大佬亲自指导，传授实战经验，避免走弯路</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-road fa-3x text-success"></i>
+                            </div>
+                            <h4 class="fw-bold">系统学习路径</h4>
+                            <p class="text-muted">从基础到进阶，科学规划路线，循序渐进掌握技能</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-comments fa-3x text-info"></i>
+                            </div>
+                            <h4 class="fw-bold">1对1答疑解惑</h4>
+                            <p class="text-muted">遇到问题随时提问，专员24小时内回复，有事绝不卡壳</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-briefcase fa-3x text-warning"></i>
+                            </div>
+                            <h4 class="fw-bold">实战项目经验</h4>
+                            <p class="text-muted">真实项目案例教学，学完即用，快速积累项目经验</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-infinity fa-3x text-danger"></i>
+                            </div>
+                            <h4 class="fw-bold">永久访问权限</h4>
+                            <p class="text-muted">一次性付费，终身学习，内容持续更新，价值不断提升</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-shield-alt fa-3x text-secondary"></i>
+                            </div>
+                            <h4 class="fw-bold">无忧退款保障</h4>
+                            <p class="text-muted">7天内不满意无条件退款，零风险尝试，安心学习</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 定价区域 -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">选择适合您的方案</h2>
+                <p class="lead text-muted">投资自己，是最明智的选择</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="pricing-card card featured border-3 shadow">
+                        <div class="card-header text-center py-4 bg-primary text-white">
+                            <h3 class="fw-bold mb-0">永久会员</h3>
+                            <div class="price display-2 fw-bold my-3">¥29.9</div>
+                            <p class="mb-0 opacity-75">一次性付费，终身受益</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 永久访问权 不限次数提问</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 专家1对1答疑</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 实战项目资源下载</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 新内容持续更新</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 会员专属社区</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 7天无忧退款保障</li>
+                            </ul>
+                            <div class="text-center">
+                                {% if not session.user %}
+                                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                                    <i class="fas fa-crown me-2"></i>立即加入精英行列
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('members') }}" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                                    <i class="fas fa-tachometer-alt me-2"></i>进入会员专区
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            <i class="fas fa-lock me-1"></i> 安全支付 ·
+                            <i class="fas fa-shield-alt me-1"></i> 隐私保护 ·
+                            <i class="fas fa-headset me-1"></i> 专属客服
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 学员见证 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">学员成功故事</h2>
+                <p class="lead text-muted">听听他们怎么说</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-warning mb-3">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text">"通过这个平台，我终于找到了适合自己的路，负债累累，也总算看到了希望。"</p>
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">张小姐</h6>
+                                    <small class="text-muted">后端客服</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-warning mb-3">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text">"一直三点一线开车跑滴滴，依然负债累累，在这提高了许多的认知，也认识到了更多的路，慢慢的上岸了"</p>
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">李先生</h6>
+                                    <small class="text-muted">滴滴司机</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-warning mb-3">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text">"专业的答疑非常及时，解决了我目前的实际问题。这个投资太值了！"</p>
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">王女士</h6>
+                                    <small class="text-muted">产品经理</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行动召唤 -->
+    <section class="py-5 text-white" style="background: var(--gradient);">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold mb-4">准备好改变未来了吗？</h2>
+            <p class="lead mb-4">加入5000+成功上岸的行列，开启您的人生新篇章</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                {% if not session.user %}
+                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+                    <i class="fas fa-user-plus me-2"></i>立即注册
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg px-5 py-3">
+                    <i class="fas fa-sign-in-alt me-2"></i>会员登录
+                </a>
+                {% else %}
+                <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
+                    <i class="fas fa-tachometer-alt me-2"></i>进入会员区
+                </a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg px-5 py-3">
+                    <i class="fas fa-sign-out-alt me-2"></i>安全退出
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>上岸翻身营</h5>
+                    <p class="text-muted">专业认知平台，祝您早日上岸</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">&copy; 2025 上岸翻身营. 保留所有权利.</p>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- 现有的 Bootstrap JS 链接 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 后续优化：滚动动画效果 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 观察所有需要动画的元素
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.transition = 'all 0.6s ease';
+
+                        // 如果是统计数据，添加计数动画
+                        if (entry.target.classList.contains('stats-counter')) {
+                            animateCounter(entry.target);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            // 计数动画函数
+            function animateCounter(counter) {
+                const target = parseInt(counter.textContent);
+                const increment = target / 50;
+                let current = 0;
+
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current) + (counter.textContent.includes('+') ? '+' : '');
+                        setTimeout(updateCounter, 30);
+                    } else {
+                        counter.textContent = target + (counter.textContent.includes('+') ? '+' : '');
+                    }
+                };
+
+                updateCounter();
+            }
+
+            // 为特色卡片添加动画
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                observer.observe(card);
+            });
+
+            // 为定价卡片添加动画
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                observer.observe(card);
+            });
+
+            // 为学员见证卡片添加动画
+            document.querySelectorAll('.card').forEach(card => {
+                if (!card.classList.contains('feature-card') && !card.classList.contains('pricing-card')) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    observer.observe(card);
+                }
+            });
+
+            // 为统计数据添加动画
+            document.querySelectorAll('.stats-counter').forEach(counter => {
+                observer.observe(counter);
+            });
+
+            // 平滑滚动导航
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
