@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务条款 - 上岸翻身营</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .legal-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .important-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-graduation-cap"></i> 上岸翻身营
+            </a>
+        </div>
+    </nav>
+
+    <div class="container legal-container">
+        <div class="important-notice">
+            <h4><i class="fas fa-exclamation-triangle"></i> 重要声明</h4>
+            <p class="mb-0"><strong>本平台仅提供信息分享、心理支持和社区互助服务，不提供金融、法律或债务协商建议。所有决策应由用户自行做出，建议咨询持牌专业人士。</strong></p>
+        </div>
+
+        <h1 class="text-center mb-4">服务条款</h1>
+        <p class="text-muted text-center">最后更新日期：2025年11月</p>
+
+        <div class="content">
+            <h2>1. 服务性质说明</h2>
+            <p>1.1 上岸翻身营是一个专注于为负债人群提供信息支持、心理疏导和社区互助的平台。</p>
+            <p>1.2 我们提供的服务包括但不限于：</p>
+            <ul>
+                <li>债务管理相关知识普及</li>
+                <li>心理压力调适方法分享</li>
+                <li>实用工具和模板提供</li>
+                <li>社区经验交流平台</li>
+            </ul>
+            <p>1.3 <strong>明确排除的服务：</strong>我们不提供金融建议、法律咨询、债务协商代理、投资推荐等专业服务。</p>
+
+            <h2>2. 用户责任与义务</h2>
+            <p>2.1 用户需保证所提供信息的真实性，并对自己的财务决策承担全部责任。</p>
+            <p>2.2 用户理解并同意，本平台提供的信息仅供参考，不应作为专业建议的替代。</p>
+            <p>2.3 用户承诺不利用本平台进行任何违法或违规活动。</p>
+
+            <h2>3. 退款政策</h2>
+            <p>3.1 用户如有退款需求申请可通过联系客服或发送邮件至 {{ ADMIN_EMAIL }} 提出。</p>
+
+            <h2>4. 知识产权</h2>
+            <p>4.1 平台所有原创内容（文字、图片、工具等）的知识产权归上岸翻身营所有。</p>
+            <p>4.2 用户可在个人使用范围内使用平台内容，但不得用于商业用途。</p>
+
+            <h2>5. 免责声明</h2>
+            <p>5.1 用户理解并同意，使用本平台服务和信息的风险由用户自行承担。</p>
+            <p>5.2 平台不对因使用本站信息而导致的任何直接、间接损失承担责任。</p>
+            <p>5.3 平台不保证服务的连续性、及时性、安全性、准确性。</p>
+
+            <h2>6. 服务变更与终止</h2>
+            <p>6.1 平台保留随时修改或终止服务的权利。</p>
+            <p>6.2 重要变更将通过网站公告或邮件通知用户。</p>
+
+            <h2>7. 联系我们</h2>
+            <p>如有任何问题，请通过以下方式联系我们：</p>
+            <p>邮箱：{{ ADMIN_EMAIL }}</p>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">返回首页</a>
+        </div>
+    </div>
+</body>
+
+</html>

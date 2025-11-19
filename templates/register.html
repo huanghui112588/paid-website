@@ -18,6 +18,15 @@
         </div>
     </header>
 
+    <!-- 在注册表单的提交按钮前添加 -->
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+        <label class="form-check-label" for="agreeTerms">
+            我已阅读并同意 <a href="{{ url_for('terms') }}" target="_blank">服务条款</a>
+            和 <a href="{{ url_for('privacy') }}" target="_blank">隐私政策</a>
+        </label>
+    </div>
+
     <main class="container">
         <div class="form-container">
             <h2>注册账号</h2>

@@ -631,6 +631,16 @@ def admin_logout():
     flash('已退出管理员账号', 'info')
     return redirect(url_for('admin_login'))
 
+@app.route('/terms')
+def terms():
+    """服务条款页面"""
+    return render_template('terms.html', ADMIN_EMAIL=ADMIN_EMAIL)
+
+@app.route('/privacy')
+def privacy():
+    """隐私政策页面"""
+    return render_template('privacy.html', ADMIN_EMAIL=ADMIN_EMAIL)
+
 
 
 
