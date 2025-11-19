@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库 - 上岸翻身营</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .category-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-card {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover {
+            border-color: #007bff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+        }
+
+        .badge-category {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="{{ url_for('index') }}">
+                <i class="fas fa-graduation-cap me-2"></i>
+                上岸翻身营
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('members') }}">会员专区</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">退出</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 知识库主内容 -->
+    <div class="container py-5">
+        <!-- 页面标题 -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold mb-3">知识库</h1>
+                <p class="lead text-muted">系统化学习债务管理知识，获得心理支持与实用工具</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>学习提示：</strong> 建议按顺序学习，先调整心态，再学习知识，最后使用工具。
+                </div>
+            </div>
+        </div>
+
+        <!-- 学习进度（可选） -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h5 class="card-title">您的学习进度</h5>
+                                <div class="progress mb-2" style="height: 10px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small class="text-muted">已完成 2/8 个模块</small>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <button class="btn btn-outline-primary" id="resetProgress">
+                                    <i class="fas fa-redo"></i> 重置进度
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容分类导航 -->
+        <div class="row mb-5">
+            {% for category_id, category in content_categories.items() %}
+            <div class="col-lg-2 col-md-4 col-6 mb-3">
+                <a href="#category-{{ category_id }}" class="text-decoration-none">
+                    <div class="category-card card text-center h-100 border-0 shadow-sm bg-{{ category.color }}">
+                        <div class="card-body py-4">
+                            <div class="mb-3" style="font-size: 2rem;">{{ category.name.split(' ')[0] }}</div>
+                            <h6 class="card-title mb-2">{{ ' '.join(category.name.split(' ')[1:]) }}</h6>
+                            <small class="text-muted">{{ category.description }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- 各分类内容模块 -->
+        {% for category_id, category in content_categories.items() %}
+        <div class="row mb-5" id="category-{{ category_id }}">
+            <div class="col-12">
+                <h2 class="mb-4">{{ category.name }}</h2>
+
+                <div class="row">
+                    {% for module_id, module in content_modules.items() %}
+                    {% if module.category == category_id %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="module-card card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h5 class="card-title">{{ module.title }}</h5>
+                                    <span class="badge bg-{{ category.color }} badge-category">
+                                        {{ module.type == 'article' and '文章' or '模板' }}
+                                    </span>
+                                </div>
+
+                                <p class="card-text text-muted mb-3">{{ module.description }}</p>
+
+                                <ul class="list-unstyled mb-4">
+                                    {% for point in module.points %}
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <small>{{ point }}</small>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input module-complete" type="checkbox"
+                                            id="complete-{{ module_id }}" data-module="{{ module_id }}">
+                                        <label class="form-check-label small" for="complete-{{ module_id }}">
+                                            标记完成
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary view-module"
+                                        data-module="{{ module_id }}">
+                                        开始学习
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- 学习建议 -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5><i class="fas fa-lightbulb text-warning me-2"></i>学习建议</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="mb-0">
+                                    <li>每天学习1-2个模块，循序渐进</li>
+                                    <li>结合实际财务状况应用所学知识</li>
+                                    <li>在社区中分享学习心得和疑问</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="mb-0">
+                                    <li>使用提供的工具模板记录进度</li>
+                                    <li>遇到困难时回顾心态调整内容</li>
+                                    <li>定期复习已学内容巩固知识</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 免责声明 -->
+    <div class="container mt-5">
+        <div class="alert alert-warning">
+            <small>
+                <strong>免责声明：</strong>
+                本知识库仅提供信息分享和教育内容，不构成金融、法律或专业建议。
+                所有决策应由用户自行做出，建议咨询持牌专业人士。
+                <a href="{{ url_for('terms') }}">查看完整服务条款</a>
+            </small>
+        </div>
+    </div>
+
+    <!-- 模块内容模态框 -->
+    <div class="modal fade" id="moduleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="moduleModalTitle">模块内容</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="moduleModalContent">
+                    <!-- 动态加载内容 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="markCompleteBtn">标记完成</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 模块学习功能
+        document.addEventListener('DOMContentLoaded', function () {
+            const moduleModal = new bootstrap.Modal(document.getElementById('moduleModal'));
+            let currentModule = null;
+
+            // 查看模块内容
+            document.querySelectorAll('.view-module').forEach(button => {
+                button.addEventListener('click', function () {
+                    const moduleId = this.getAttribute('data-module');
+                    currentModule = moduleId;
+
+                    // 这里应该从服务器加载模块内容
+                    // 暂时使用模拟数据
+                    loadModuleContent(moduleId);
+                    moduleModal.show();
+                });
+            });
+
+            // 标记完成
+            document.getElementById('markCompleteBtn').addEventListener('click', function () {
+                if (currentModule) {
+                    const checkbox = document.getElementById('complete-' + currentModule);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        updateProgress();
+                    }
+                    moduleModal.hide();
+                }
+            });
+
+            // 复选框标记完成
+            document.querySelectorAll('.module-complete').forEach(checkbox => {
+                checkbox.addEventListener('change', updateProgress);
+            });
+
+            // 重置进度
+            document.getElementById('resetProgress').addEventListener('click', function () {
+                document.querySelectorAll('.module-complete').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateProgress();
+            });
+
+            function loadModuleContent(moduleId) {
+                // 模拟模块内容加载
+                const moduleData = {
+                    'mindset_1': {
+                        title: '从恐慌到平静：债务压力的心理调适',
+                        content: `
+                            <h4>理解债务压力</h4>
+                            <p>债务压力是面对财务困难时产生的正常情绪反应...</p>
+                            
+                            <h4>情绪调节技巧</h4>
+                            <ul>
+                                <li>深呼吸练习：每天进行5-10分钟的深呼吸</li>
+                                <li>正念冥想：关注当下，减少焦虑</li>
+                                <li>运动释放：通过体育活动缓解压力</li>
+                            </ul>
+                            
+                            <div class="alert alert-info">
+                                <strong>温馨提示：</strong> 这些方法有助于缓解压力，但如感到严重焦虑或抑郁，建议寻求专业心理咨询。
+                            </div>
+                        `
+                    },
+                    'tools_1': {
+                        title: '债务清单制作指南',
+                        content: `
+                            <h4>制作个人债务清单</h4>
+                            <p>债务清单是管理财务的基础工具，帮助你全面了解债务状况...</p>
+                            
+                            <h5>制作步骤：</h5>
+                            <ol>
+                                <li>收集所有债务文件</li>
+                                <li>按类型分类记录</li>
+                                <li>记录金额、利率、期限</li>
+                                <li>设置还款优先级</li>
+                            </ol>
+                            
+                            <div class="mt-4">
+                                <a href="#" class="btn btn-outline-success">
+                                    <i class="fas fa-download"></i> 下载债务清单模板
+                                </a>
+                            </div>
+                        `
+                    }
+                };
+
+                const module = moduleData[moduleId] || {
+                    title: '模块内容',
+                    content: '<p>内容正在开发中...</p>'
+                };
+
+                document.getElementById('moduleModalTitle').textContent = module.title;
+                document.getElementById('moduleModalContent').innerHTML = module.content;
+            }
+
+            function updateProgress() {
+                const totalModules = document.querySelectorAll('.module-complete').length;
+                const completed = document.querySelectorAll('.module-complete:checked').length;
+                const progress = (completed / totalModules) * 100;
+
+                document.querySelector('.progress-bar').style.width = progress + '%';
+                document.querySelector('.progress-bar').setAttribute('aria-valuenow', progress);
+                document.querySelector('.progress-bar').textContent = Math.round(progress) + '%';
+
+                const progressText = document.querySelector('.progress + .text-muted');
+                if (progressText) {
+                    progressText.textContent = `已完成 ${completed}/${totalModules} 个模块`;
+                }
+            }
+
+            // 初始化进度
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>

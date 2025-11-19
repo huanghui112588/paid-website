@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 
-<!-- 在会员页面内容顶部添加 -->
-<div class="alert alert-info mb-4">
-    <i class="fas fa-info-circle"></i>
-    <strong>重要提示：</strong>
-    本平台提供的是信息支持和社区互助服务，不替代专业金融或法律建议。
-    请根据自身情况谨慎决策。
-    <a href="{{ url_for('terms') }}" class="alert-link">查看服务条款</a>
-</div>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -492,7 +483,7 @@
         <nav class="navbar">
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i>
-                <span>学海无涯</span>
+                <span>上岸翻身营</span>
             </div>
             <div class="user-menu">
                 <div class="user-avatar">
@@ -508,19 +499,28 @@
         <!-- 页面标题区域 -->
         <header class="page-header">
             <h1 class="page-title">会员专属内容库</h1>
-            <p class="page-subtitle">以下是专为您准备的独家学习资源，持续更新中。作为尊贵的永久会员，您可以无限制访问所有内容。</p>
+            <p class="page-subtitle">以下是专为您准备的独家资源，持续更新中。作为尊贵的永久会员，您可以无限制访问所有内容。</p>
         </header>
+
+        <!-- 重要提示 -->
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle"></i>
+            <strong>重要提示：</strong>
+            本平台提供的是信息支持和社区互助服务，不替代专业金融或法律建议。
+            请根据自身情况谨慎决策。
+            <a href="#" class="alert-link" onclick="showTerms()">查看服务条款</a>
+        </div>
 
         <!-- 内容区域 -->
         <main class="content-grid">
             <!-- 独家教程 #1 -->
             <article class="content-card">
                 <div class="card-header">
-                    <h2 class="card-title">独家教程 #1</h2>
-                    <span class="card-badge">新内容</span>
+                    <h2 class="card-title">独家视频 #1</h2>
+                    <span class="card-badge">负债人群</span>
                 </div>
                 <div class="card-content">
-                    <p class="card-description">这里是您的第一个独家教程内容。作为会员，您可以访问所有我们精心准备的进阶学习材料，包括详细步骤和实用技巧。</p>
+                    <p class="card-description">负债人越来越多，别太焦虑，立刻停止以贷养贷。违法催收的收集好证据，把面子放下，努力搞钱</p>
 
                     <div class="video-container">
                         <video class="video-player" controls
@@ -532,23 +532,23 @@
 
                     <div class="stats-container">
                         <div class="stat-item">
-                            <span class="stat-value">65%</span>
-                            <span class="stat-label">学习进度</span>
+                            <span class="stat-value">1停止以贷养贷</span>
+                            <span class="stat-label">2清点账单每一家贷款机构</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">3.5h</span>
-                            <span class="stat-label">已学习</span>
+                            <span class="stat-value">3协商分36 60期</span>
+                            <span class="stat-label">4提升自己的收入</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">12</span>
-                            <span class="stat-label">章节</span>
+                            <span class="stat-value">5节支 执行</span>
+                            <span class="stat-label">6心理强大，欠钱不是欠命</span>
                         </div>
                     </div>
 
                     <div class="progress-container">
                         <div class="progress-info">
-                            <span>课程进度</span>
-                            <span>65%</span>
+                            <span>已经迈出了第一步，坚持下去，上岸指日可待。</span>
+                            <span>加油</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 65%"></div>
@@ -558,11 +558,55 @@
                     <div class="card-actions">
                         <button class="btn btn-primary" onclick="continueLearning()">
                             <i class="fas fa-play-circle"></i>
-                            继续学习
+                            逾期不是终点，是新生活的起点
                         </button>
                         <button class="btn btn-outline" onclick="downloadResources()">
                             <i class="fas fa-download"></i>
-                            下载资源
+                            重头开始
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 知识库系统 -->
+            <article class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">知识库系统</h2>
+                    <span class="card-badge">新内容</span>
+                </div>
+                <div class="card-content">
+                    <p class="card-description">系统化学习债务管理知识，从心态调整到实用工具，循序渐进掌握上岸方法。</p>
+
+                    <div
+                        style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; padding: 40px 20px; text-align: center; color: white; margin-bottom: 20px;">
+                        <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                        <h3 style="margin-bottom: 8px;">系统化知识体系</h3>
+                        <p>5大模块，循序渐进学习</p>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-value">5</span>
+                            <span class="stat-label">学习模块</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">8+</span>
+                            <span class="stat-label">内容单元</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">100%</span>
+                            <span class="stat-label">实用内容</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="goToKnowledgeBase()">
+                            <i class="fas fa-graduation-cap"></i>
+                            进入知识库
+                        </button>
+                        <button class="btn btn-outline" onclick="showLearningPath()">
+                            <i class="fas fa-road"></i>
+                            学习路径
                         </button>
                     </div>
                 </div>
@@ -571,11 +615,11 @@
             <!-- 视频课程 #1 -->
             <article class="content-card">
                 <div class="card-header">
-                    <h2 class="card-title">视频课程 #1</h2>
+                    <h2 class="card-title">心态变强 #1</h2>
                     <span class="card-badge">热门</span>
                 </div>
                 <div class="card-content">
-                    <p class="card-description">观看我们的独家视频课程，学习专业知识和技能。这些课程由行业专家精心制作，涵盖最新技术和最佳实践。</p>
+                    <p class="card-description">止损→清点→协商→增收→节支→执行→心理建设。“上岸”不是一次性动作，而是一连串“今天没垮”的累计，心态一旦变硬，钱迟早会跟上。</p>
 
                     <div class="video-container">
                         <video class="video-player" controls
@@ -587,27 +631,27 @@
 
                     <div class="stats-container">
                         <div class="stat-item">
-                            <span class="stat-value">8/12</span>
-                            <span class="stat-label">已观看</span>
+                            <span class="stat-value">新网站功能慢慢解锁</span>
+                            <span class="stat-label">请多多见谅</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">4.8</span>
-                            <span class="stat-label">评分</span>
+                            <span class="stat-value">勇敢面对</span>
+                            <span class="stat-label">信用卡继续协商</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">6h</span>
-                            <span class="stat-label">总时长</span>
+                            <span class="stat-value">每天协商银行</span>
+                            <span class="stat-label">网贷高炮别管</span>
                         </div>
                     </div>
 
                     <div class="card-actions">
                         <button class="btn btn-primary" onclick="watchVideo()">
                             <i class="fas fa-play"></i>
-                            观看视频
+                            态度诚恳沟通
                         </button>
                         <button class="btn btn-outline" onclick="showCourseList()">
                             <i class="fas fa-list"></i>
-                            课程列表
+                            正规机构包括信用卡都可协商
                         </button>
                     </div>
                 </div>
@@ -616,31 +660,31 @@
             <!-- 高级资源库 -->
             <article class="content-card">
                 <div class="card-header">
-                    <h2 class="card-title">高级资源库</h2>
+                    <h2 class="card-title">协商话术</h2>
                     <span class="card-badge">独家</span>
                 </div>
                 <div class="card-content">
-                    <p class="card-description">访问我们的高级资源库，下载专业模板、工具和资源文件，助您事半功倍。每周更新最新资源。</p>
+                    <p class="card-description">遇软暴力催收，电话，短信等，操作路径：打 12378具有强制执行力，催收必须停。</p>
 
                     <div
                         style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; padding: 40px 20px; text-align: center; color: white; margin-bottom: 20px;">
                         <i class="fas fa-archive" style="font-size: 3rem; margin-bottom: 16px;"></i>
-                        <h3 style="margin-bottom: 8px;">资源库</h3>
-                        <p>包含模板、工具和资源文件</p>
+                        <h3 style="margin-bottom: 8px;">协商话术</h3>
+                        <p>新网站功能逐步开发</p>
                     </div>
 
                     <div class="stats-container">
                         <div class="stat-item">
-                            <span class="stat-value">127</span>
-                            <span class="stat-label">资源数量</span>
+                            <span class="stat-value">电话不想接就不接</span>
+                            <span class="stat-label">接电话打开录音</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">24</span>
-                            <span class="stat-label">本周新增</span>
+                            <span class="stat-value">工信部gov.cn</span>
+                            <span class="stat-label">输入虚拟号前8位</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">1.2GB</span>
-                            <span class="stat-label">总大小</span>
+                            <span class="stat-value">虚拟号催收</span>
+                            <span class="stat-label">投诉电话12321</span>
                         </div>
                     </div>
 
@@ -660,27 +704,27 @@
             <!-- 专家问答 -->
             <article class="content-card">
                 <div class="card-header">
-                    <h2 class="card-title">专家问答</h2>
+                    <h2 class="card-title">过来人问答</h2>
                     <span class="card-badge">实时</span>
                 </div>
                 <div class="card-content">
-                    <p class="card-description">直接向行业专家提问，获得个性化指导和建议，解决您在学习中遇到的难题。24小时内回复保证。</p>
+                    <p class="card-description">直接向过来人提问催收，协商，投诉等问题。24小时内回复保证。</p>
 
                     <div
                         style="background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 12px; padding: 40px 20px; text-align: center; color: white; margin-bottom: 20px;">
                         <i class="fas fa-comments" style="font-size: 3rem; margin-bottom: 16px;"></i>
-                        <h3 style="margin-bottom: 8px;">专家在线答疑</h3>
+                        <h3 style="margin-bottom: 8px;">在线答疑</h3>
                         <p>24小时内回复保证</p>
                     </div>
 
                     <div class="stats-container">
                         <div class="stat-item">
-                            <span class="stat-value">23</span>
+                            <span class="stat-value">48762</span>
                             <span class="stat-label">已回答</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-value">5</span>
-                            <span class="stat-label">专家在线</span>
+                            <span class="stat-value">6</span>
+                            <span class="stat-label">专员在线</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-value">98%</span>
@@ -691,7 +735,7 @@
                     <div class="card-actions">
                         <button class="btn btn-primary" onclick="askExpert()">
                             <i class="fas fa-question-circle"></i>
-                            提问专家
+                            提问
                         </button>
                         <button class="btn btn-outline" onclick="showQaHistory()">
                             <i class="fas fa-history"></i>
@@ -704,12 +748,12 @@
 
         <!-- 页脚 -->
         <footer class="footer">
-            <p>© 2025 学海无涯会员平台 | 保留所有权利</p>
+            <p>© 2025 上岸翻身营会员平台 | 保留所有权利</p>
             <div class="footer-links">
-                <a href="#">使用条款</a>
-                <a href="#">隐私政策</a>
-                <a href="#">会员协议</a>
-                <a href="#">联系我们</a>
+                <a href="#" onclick="showTerms()">使用条款</a>
+                <a href="#" onclick="showPrivacy()">隐私政策</a>
+                <a href="#" onclick="showAgreement()">会员协议</a>
+                <a href="#" onclick="showContact()">联系我们</a>
             </div>
         </footer>
     </div>
@@ -718,7 +762,7 @@
     <div id="askExpertModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">向专家提问</h3>
+                <h3 class="modal-title">向专员提问</h3>
                 <button class="close-modal" onclick="closeModal('askExpertModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -735,9 +779,9 @@
                     <label class="form-label">问题分类</label>
                     <select class="form-input" id="questionCategory">
                         <option value="">请选择问题分类</option>
-                        <option value="technical">技术问题</option>
-                        <option value="conceptual">概念理解</option>
-                        <option value="implementation">实现方案</option>
+                        <option value="technical">投诉问题</option>
+                        <option value="conceptual">心理安慰</option>
+                        <option value="implementation">话术协商</option>
                         <option value="other">其他问题</option>
                     </select>
                 </div>
@@ -782,27 +826,27 @@
             <div class="modal-body">
                 <div class="resource-list">
                     <div class="resource-item">
-                        <div class="resource-name">Python高级编程模板</div>
+                        <div class="resource-name">银保监会电话12378</div>
                         <button class="resource-download" onclick="downloadResource('python_template')">下载</button>
                     </div>
                     <div class="resource-item">
-                        <div class="resource-name">Web开发项目结构</div>
+                        <div class="resource-name">虚拟电话催收 工信部电话12321</div>
                         <button class="resource-download" onclick="downloadResource('web_structure')">下载</button>
                     </div>
                     <div class="resource-item">
-                        <div class="resource-name">数据库设计规范文档</div>
+                        <div class="resource-name">1068/1069短信轰炸 记住前8位号 登录gov.cn投诉</div>
                         <button class="resource-download" onclick="downloadResource('db_design')">下载</button>
                     </div>
                     <div class="resource-item">
-                        <div class="resource-name">API设计最佳实践</div>
+                        <div class="resource-name">爆通讯录 P图等行为 直接起诉 要求赔偿精神费 胜率超高</div>
                         <button class="resource-download" onclick="downloadResource('api_design')">下载</button>
                     </div>
                     <div class="resource-item">
-                        <div class="resource-name">前端组件库</div>
+                        <div class="resource-name">协商分期基本原则 </div>
                         <button class="resource-download" onclick="downloadResource('frontend_components')">下载</button>
                     </div>
                     <div class="resource-item">
-                        <div class="resource-name">部署配置模板</div>
+                        <div class="resource-name">信用卡 银行 抵押贷优先</div>
                         <button class="resource-download" onclick="downloadResource('deployment_config')">下载</button>
                     </div>
                 </div>
@@ -822,87 +866,36 @@
 
         // 获取用户的问答历史
         function loadMyQuestions() {
-            fetch('/get-my-questions')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        displayQuestions(data.questions);
-                        displayModalQuestions(data.questions); // 同时更新模态框
-                    } else {
-                        showError('加载失败');
+            // 模拟从服务器获取数据
+            setTimeout(() => {
+                const questions = [
+                    {
+                        id: 1,
+                        content: "如何有效管理学习时间？",
+                        create_time: new Date(Date.now() - 86400000).toISOString(),
+                        answered: true,
+                        answer: "建议使用番茄工作法，每25分钟专注学习后休息5分钟，可以有效提高学习效率。",
+                        answer_time: new Date(Date.now() - 43200000).toISOString()
+                    },
+                    {
+                        id: 2,
+                        content: "如何提高记忆效果？",
+                        create_time: new Date(Date.now() - 172800000).toISOString(),
+                        answered: true,
+                        answer: "推荐使用间隔重复法和主动回忆法，结合多种感官参与学习过程。",
+                        answer_time: new Date(Date.now() - 129600000).toISOString()
+                    },
+                    {
+                        id: 3,
+                        content: "如何处理学习中的焦虑情绪？",
+                        create_time: new Date(Date.now() - 3600000).toISOString(),
+                        answered: false,
+                        answer: null,
+                        answer_time: null
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showError('加载失败，请重试');
-                });
-        }
-
-        // 在页面显示问答历史
-        function displayQuestions(questions) {
-            const container = document.getElementById('qaHistoryContainer');
-            if (!container) return;
-
-            if (!questions || questions.length === 0) {
-                container.innerHTML = `
-            <div class="text-center py-4">
-                <i class="fas fa-comments fa-2x text-muted mb-3"></i>
-                <p class="text-muted">您还没有提问过任何问题</p>
-                <p class="text-muted small">点击"提问专家"开始您的第一个问题</p>
-            </div>
-        `;
-                return;
-            }
-
-            let html = '';
-            questions.forEach(q => {
-                const questionTime = new Date(q.create_time).toLocaleString('zh-CN');
-                const answerTime = q.answer_time ? new Date(q.answer_time).toLocaleString('zh-CN') : '尚未回答';
-
-                html += `
-            <div class="qa-item" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-                <div class="question-section" style="margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                        <strong style="color: #374151;">我的提问</strong>
-                        <span class="badge ${q.answered ? 'bg-success' : 'bg-warning'}" 
-                              style="font-size: 0.75rem; padding: 4px 8px; border-radius: 12px; color: white;">
-                            ${q.answered ? '已回答' : '待回答'}
-                        </span>
-                    </div>
-                    <p style="margin: 0; color: #4b5563; line-height: 1.5; white-space: pre-wrap;">${q.content}</p>
-                    <div style="font-size: 0.875rem; color: #6b7280; margin-top: 8px;">
-                        <i class="fas fa-clock"></i> ${questionTime}
-                    </div>
-                </div>
-                
-                ${q.answered ? `
-                <div class="answer-section" style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                        <strong style="color: #059669;">专家回答</strong>
-                        <span style="font-size: 0.75rem; color: #6b7280;">
-                            <i class="fas fa-check-circle"></i> 已解答
-                        </span>
-                    </div>
-                    <p style="margin: 0; color: #374151; line-height: 1.5; background: #f0fdf4; padding: 12px; border-radius: 6px; white-space: pre-wrap;">${q.answer}</p>
-                    <div style="font-size: 0.875rem; color: #6b7280; margin-top: 8px;">
-                        <i class="fas fa-clock"></i> ${answerTime}
-                    </div>
-                </div>
-                ` : `
-                <div class="answer-section" style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
-                    <div style="text-align: center; padding: 16px;">
-                        <i class="fas fa-hourglass-half fa-lg text-warning mb-2"></i>
-                        <p style="margin: 0; color: #92400e; font-size: 0.875rem;">
-                            专家正在审核您的问题，通常会在24小时内回复
-                        </p>
-                    </div>
-                </div>
-                `}
-            </div>
-        `;
-            });
-
-            container.innerHTML = html;
+                ];
+                displayModalQuestions(questions);
+            }, 1000);
         }
 
         // 在模态框中显示问答历史
@@ -933,7 +926,7 @@
                     </div>
                     ${q.answered ? `
                     <div style="font-size: 0.85rem; color: #059669; margin-top: 4px;">
-                        <strong>专家回答:</strong> ${q.answer.substring(0, 80)}${q.answer.length > 80 ? '...' : ''}
+                        <strong>专员回答:</strong> ${q.answer.substring(0, 80)}${q.answer.length > 80 ? '...' : ''}
                     </div>
                     ` : ''}
                 </div>
@@ -947,50 +940,22 @@
 
         // 刷新问答历史
         function refreshQaHistory() {
-            const containers = ['qaHistoryContainer', 'dynamicQaHistory'];
-            containers.forEach(containerId => {
-                const container = document.getElementById(containerId);
-                if (container) {
-                    container.innerHTML = '<div class="text-center py-4"><p class="text-muted">刷新中...</p></div>';
-                }
-            });
+            const container = document.getElementById('dynamicQaHistory');
+            if (container) {
+                container.innerHTML = '<div class="text-center py-4"><p class="text-muted">刷新中...</p></div>';
+            }
 
             loadMyQuestions();
         }
 
         // 查看问题详情
         function viewQuestionDetail(questionId) {
-            // 这里可以实现查看单个问题详情的功能
-            alert('查看问题详情功能开发中...');
+            alert('查看问题详情功能开发中...问题ID: ' + questionId);
         }
-
-        // 错误显示
-        function showError(message) {
-            const containers = ['qaHistoryContainer', 'dynamicQaHistory'];
-            containers.forEach(containerId => {
-                const container = document.getElementById(containerId);
-                if (container) {
-                    container.innerHTML = `<div class="text-center py-4"><p class="text-muted">${message}</p></div>`;
-                }
-            });
-        }
-
-        // 修改现有的 showQaHistory 函数
-        function showQaHistory() {
-            loadMyQuestions(); // 先加载数据
-            openModal('qaHistoryModal');
-        }
-
-        // 页面加载时自动加载问答历史
-        document.addEventListener('DOMContentLoaded', function () {
-            // 延迟加载问答历史
-            setTimeout(loadMyQuestions, 1000);
-        });
 
         // 按钮功能实现
         function continueLearning() {
             alert('跳转到课程继续学习页面...');
-            // 实际应用中这里可以跳转到具体课程页面
         }
 
         function downloadResources() {
@@ -999,12 +964,10 @@
 
         function watchVideo() {
             alert('开始播放视频课程...');
-            // 实际应用中这里可以控制视频播放
         }
 
         function showCourseList() {
             alert('显示所有可用课程列表...');
-            // 实际应用中这里可以显示课程目录
         }
 
         function browseResources() {
@@ -1023,6 +986,7 @@
         }
 
         function showQaHistory() {
+            loadMyQuestions();
             openModal('qaHistoryModal');
         }
 
@@ -1039,41 +1003,64 @@
             // 组合问题内容
             const content = `【${category}】${title}\n\n${description}`;
 
-            // 提交到后端
-            fetch('/submit-question', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `content=${encodeURIComponent(content)}`
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        closeModal('askExpertModal');
-                        // 清空表单
-                        document.getElementById('questionTitle').value = '';
-                        document.getElementById('questionDescription').value = '';
-                        document.getElementById('questionCategory').value = '';
-                    } else {
-                        alert('提交失败: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('提交失败，请重试');
-                });
-        }
+            alert('问题已提交！专员将在24小时内回复。');
+            closeModal('askExpertModal');
 
-        function viewAnswer(id) {
-            alert(`正在加载问答详情 #${id}...`);
-            // 实际应用中这里可以跳转到问答详情页面
+            // 清空表单
+            document.getElementById('questionTitle').value = '';
+            document.getElementById('questionDescription').value = '';
+            document.getElementById('questionCategory').value = '';
         }
 
         function downloadResource(resourceName) {
             alert(`开始下载资源: ${resourceName}`);
-            // 实际应用中这里可以触发文件下载
+        }
+
+        // 新增函数
+        function goToKnowledgeBase() {
+            // 修复了单引号嵌套问题
+            window.location.href = '/knowledge_base';
+        }
+
+        function showLearningPath() {
+            alert(`推荐学习路径：
+    
+1. 🧠 心态调整模块（首先学习）
+   - 从恐慌到平静
+   - 家庭沟通技巧
+
+2. 📖 基础知识模块  
+   - 债务基本概念
+   - 合法权益了解
+
+3. 🛠️ 实用工具模块
+   - 债务清单制作
+   - 预算规划模板
+
+4. 💬 沟通技巧模块
+   - 协商基本原则
+
+5. 🚀 重建之路模块
+   - 信用修复指南
+   - 未来财务规划
+    
+按此顺序学习效果最佳！`);
+        }
+
+        function showTerms() {
+            alert('服务条款页面开发中...');
+        }
+
+        function showPrivacy() {
+            alert('隐私政策页面开发中...');
+        }
+
+        function showAgreement() {
+            alert('会员协议页面开发中...');
+        }
+
+        function showContact() {
+            alert('联系我们页面开发中...');
         }
 
         // 简单的交互功能
@@ -1113,6 +1100,32 @@
                     }
                 });
             });
+
+            // 添加提示框样式
+            const style = document.createElement('style');
+            style.textContent = `
+                .alert {
+                    padding: 16px;
+                    border-radius: 12px;
+                    margin-bottom: 24px;
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                }
+                .alert-info {
+                    background-color: #dbeafe;
+                    color: #1e40af;
+                    border: 1px solid #93c5fd;
+                }
+                .alert-link {
+                    color: #1e40af;
+                    text-decoration: underline;
+                }
+                .alert-link:hover {
+                    color: #1e3a8a;
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>

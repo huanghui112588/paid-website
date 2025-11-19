@@ -639,7 +639,127 @@ def terms():
 @app.route('/privacy')
 def privacy():
     """隐私政策页面"""
-    return render_template('privacy.html', ADMIN_EMAIL=ADMIN_EMAIL)
+    return render_template('privacy.html', ADMIN_EMAIL=ADMIN_EMAIL) 
+
+@app.route('/knowledge-base')
+@payment_required
+def knowledge_base():
+    """知识库页面"""
+    return render_template('knowledge_base.html', 
+                         content_categories=CONTENT_CATEGORIES,
+                         content_modules=CONTENT_MODULES)
+
+# ============ 知识内容框架 ============
+
+# 内容分类体系
+CONTENT_CATEGORIES = {
+    'mindset': {
+        'name': '🧠 心态调整',
+        'description': '心理调适与情绪管理',
+        'color': 'primary'
+    },
+    'knowledge': {
+        'name': '📖 基础知识', 
+        'description': '债务管理基本原理',
+        'color': 'info'
+    },
+    'tools': {
+        'name': '🛠️ 实用工具',
+        'description': '模板与计算工具',
+        'color': 'success'
+    },
+    'communication': {
+        'name': '💬 沟通技巧',
+        'description': '交流与协商方法',
+        'color': 'warning'
+    },
+    'rebuilding': {
+        'name': '🚀 重建之路',
+        'description': '信用修复与未来规划',
+        'color': 'secondary'
+    }
+}
+
+# 具体内容模块
+CONTENT_MODULES = {
+    # 心态调整系列
+    'mindset_1': {
+        'title': '从恐慌到平静：债务压力的心理调适',
+        'category': 'mindset',
+        'type': 'article',
+        'description': '学习应对债务焦虑的实用方法',
+        'points': [
+            '理解债务压力的心理机制',
+            '实用的情绪调节技巧',
+            '建立积极心态的方法',
+            '应对催收电话的心理准备'
+        ]
+    },
+    'mindset_2': {
+        'title': '如何与家人坦诚沟通债务问题',
+        'category': 'mindset', 
+        'type': 'article',
+        'description': '改善家庭沟通，获得理解支持',
+        'points': [
+            '选择合适时机和方式',
+            '准备沟通的内容要点',
+            '应对可能的情绪反应',
+            '共同制定解决方案'
+        ]
+    },
+    
+    # 基础知识系列
+    'knowledge_1': {
+        'title': '了解债务：基本概念与类型',
+        'category': 'knowledge',
+        'type': 'article', 
+        'description': '掌握债务管理的基础知识',
+        'points': [
+            '债务的基本分类',
+            '利息与罚息的计算原理',
+            '信用记录的影响因素',
+            '不同债务的优先级'
+        ]
+    },
+    'knowledge_2': {
+        'title': '债务人的合法权益',
+        'category': 'knowledge',
+        'type': 'article',
+        'description': '了解相关法律法规的基本规定',
+        'points': [
+            '个人信息保护权利',
+            '合法的催收行为边界',
+            '协商还款的基本权利',
+            '寻求法律援助的途径'
+        ]
+    },
+    
+    # 实用工具系列
+    'tools_1': {
+        'title': '债务清单制作指南',
+        'category': 'tools',
+        'type': 'template',
+        'description': '制作个人债务清单的步骤',
+        'points': [
+            '债务清单模板使用',
+            '数据收集与整理方法', 
+            '优先级排序原则',
+            '进度跟踪技巧'
+        ]
+    },
+    'tools_2': {
+        'title': '个人预算规划模板',
+        'category': 'tools',
+        'type': 'template',
+        'description': '建立可持续的预算计划',
+        'points': [
+            '收入支出分类方法',
+            '必要开支识别技巧',
+            '储蓄与还款平衡',
+            '预算调整机制'
+        ]
+    }
+}
 
 
 
