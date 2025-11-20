@@ -103,9 +103,17 @@
                     <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">返回仪表板</a>
                 </div>
 
+                <!-- 在 admin_questions.html 的问题列表部分 -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">用户提问列表</h5>
+
+                        <!-- 调试信息（生产环境可以移除） -->
+                        <div class="alert alert-info">
+                            <small>总问题数: {{ questions|length }} |
+                                未回答: {{ questions|selectattr('answered', 'equalto', false)|list|length }}</small>
+                        </div>
+
                         {% if questions %}
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -120,15 +128,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- 修改表格中的这部分代码 -->
                                     {% for question in questions %}
                                     <tr>
                                         <td>{{ question.id }}</td>
                                         <td>
                                             {% if question.user %}
-                                            {{ question.user.username }}
+                                            {{ question.user.username }} (ID: {{ question.user.id }})
                                             {% else %}
-                                            <span class="text-muted">用户已删除</span>
+                                            <span class="text-danger">用户已删除</span>
                                             {% endif %}
                                         </td>
                                         <td>
@@ -149,182 +156,186 @@
                                             {% if not question.answered %}
                                             <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#answerModal" data-question-id="{{ question.id }}"
-                                                data-question-content="{{ question.content | replace('"', ' &quot;')
-                                                }}">
+                                                data-question-content="{{ question.content }}">
                                                 回答
                                             </button>
                                             {% else %}
                                             <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
                                                 data-bs-target="#viewAnswerModal"
-                                                data-question-content="{{ question.content | replace('"', ' &quot;') }}"
-                                                data-answer="{{ question.answer | replace('"', ' &quot;') }}">
+                                                data-question-content="{{ question.content }}"
+                                                data-answer="{{ question.answer }}">
                                                 查看回答
                                             </button>
                                             {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}
-                                    <div class="text-center py-4">
-                                        <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">暂无用户提问</h5>
-                                        <p class="text-muted">当用户提交问题后，记录将显示在这里</p>
-                                    </div>
-                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">暂无用户提问</h5>
+                            <p class="text-muted">当用户提交问题后，记录将显示在这里</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- 回答问题的模态框 -->
+                <div class="modal fade" id="answerModal" tabindex="-1" aria-labelledby="answerModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="answerModalLabel">回答问题</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">用户问题：</label>
+                                    <div id="questionContentDisplay" class="border p-3 bg-light rounded"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="answerContent" class="form-label">专家回答：</label>
+                                    <textarea class="form-control" id="answerContent" rows="6"
+                                        placeholder="请输入专业的回答..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" id="submitAnswer">提交回答</button>
+                            </div>
                         </div>
                     </div>
-            </main>
-        </div>
-    </div>
+                </div>
 
-    <!-- 回答问题的模态框 -->
-    <div class="modal fade" id="answerModal" tabindex="-1" aria-labelledby="answerModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="answerModalLabel">回答问题</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">用户问题：</label>
-                        <div id="questionContentDisplay" class="border p-3 bg-light rounded"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="answerContent" class="form-label">专家回答：</label>
-                        <textarea class="form-control" id="answerContent" rows="6" placeholder="请输入专业的回答..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="submitAnswer">提交回答</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 查看回答的模态框 -->
-    <div class="modal fade" id="viewAnswerModal" tabindex="-1" aria-labelledby="viewAnswerModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewAnswerModalLabel">问题与回答</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">用户问题：</label>
-                        <div id="viewQuestionContent" class="border p-3 bg-light rounded"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">专家回答：</label>
-                        <div id="viewAnswerContent" class="border p-3 bg-light rounded"></div>
+                <!-- 查看回答的模态框 -->
+                <div class="modal fade" id="viewAnswerModal" tabindex="-1" aria-labelledby="viewAnswerModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewAnswerModalLabel">问题与回答</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">用户问题：</label>
+                                    <div id="viewQuestionContent" class="border p-3 bg-light rounded"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">专家回答：</label>
+                                    <div id="viewAnswerContent" class="border p-3 bg-light rounded"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let currentQuestionId = null;
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+                <script>
+                    let currentQuestionId = null;
 
-        // 内容展开/收起
-        function toggleContent(questionId) {
-            const contentDiv = document.getElementById('content-' + questionId);
-            if (!contentDiv) return;
+                    // 内容展开/收起
+                    function toggleContent(questionId) {
+                        const contentDiv = document.getElementById('content-' + questionId);
+                        if (!contentDiv) return;
 
-            const readMoreSpan = contentDiv.querySelector('.read-more');
-            if (!readMoreSpan) return;
+                        const readMoreSpan = contentDiv.querySelector('.read-more');
+                        if (!readMoreSpan) return;
 
-            if (contentDiv.classList.contains('expanded')) {
-                contentDiv.classList.remove('expanded');
-                readMoreSpan.textContent = '展开';
-            } else {
-                contentDiv.classList.add('expanded');
-                readMoreSpan.textContent = '收起';
-            }
-        }
-
-        // 回答模态框
-        const answerModal = document.getElementById('answerModal');
-        if (answerModal) {
-            answerModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                currentQuestionId = button.getAttribute('data-question-id');
-                const questionContent = button.getAttribute('data-question-content');
-
-                const contentDisplay = document.getElementById('questionContentDisplay');
-                const answerContent = document.getElementById('answerContent');
-
-                if (contentDisplay) contentDisplay.textContent = questionContent;
-                if (answerContent) answerContent.value = '';
-            });
-        }
-
-        // 查看回答模态框
-        const viewAnswerModal = document.getElementById('viewAnswerModal');
-        if (viewAnswerModal) {
-            viewAnswerModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const questionContent = button.getAttribute('data-question-content');
-                const answer = button.getAttribute('data-answer');
-
-                const viewQuestion = document.getElementById('viewQuestionContent');
-                const viewAnswer = document.getElementById('viewAnswerContent');
-
-                if (viewQuestion) viewQuestion.textContent = questionContent;
-                if (viewAnswer) viewAnswer.textContent = answer;
-            });
-        }
-
-        // 提交回答
-        const submitAnswerBtn = document.getElementById('submitAnswer');
-        if (submitAnswerBtn) {
-            submitAnswerBtn.addEventListener('click', function () {
-                const answerContentElem = document.getElementById('answerContent');
-                if (!answerContentElem) return;
-
-                const answerContent = answerContentElem.value.trim();
-
-                if (!answerContent) {
-                    alert('请填写回答内容');
-                    return;
-                }
-
-                if (!currentQuestionId) {
-                    alert('未找到问题ID');
-                    return;
-                }
-
-                fetch('/admin/answer-question/' + currentQuestionId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        answer: answerContent
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('回答提交成功！');
-                            location.reload();
+                        if (contentDiv.classList.contains('expanded')) {
+                            contentDiv.classList.remove('expanded');
+                            readMoreSpan.textContent = '展开';
                         } else {
-                            alert('提交失败: ' + data.message);
+                            contentDiv.classList.add('expanded');
+                            readMoreSpan.textContent = '收起';
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('提交失败，请重试');
-                    });
-            });
-        }
-    </script>
+                    }
+
+                    // 回答模态框
+                    const answerModal = document.getElementById('answerModal');
+                    if (answerModal) {
+                        answerModal.addEventListener('show.bs.modal', function (event) {
+                            const button = event.relatedTarget;
+                            currentQuestionId = button.getAttribute('data-question-id');
+                            const questionContent = button.getAttribute('data-question-content');
+
+                            const contentDisplay = document.getElementById('questionContentDisplay');
+                            const answerContent = document.getElementById('answerContent');
+
+                            if (contentDisplay) contentDisplay.textContent = questionContent;
+                            if (answerContent) answerContent.value = '';
+                        });
+                    }
+
+                    // 查看回答模态框
+                    const viewAnswerModal = document.getElementById('viewAnswerModal');
+                    if (viewAnswerModal) {
+                        viewAnswerModal.addEventListener('show.bs.modal', function (event) {
+                            const button = event.relatedTarget;
+                            const questionContent = button.getAttribute('data-question-content');
+                            const answer = button.getAttribute('data-answer');
+
+                            const viewQuestion = document.getElementById('viewQuestionContent');
+                            const viewAnswer = document.getElementById('viewAnswerContent');
+
+                            if (viewQuestion) viewQuestion.textContent = questionContent;
+                            if (viewAnswer) viewAnswer.textContent = answer;
+                        });
+                    }
+
+                    // 提交回答
+                    const submitAnswerBtn = document.getElementById('submitAnswer');
+                    if (submitAnswerBtn) {
+                        submitAnswerBtn.addEventListener('click', function () {
+                            const answerContentElem = document.getElementById('answerContent');
+                            if (!answerContentElem) return;
+
+                            const answerContent = answerContentElem.value.trim();
+
+                            if (!answerContent) {
+                                alert('请填写回答内容');
+                                return;
+                            }
+
+                            if (!currentQuestionId) {
+                                alert('未找到问题ID');
+                                return;
+                            }
+
+                            fetch('/admin/answer-question/' + currentQuestionId, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    answer: answerContent
+                                })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        alert('回答提交成功！');
+                                        location.reload();
+                                    } else {
+                                        alert('提交失败: ' + data.message);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('提交失败，请重试');
+                                });
+                        });
+                    }
+                </script>
 </body>
 
 </html>

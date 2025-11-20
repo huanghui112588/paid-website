@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>上岸翻身营 - 专业学习平台，助您事业腾飞</title>
+    <title>上岸翻身营 - 专为负债人群打造的翻身平台</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -12,6 +12,8 @@
             --primary: #6366f1;
             --primary-dark: #4f46e5;
             --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
             --dark: #1f2937;
             --light: #f9fafb;
             --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,67 +22,78 @@
         .hero-section {
             background: var(--gradient);
             color: white;
-            padding: 100px 0;
+            padding: 80px 0;
             position: relative;
             overflow: hidden;
         }
 
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+        .crisis-alert {
+            background: linear-gradient(135deg, #fef3c7, #f59e0b);
+            border-left: 4px solid #dc2626;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
         }
 
-        .feature-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
+        .solution-steps {
+            background: white;
             border-radius: 15px;
-            overflow: hidden;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .pricing-card {
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
-        }
-
-        .pricing-card.featured {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .stats-counter {
-            font-size: 3rem;
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
-            color: var(--primary);
+            margin-right: 15px;
         }
 
-        .trust-badges {
-            background: var(--light);
+        .urgency-badge {
+            background: #dc2626;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+
+        .debt-stats {
+            background: linear-gradient(135deg, #1e293b, #374151);
+            color: white;
             padding: 40px 0;
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 60px 0;
-            }
-
-            .display-4 {
-                font-size: 2.5rem;
-            }
-
-            .pricing-card.featured {
-                transform: none;
-            }
+            border-radius: 15px;
         }
     </style>
 </head>
@@ -90,7 +103,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="{{ url_for('index') }}">
-                <i class="fas fa-graduation-cap me-2"></i>
+                <i class="fas fa-life-ring me-2"></i>
                 上岸翻身营
             </a>
             <div class="navbar-nav ms-auto">
@@ -105,151 +118,220 @@
         </div>
     </nav>
 
+    <!-- 紧急警示区域 -->
+    <div class="container mt-3">
+        <div class="crisis-alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle text-danger me-3 fs-4"></i>
+                <div>
+                    <strong class="text-dark">紧急提醒：</strong>
+                    <span class="text-dark">如果你正在被催收困扰、面临逾期压力，请立即停止以贷养贷！专业指导助你走出困境。</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 英雄区域 -->
     <section class="hero-section">
-        <div class="container position-relative">
+        <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-4">改变命运，从这一刻开始</h1>
-                    <p class="lead mb-4">专业导师团队，系统化学习路径，助您快速掌握核心技能，实现事业突破</p>
+                    <span class="urgency-badge mb-3">🚨 专为负债人群设计</span>
+                    <h1 class="display-4 fw-bold mb-4">从负债累累到成功上岸</h1>
+                    <p class="lead mb-4">停止以贷养贷 → 科学规划债务 → 协商分期 → 增加收入 → 成功翻身</p>
+
                     <div class="d-flex gap-3 flex-wrap">
                         {% if not session.user %}
                         <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
-                            <i class="fas fa-rocket me-2"></i>立即启程
+                            <i class="fas fa-user-plus me-2"></i>立即开始翻身
                         </a>
                         {% else %}
                         <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
                             <i class="fas fa-tachometer-alt me-2"></i>进入会员区
                         </a>
                         {% endif %}
-                        <a href="#features" class="btn btn-outline-light btn-lg px-5 py-3">
-                            <i class="fas fa-play-circle me-2"></i>了解更多
+                        <a href="#solution" class="btn btn-outline-light btn-lg px-5 py-3">
+                            <i class="fas fa-play-circle me-2"></i>查看解决方案
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                            alt="成功学员" class="img-fluid rounded-3 shadow-lg">
-                        <div class="position-absolute bottom-0 start-0 m-4">
-                            <div class="bg-white rounded-3 p-3 shadow">
-                                <div class="text-warning">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="text-muted">5000+ 学员推荐</small>
-                            </div>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                            alt="财务自由" class="img-fluid rounded-3 shadow-lg">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 信任指标 -->
-    <section class="trust-badges">
+    <!-- 债务统计 -->
+    <section class="debt-stats mt-5">
         <div class="container">
             <div class="row text-center">
                 <div class="col-md-3 col-6 mb-4">
-                    <div class="stats-counter">5000+</div>
-                    <div class="text-muted">成功学员</div>
+                    <div class="h1 fw-bold text-warning">76%</div>
+                    <div class="text-light">负债人曾以贷养贷</div>
                 </div>
                 <div class="col-md-3 col-6 mb-4">
-                    <div class="stats-counter">98%</div>
-                    <div class="text-muted">满意度</div>
+                    <div class="h1 fw-bold text-danger">89%</div>
+                    <div class="text-light">因催收产生心理问题</div>
                 </div>
                 <div class="col-md-3 col-6 mb-4">
-                    <div class="stats-counter">24/7</div>
-                    <div class="text-muted">专家支持</div>
+                    <div class="h1 fw-bold text-success">94%</div>
+                    <div class="text-light">通过规划成功减负</div>
                 </div>
                 <div class="col-md-3 col-6 mb-4">
-                    <div class="stats-counter">100%</div>
-                    <div class="text-muted">实战内容</div>
+                    <div class="h1 fw-bold text-primary">5000+</div>
+                    <div class="text-light">已成功上岸学员</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 核心特色 -->
-    <section id="features" class="py-5 bg-light">
+    <!-- 解决方案 -->
+    <section id="solution" class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">为什么选择我们？</h2>
-                <p class="lead text-muted">专业的内容，贴心的服务，让学习变得更简单</p>
+                <h2 class="display-5 fw-bold mb-3">6步科学上岸方案</h2>
+                <p class="lead text-muted">跟着专业步骤，告别债务困扰</p>
             </div>
 
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card card h-100 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon mb-3">
-                                <i class="fas fa-user-graduate fa-3x text-primary"></i>
+            <div class="solution-steps">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h5 class="fw-bold">立即停止以贷养贷</h5>
+                                <p class="text-muted">切断债务恶性循环，避免雪球越滚越大</p>
                             </div>
-                            <h4 class="fw-bold">专家导师团队</h4>
-                            <p class="text-muted">行业资深专家亲自指导，传授实战经验，避免走弯路</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h5 class="fw-bold">全面清点所有债务</h5>
+                                <p class="text-muted">制作详细债务清单，明确还款优先级</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h5 class="fw-bold">主动协商分期还款</h5>
+                                <p class="text-muted">与银行/平台协商，争取最优还款方案</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h5 class="fw-bold">应对催收保护权益</h5>
+                                <p class="text-muted">合法应对催收，维护个人合法权益</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">5</div>
+                            <div>
+                                <h5 class="fw-bold">提升收入开源节流</h5>
+                                <p class="text-muted">增加收入渠道，合理控制支出</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">6</div>
+                            <div>
+                                <h5 class="fw-bold">心理建设保持信心</h5>
+                                <p class="text-muted">调整心态，债务不是人生的终点</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成功案例 -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">真实上岸案例</h2>
+                <p class="lead text-muted">他们曾经和你一样，现在已成功翻身</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="text-warning mb-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="card-text">"负债35万，通过协商分期和增加收入，2年成功上岸！"</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style="width: 50px; height: 50px;">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">张先生</h6>
+                                <small class="text-muted">前负债35万，现财务自由</small>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card card h-100 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon mb-3">
-                                <i class="fas fa-road fa-3x text-success"></i>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="text-warning mb-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="card-text">"信用卡逾期被起诉，通过学习法律知识成功调解！"</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style="width: 50px; height: 50px;">
+                                <i class="fas fa-user text-white"></i>
                             </div>
-                            <h4 class="fw-bold">系统学习路径</h4>
-                            <p class="text-muted">从基础到进阶，科学规划学习路线，循序渐进掌握技能</p>
+                            <div>
+                                <h6 class="mb-0">李女士</h6>
+                                <small class="text-muted">成功避免法律风险</small>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card card h-100 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon mb-3">
-                                <i class="fas fa-comments fa-3x text-info"></i>
-                            </div>
-                            <h4 class="fw-bold">1对1答疑解惑</h4>
-                            <p class="text-muted">遇到问题随时提问，专家24小时内回复，学习不卡壳</p>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="text-warning mb-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card card h-100 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon mb-3">
-                                <i class="fas fa-briefcase fa-3x text-warning"></i>
+                        <p class="card-text">"从月入3000到月入过万，副业收入让我提前上岸！"</p>
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style="width: 50px; height: 50px;">
+                                <i class="fas fa-user text-white"></i>
                             </div>
-                            <h4 class="fw-bold">实战项目经验</h4>
-                            <p class="text-muted">真实项目案例教学，学完即用，快速积累项目经验</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card card h-100 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon mb-3">
-                                <i class="fas fa-infinity fa-3x text-danger"></i>
+                            <div>
+                                <h6 class="mb-0">王先生</h6>
+                                <small class="text-muted">通过副业加速上岸</small>
                             </div>
-                            <h4 class="fw-bold">永久访问权限</h4>
-                            <p class="text-muted">一次性付费，终身学习，内容持续更新，价值不断提升</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card card h-100 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon mb-3">
-                                <i class="fas fa-shield-alt fa-3x text-secondary"></i>
-                            </div>
-                            <h4 class="fw-bold">无忧退款保障</h4>
-                            <p class="text-muted">7天内不满意无条件退款，零风险尝试，安心学习</p>
                         </div>
                     </div>
                 </div>
@@ -258,34 +340,34 @@
     </section>
 
     <!-- 定价区域 -->
-    <section class="py-5">
+    <section class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">选择适合您的方案</h2>
-                <p class="lead text-muted">投资自己，是最明智的选择</p>
+                <h2 class="display-5 fw-bold mb-3">投资自己，告别负债</h2>
+                <p class="lead text-muted">一次付费，终身会员，开启你的上岸之旅</p>
             </div>
 
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="pricing-card card featured border-3 shadow">
+                    <div class="card border-3 border-primary shadow">
                         <div class="card-header text-center py-4 bg-primary text-white">
                             <h3 class="fw-bold mb-0">永久会员</h3>
-                            <div class="price display-2 fw-bold my-3">¥29.9</div>
+                            <div class="price display-2 fw-bold my-3">¥99</div>
                             <p class="mb-0 opacity-75">一次性付费，终身受益</p>
                         </div>
                         <div class="card-body p-4">
                             <ul class="list-unstyled mb-4">
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 所有课程永久访问</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 债务管理全套方案</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 协商话术与法律支持</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 心理疏导与压力管理</li>
+                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 赚钱项目与副业指导</li>
                                 <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 专家1对1答疑</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 实战项目资源下载</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 新内容持续更新</li>
-                                <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 会员专属社区</li>
                                 <li class="mb-3"><i class="fas fa-check text-success me-2"></i> 7天无忧退款保障</li>
                             </ul>
                             <div class="text-center">
                                 {% if not session.user %}
                                 <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
-                                    <i class="fas fa-crown me-2"></i>立即加入精英行列
+                                    <i class="fas fa-crown me-2"></i>立即加入翻身计划
                                 </a>
                                 {% else %}
                                 <a href="{{ url_for('members') }}" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
@@ -295,127 +377,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="text-center mt-4">
-                        <small class="text-muted">
-                            <i class="fas fa-lock me-1"></i> 安全支付 ·
-                            <i class="fas fa-shield-alt me-1"></i> 隐私保护 ·
-                            <i class="fas fa-headset me-1"></i> 专属客服
-                        </small>
-                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 学员见证 -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">学员成功故事</h2>
-                <p class="lead text-muted">听听他们怎么说</p>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <div class="text-warning mb-3">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <p class="card-text">"通过这个平台，我在3个月内成功转行，薪资翻倍！专家的指导非常实用。"</p>
-                            <div class="d-flex align-items-center mt-3">
-                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-                                    style="width: 50px; height: 50px;">
-                                    <i class="fas fa-user text-white"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">张小姐</h6>
-                                    <small class="text-muted">前端开发工程师</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <div class="text-warning mb-3">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <p class="card-text">"课程内容非常系统，从基础到进阶，让我这个零基础的小白也能快速上手。"</p>
-                            <div class="d-flex align-items-center mt-3">
-                                <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
-                                    style="width: 50px; height: 50px;">
-                                    <i class="fas fa-user text-white"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">李先生</h6>
-                                    <small class="text-muted">数据分析师</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <div class="text-warning mb-3">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <p class="card-text">"专家答疑非常及时，解决了我工作中的实际问题。这个投资太值了！"</p>
-                            <div class="d-flex align-items-center mt-3">
-                                <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
-                                    style="width: 50px; height: 50px;">
-                                    <i class="fas fa-user text-white"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">王女士</h6>
-                                    <small class="text-muted">产品经理</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 行动召唤 -->
-    <section class="py-5 text-white" style="background: var(--gradient);">
-        <div class="container text-center">
-            <h2 class="display-5 fw-bold mb-4">准备好改变未来了吗？</h2>
-            <p class="lead mb-4">加入5000+成功学员的行列，开启您的职业新篇章</p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                {% if not session.user %}
-                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
-                    <i class="fas fa-user-plus me-2"></i>立即注册
-                </a>
-                <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg px-5 py-3">
-                    <i class="fas fa-sign-in-alt me-2"></i>会员登录
-                </a>
-                {% else %}
-                <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-5 py-3 fw-bold">
-                    <i class="fas fa-tachometer-alt me-2"></i>进入会员区
-                </a>
-                <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-lg px-5 py-3">
-                    <i class="fas fa-sign-out-alt me-2"></i>安全退出
-                </a>
-                {% endif %}
             </div>
         </div>
     </section>
@@ -425,8 +387,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5><i class="fas fa-graduation-cap me-2"></i>上岸翻身营</h5>
-                    <p class="text-muted">专业学习平台，助您事业腾飞</p>
+                    <h5><i class="fas fa-life-ring me-2"></i>上岸翻身营</h5>
+                    <p class="text-muted">专为负债人群打造的翻身平台</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <p class="text-muted mb-0">&copy; 2024 上岸翻身营. 保留所有权利.</p>
@@ -435,92 +397,8 @@
         </div>
     </footer>
 
-    <!-- 现有的 Bootstrap JS 链接 -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- 后续优化：滚动动画效果 -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 观察所有需要动画的元素
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        entry.target.style.transition = 'all 0.6s ease';
-
-                        // 如果是统计数据，添加计数动画
-                        if (entry.target.classList.contains('stats-counter')) {
-                            animateCounter(entry.target);
-                        }
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            // 计数动画函数
-            function animateCounter(counter) {
-                const target = parseInt(counter.textContent);
-                const increment = target / 50;
-                let current = 0;
-
-                const updateCounter = () => {
-                    if (current < target) {
-                        current += increment;
-                        counter.textContent = Math.ceil(current) + (counter.textContent.includes('+') ? '+' : '');
-                        setTimeout(updateCounter, 30);
-                    } else {
-                        counter.textContent = target + (counter.textContent.includes('+') ? '+' : '');
-                    }
-                };
-
-                updateCounter();
-            }
-
-            // 为特色卡片添加动画
-            document.querySelectorAll('.feature-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                observer.observe(card);
-            });
-
-            // 为定价卡片添加动画
-            document.querySelectorAll('.pricing-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                observer.observe(card);
-            });
-
-            // 为学员见证卡片添加动画
-            document.querySelectorAll('.card').forEach(card => {
-                if (!card.classList.contains('feature-card') && !card.classList.contains('pricing-card')) {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    observer.observe(card);
-                }
-            });
-
-            // 为统计数据添加动画
-            document.querySelectorAll('.stats-counter').forEach(counter => {
-                observer.observe(counter);
-            });
-
-            // 平滑滚动导航
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

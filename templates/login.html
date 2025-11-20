@@ -1,61 +1,485 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录账号</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>登录账号 - 上岸翻身营</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 使用您提供的CSS变量和基础样式 */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #7209b7;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --warning-color: #ffcc00;
+            --danger-color: #dc3545;
+            --gray-color: #6c757d;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部导航栏 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        nav a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 主要内容区域 */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 50px;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .feature-list i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .form-subtitle {
+            color: var(--gray-color);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--secondary-color);
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: var(--gray-color);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-button {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .social-button:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .social-button.wechat {
+            color: #09bb07;
+        }
+
+        .social-button.qq {
+            color: #12b7f5;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .form-footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+
+        .error-message {
+            background-color: #ffe6e6;
+            color: var(--danger-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+
+            .login-left {
+                padding: 30px;
+            }
+
+            .login-right {
+                padding: 30px;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .form-title {
+                font-size: 1.8rem;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <header>
         <div class="container">
-            <h1>上岸翻身营</h1>
-            <nav>
-                <a href="{{ url_for('index') }}">首页</a>
-            </nav>
+            <div class="header-content">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <i class="fas fa-life-ring"></i>
+                    <span>上岸翻身营</span>
+                </a>
+                <nav>
+                    <a href="{{ url_for('index') }}">首页</a>
+                </nav>
+            </div>
         </div>
     </header>
 
     <main class="container">
-        <div class="form-container">
-            <h2>登录账号</h2>
+        <div class="login-container">
+            <div class="login-left">
+                <h1 class="welcome-title">重新掌控财务，开启全新人生</h1>
+                <p class="welcome-subtitle">加入数千名成功上岸的伙伴，告别负债焦虑</p>
 
-            {% if error %}
-            <div class="error-message">
-                {{ error }}
+                <ul class="feature-list">
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>专业债务协商指导</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>实用赚钱项目分享</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>一对一心理支持</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>24小时专家答疑</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>成功案例学习</span>
+                    </li>
+                </ul>
+
+                <div class="testimonial">
+                    <p class="testimonial-text">"在翻身营的帮助下，我不仅还清了20万债务，还找到了稳定的副业收入。感谢这个平台给了我第二次机会！"</p>
+                    <p class="testimonial-author">- 张先生，3个月成功上岸</p>
+                </div>
             </div>
-            {% endif %}
 
-            <form action="{{ url_for('login') }}" method="POST">
-                <div class="form-group">
-                    <label for="username">用户名:</label>
-                    <input type="text" id="username" name="username" required>
+            <div class="login-right">
+                <h2 class="form-title">登录账号</h2>
+                <p class="form-subtitle">欢迎回到上岸翻身营，继续您的财务自由之旅</p>
+
+                {% if error %}
+                <div class="error-message">
+                    {{ error }}
                 </div>
+                {% endif %}
 
-                <div class="form-group">
-                    <label for="password">密码:</label>
-                    <input type="password" id="password" name="password" required>
+                <form action="{{ url_for('login') }}" method="POST">
+                    <div class="form-group">
+                        <label for="username">用户名:</label>
+                        <input type="text" id="username" name="username" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密码:</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                    </div>
+
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="{{ url_for('forgot_password') }}" class="forgot-password">忘记密码？</a>
+                    </div>
+
+                    <button type="submit" class="cta-button">
+                        <i class="fas fa-sign-in-alt"></i>
+                        登录账号
+                    </button>
+                </form>
+
+                <div class="form-footer">
+                    <p>还没有账号？<a href="{{ url_for('register') }}">立即注册</a></p>
                 </div>
-
-                <button type="submit" class="cta-button">登录</button>
-            </form>
-
-            <div class="form-footer">
-                <p>还没有账号？<a href="{{ url_for('register') }}">立即注册</a></p>
             </div>
         </div>
     </main>
 
-    <div class="form-footer">
-        <p><a href="{{ url_for('forgot_password') }}">忘记密码？</a></p>
-        <p>还没有账号？<a href="{{ url_for('register') }}">立即注册</a></p>
-    </div>
-
     <footer>
         <div class="container">
-            <p>&copy; 2025 上岸翻身营</p>
+            <p>&copy; 2025 上岸翻身营 - 专业债务解决方案与财务重建平台</p>
         </div>
     </footer>
 </body>

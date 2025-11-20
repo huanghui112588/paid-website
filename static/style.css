@@ -450,3 +450,36 @@ footer {
     padding-top: 20px;
     margin-top: 20px;
 }
+
+/* 问答项目样式 */
+.question-item {
+    border: 1px solid var(--gray-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: var(--light);
+    transition: all 0.3s ease;
+}
+
+.question-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.question-item.answered {
+    border-left: 4px solid var(--secondary);
+}
+
+.question-item.pending {
+    border-left: 4px solid var(--warning);
+}
+
+.answer-content {
+    background: #f8fff8;
+    border: 1px solid #e6ffe6;
+}
+
+/* 浮动提示样式 */
+.alert-floating {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}

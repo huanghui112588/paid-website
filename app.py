@@ -57,7 +57,7 @@ app.config.update(
 db = SQLAlchemy(app)
 
 # ============ 配置常量 ============
-MEMBERSHIP_PRICE = 29.9
+MEMBERSHIP_PRICE = 99
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "942521233@qq.com")  # 从环境变量获取
 
 # 默认的内容分类和模块（防止未定义错误），可以根据实际内容替换为数据库或配置加载
@@ -579,13 +579,23 @@ def admin_dashboard():
 @app.route('/submit-question', methods=['POST'])
 @payment_required
 def submit_question():
-    """用户提交问题"""
-    content = request.form.get('content', '').strip()
-    
-    if not content:
-        return jsonify({'success': False, 'message': '问题内容不能为空'})
-    
+    """用户提交问题 - 修复版本"""
     try:
+        # 同时支持表单数据和JSON数据
+        if request.is_json:
+            data = request.get_json()
+            content = data.get('content', '').strip()
+        else:
+            content = request.form.get('content', '').strip()
+        
+        print(f"📝 收到问题提交: {content[:100]}...")  # 调试日志
+        
+        if not content:
+            return jsonify({'success': False, 'message': '问题内容不能为空'})
+        
+        if len(content) < 5:
+            return jsonify({'success': False, 'message': '问题内容太短，请详细描述'})
+        
         new_question = Question(
             user_id=session['user_id'],
             content=content
@@ -594,10 +604,12 @@ def submit_question():
         db.session.add(new_question)
         db.session.commit()
         
+        print(f"✅ 问题提交成功，ID: {new_question.id}")  # 调试日志
         return jsonify({'success': True, 'message': '问题提交成功！专家将在24小时内回复'})
         
     except Exception as e:
         db.session.rollback()
+        print(f"❌ 问题提交失败: {str(e)}")  # 错误日志
         return jsonify({'success': False, 'message': f'提交失败: {str(e)}'})
 
 @app.route('/get-my-questions')
@@ -623,32 +635,36 @@ def get_my_questions():
 @app.route('/admin/answer-question/<int:question_id>', methods=['POST'])
 @admin_required
 def answer_question(question_id):
-    """管理员回答问题"""
-    question = Question.query.get_or_404(question_id)
-    
-    # 安全的 JSON 数据获取
-    if not request.is_json:
-        return jsonify({'success': False, 'message': '请求必须是JSON格式'})
-    
-    data = request.get_json()
-    if not data:
-        return jsonify({'success': False, 'message': '无效的JSON数据'})
-    
-    answer_content = data.get('answer', '').strip()
-    
-    if not answer_content:
-        return jsonify({'success': False, 'message': '回答内容不能为空'})
-    
+    """管理员回答问题 - 修复版本"""
     try:
+        question = Question.query.get_or_404(question_id)
+        
+        # 检查请求数据
+        if not request.is_json:
+            return jsonify({'success': False, 'message': '请求必须是JSON格式'})
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({'success': False, 'message': '无效的JSON数据'})
+        
+        answer_content = data.get('answer', '').strip()
+        if not answer_content:
+            return jsonify({'success': False, 'message': '回答内容不能为空'})
+        
+        # 更新问题
         question.answer = answer_content
         question.answered = True
         question.answer_time = datetime.now()
         
         db.session.commit()
+        
+        print(f"管理员已回答问题 ID: {question_id}")  # 调试日志
+        
         return jsonify({'success': True, 'message': '回答提交成功'})
         
     except Exception as e:
         db.session.rollback()
+        print(f"回答问题错误: {str(e)}")  # 调试日志
         return jsonify({'success': False, 'message': f'回答失败: {str(e)}'})
 
 @app.route('/admin/payments')
@@ -792,12 +808,22 @@ def make_admin(user_id):
 @app.route('/admin/questions')
 @admin_required
 def admin_questions():
-    """问题管理 - 优化版本"""
-    # 使用优化后的查询方法
-    questions = db.session.query(Question).order_by(Question.create_time.desc())\
+    """问题管理 - 修复版本"""
+    try:
+        # 使用更明确的查询，确保正确加载用户关系
+        questions = db.session.query(Question)\
                              .options(db.joinedload(Question.user))\
+                             .order_by(Question.create_time.desc())\
                              .all()
-    return render_template('admin_questions.html', questions=questions)
+        
+        print(f"管理员查看问题: 找到 {len(questions)} 个问题")  # 调试日志
+        
+        return render_template('admin_questions.html', questions=questions)
+        
+    except Exception as e:
+        print(f"管理员问题查询错误: {str(e)}")  # 调试日志
+        flash(f'加载问题列表失败: {str(e)}', 'error')
+        return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/logout')
 def admin_logout():
@@ -825,6 +851,336 @@ def knowledge_base():
                          content_categories=CONTENT_CATEGORIES,
                          content_modules=CONTENT_MODULES)
 
+# ============ 新增：债务计算器API ============
+@app.route('/api/calculate-debt', methods=['POST'])
+@login_required
+def calculate_debt():
+    """债务计算器API"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'success': False, 'message': '无效的请求数据'})
+        
+        total_debt = float(data.get('total_debt', 0))
+        monthly_payment = float(data.get('monthly_payment', 0))
+        interest_rate = float(data.get('interest_rate', 12))
+        
+        if total_debt <= 0 or monthly_payment <= 0:
+            return jsonify({'success': False, 'message': '请输入有效的债务金额和月还款额'})
+        
+        # 计算还款计划
+        monthly_rate = interest_rate / 100 / 12
+        remaining_debt = total_debt
+        months = 0
+        total_interest = 0
+        payment_plan = []
+        
+        # 计算还款月数
+        while remaining_debt > 0 and months < 600:  # 限制最多50年
+            interest = remaining_debt * monthly_rate
+            principal = monthly_payment - interest
+            
+            if principal <= 0:
+                return jsonify({
+                    'success': False, 
+                    'message': '月还款额不足以支付利息，请增加月还款额'
+                })
+            
+            remaining_debt -= principal
+            total_interest += interest
+            months += 1
+            
+            # 记录每月还款详情
+            payment_plan.append({
+                'month': months,
+                'principal': round(principal, 2),
+                'interest': round(interest, 2),
+                'remaining': round(max(remaining_debt, 0), 2)
+            })
+            
+            if months >= 600:
+                break
+        
+        years = months // 12
+        remaining_months = months % 12
+        
+        # 生成建议
+        advice = generate_debt_advice(total_debt, monthly_payment, months)
+        
+        return jsonify({
+            'success': True,
+            'result': {
+                'total_debt': total_debt,
+                'monthly_payment': monthly_payment,
+                'total_months': months,
+                'years': years,
+                'remaining_months': remaining_months,
+                'total_interest': round(total_interest, 2),
+                'total_payment': round(total_debt + total_interest, 2),
+                'advice': advice,
+                'payment_plan': payment_plan[:12]  # 只返回前12个月的详细计划
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'计算失败: {str(e)}'})
+
+def generate_debt_advice(total_debt, monthly_payment, months):
+    """生成债务建议"""
+    if months <= 12:
+        return {
+            'level': 'success',
+            'title': '恭喜！还款计划很合理',
+            'content': '您的还款计划很合理，坚持执行很快就能上岸！继续保持。',
+            'suggestions': [
+                '坚持当前还款计划',
+                '建立紧急备用金',
+                '学习理财知识预防再次负债'
+            ]
+        }
+    elif months <= 36:
+        return {
+            'level': 'warning',
+            'title': '还款计划可行，建议优化',
+            'content': '还款计划可行，但周期较长。建议寻找增加收入的机会，加速还款进程。',
+            'suggestions': [
+                '寻找兼职或副业增加收入',
+                '优化日常开支',
+                '与债权人协商降低利率'
+            ]
+        }
+    else:
+        return {
+            'level': 'danger',
+            'title': '需要调整还款计划',
+            'content': '还款周期较长，建议积极调整还款策略，避免长期负担。',
+            'suggestions': [
+                '与所有债权人协商还款方案',
+                '寻求专业债务咨询服务',
+                '制定严格的预算计划',
+                '优先偿还高利率债务'
+            ]
+        }
+
+# ============ 新增：获取用户进度 ============
+@app.route('/api/user-progress')
+@payment_required
+def get_user_progress():
+    """获取用户学习进度"""
+    try:
+        user_id = session['user_id']
+        
+        # 获取用户的学习数据（这里需要根据实际数据结构调整）
+        completed_courses = 15  # 模拟数据
+        completed_steps = 6     # 模拟数据
+        in_progress_steps = 3   # 模拟数据
+        
+        # 计算总体进度
+        total_progress = min(100, int((completed_steps / (completed_steps + in_progress_steps)) * 100))
+        
+        return jsonify({
+            'success': True,
+            'progress': {
+                'total_progress': total_progress,
+                'completed_courses': completed_courses,
+                'completed_steps': completed_steps,
+                'in_progress_steps': in_progress_steps,
+                'pending_tasks': 2
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取进度失败: {str(e)}'})
+
+# ============ 新增：工具箱内容API ============
+@app.route('/api/tool-content/<tool_type>')
+@payment_required
+def get_tool_content(tool_type):
+    """获取工具箱内容"""
+    tools = {
+        'harassment': {
+            'title': '催收应对技巧',
+            'content': """
+                <h4>合法应对催收电话</h4>
+                <ul>
+                    <li><strong>保持冷静：</strong>不要与催收人员争吵</li>
+                    <li><strong>录音取证：</strong>所有通话都要录音保存</li>
+                    <li><strong>明确表达：</strong>表明还款意愿但暂时困难</li>
+                    <li><strong>了解权利：</strong>催收不得骚扰家人朋友</li>
+                    <li><strong>投诉渠道：</strong>遭遇违规催收可拨打12378投诉</li>
+                </ul>
+                <div class="alert alert-warning mt-3">
+                    <strong>注意：</strong>如果催收人员威胁、辱骂或上门骚扰，立即向银保监会投诉。
+                </div>
+            """
+        },
+        'legal': {
+            'title': '法律保护知识',
+            'content': """
+                <h4>你的合法权益</h4>
+                <ul>
+                    <li><strong>个人信息权：</strong>催收不得泄露你的债务信息</li>
+                    <li><strong>休息权：</strong>晚上10点至早上8点不得催收</li>
+                    <li><strong>名誉权：</strong>不得公开侮辱、诽谤</li>
+                    <li><strong>协商权：</strong>有权要求协商还款方案</li>
+                </ul>
+                <h4 class="mt-4">常见违法行为</h4>
+                <ul>
+                    <li>爆通讯录、联系无关第三人</li>
+                    <li>P图、发假律师函</li>
+                    <li>上门骚扰、威胁</li>
+                    <li>冒充公检法人员</li>
+                </ul>
+                <div class="alert alert-info mt-3">
+                    <strong>维权方式：</strong>收集证据 → 向银保监会12378投诉 → 必要时报警
+                </div>
+            """
+        },
+        'psychological': {
+            'title': '心理疏导方法',
+            'content': """
+                <h4>缓解债务焦虑</h4>
+                <ul>
+                    <li><strong>接受现实：</strong>债务是暂时困难，不是人生终点</li>
+                    <li><strong>分解目标：</strong>将大目标分解为可执行的小步骤</li>
+                    <li><strong>寻求支持：</strong>与家人沟通或加入支持群体</li>
+                    <li><strong>保持运动：</strong>每天30分钟运动缓解压力</li>
+                    <li><strong>正面思考：</strong>关注解决方案而非问题本身</li>
+                </ul>
+                <h4 class="mt-4">紧急心理支持</h4>
+                <p>如果感到极度焦虑、抑郁或有自杀念头，请立即寻求专业帮助：</p>
+                <ul>
+                    <li>心理援助热线：12320</li>
+                    <li>危机干预热线：800-810-1117</li>
+                    <li>当地心理卫生中心</li>
+                </ul>
+            """
+        }
+    }
+    
+    tool = tools.get(tool_type)
+    if tool:
+        return jsonify({'success': True, 'tool': tool})
+    else:
+        return jsonify({'success': False, 'message': '工具不存在'})
+
+# ============ 优化：问答功能 ============
+@app.route('/api/submit-question', methods=['POST'])
+@payment_required
+def api_submit_question():
+    """API版本的问题提交"""
+    data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'message': '无效的请求数据'})
+    
+    content = data.get('content', '').strip()
+    
+    if not content:
+        return jsonify({'success': False, 'message': '问题内容不能为空'})
+    
+    try:
+        new_question = Question(
+            user_id=session['user_id'],
+            content=content
+        )
+        
+        db.session.add(new_question)
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': '问题提交成功！专家将在24小时内回复'})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'提交失败: {str(e)}'})
+
+@app.route('/api/my-questions')
+@payment_required
+def api_my_questions():
+    """API版本的用户问题列表"""
+    try:
+        questions = Question.query.filter_by(user_id=session['user_id'])\
+                                 .order_by(Question.create_time.desc()).all()
+        
+        questions_data = []
+        for q in questions:
+            questions_data.append({
+                'id': q.id,
+                'content': q.content,
+                'answer': q.answer,
+                'answered': q.answered,
+                'create_time': q.create_time.strftime('%Y-%m-%d %H:%M'),
+                'answer_time': q.answer_time.strftime('%Y-%m-%d %H:%M') if q.answer_time else None
+            })
+        
+        return jsonify({'success': True, 'questions': questions_data})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取问题列表失败: {str(e)}'})
+
+# ============ 新增：资源下载 ============
+@app.route('/download/<resource_type>')
+@payment_required
+def download_resource(resource_type):
+    """资源下载"""
+    resources = {
+        'debt-template': {
+            'filename': '债务管理表格.xlsx',
+            'description': '债务管理电子表格模板'
+        },
+        'negotiation-guide': {
+            'filename': '协商话术指南.pdf',
+            'description': '完整的协商话术指南'
+        },
+        'legal-rights': {
+            'filename': '法律权益手册.pdf',
+            'description': '债务相关法律权益手册'
+        }
+    }
+    
+    resource = resources.get(resource_type)
+    if resource:
+        # 这里应该返回实际的文件
+        # 暂时返回成功消息
+        flash(f'开始下载: {resource["description"]}', 'success')
+        return jsonify({'success': True, 'message': f'开始下载 {resource["description"]}'})
+    else:
+        return jsonify({'success': False, 'message': '资源不存在'})
+    
+    # ============ 新增：调试路由 ============
+@app.route('/debug/questions')
+@admin_required
+def debug_questions():
+    """调试问题数据"""
+    try:
+        # 检查所有问题
+        all_questions = Question.query.all()
+        print(f"总问题数量: {len(all_questions)}")
+        
+        # 检查未回答问题
+        unanswered = Question.query.filter_by(answered=False).all()
+        print(f"未回答问题数量: {len(unanswered)}")
+        
+        # 检查用户关联
+        for q in all_questions:
+            user = User.query.get(q.user_id)
+            print(f"问题ID: {q.id}, 用户ID: {q.user_id}, 用户名: {user.username if user else '用户不存在'}, 已回答: {q.answered}")
+        
+        return jsonify({
+            'total_questions': len(all_questions),
+            'unanswered_questions': len(unanswered),
+            'questions': [
+                {
+                    'id': q.id,
+                    'user_id': q.user_id,
+                    'username': User.query.get(q.user_id).username if User.query.get(q.user_id) else 'Unknown',
+                    'content': q.content[:50] + '...' if len(q.content) > 50 else q.content,
+                    'answered': q.answered,
+                    'create_time': q.create_time.strftime('%Y-%m-%d %H:%M')
+                } for q in all_questions
+            ]
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
 # ============ 启动应用 ============
 if __name__ == '__main__':
     init_db()
