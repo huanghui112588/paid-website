@@ -60,6 +60,19 @@ db = SQLAlchemy(app)
 MEMBERSHIP_PRICE = 29.9
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "942521233@qq.com")  # 从环境变量获取
 
+# 默认的内容分类和模块（防止未定义错误），可以根据实际内容替换为数据库或配置加载
+CONTENT_CATEGORIES = [
+    {"id": 1, "name": "入门指南", "slug": "getting-started"},
+    {"id": 2, "name": "高级技巧", "slug": "advanced"},
+    {"id": 3, "name": "常见问题", "slug": "faq"}
+]
+
+CONTENT_MODULES = [
+    {"id": 1, "category_id": 1, "title": "如何注册与登录", "content": "在此处添加内容摘要..."},
+    {"id": 2, "category_id": 1, "title": "支付流程说明", "content": "在此处添加支付流程..."},
+    {"id": 3, "category_id": 2, "title": "优化技巧", "content": "在此处添加高级技巧..."},
+]
+
 # ============ 数据模型（兼容版本） ============
 class User(db.Model):
     __tablename__ = "user"
@@ -118,6 +131,24 @@ class Question(db.Model):
         self.content = content
         self.answer = answer
         self.answered = answered
+
+class PasswordReset(db.Model):
+    """密码重置令牌模型"""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    token = db.Column(db.String(100), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    used = db.Column(db.Boolean, default=False)
+    
+    def __init__(self, user_id: int, token: str, expires_at: datetime):
+        self.user_id = user_id
+        self.token = token
+        self.expires_at = expires_at
+
+    def is_valid(self):
+        """检查令牌是否有效"""
+        return not self.used and self.expires_at > datetime.now()
 
 # ============ 优化查询方法 ============
 
@@ -297,6 +328,151 @@ def logout():
     session.clear()
     flash('已退出登录', 'info')
     return redirect(url_for('index'))
+
+# ============ 密码管理路由 ============
+
+@app.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    """修改密码（需要登录）"""
+    if request.method == 'POST':
+        # 确保从表单获得字符串，避免 None 传入 check_password_hash
+        current_password = (request.form.get('current_password') or '').strip()
+        new_password = (request.form.get('new_password') or '').strip()
+        confirm_password = (request.form.get('confirm_password') or '').strip()
+        
+        # 获取当前用户
+        user = User.query.get(session['user_id'])
+        if not user:
+            flash('用户不存在或已被删除，请重新登录', 'error')
+            session.clear()
+            return redirect(url_for('login'))
+        
+        # 验证当前密码（确保传入的都是 str）
+        if not current_password or not check_password_hash(user.password, current_password):
+            flash('当前密码错误', 'error')
+            return render_template('change_password.html')
+        
+        # 验证新密码
+        if new_password != confirm_password:
+            flash('新密码与确认密码不一致', 'error')
+            return render_template('change_password.html')
+        
+        if len(new_password or '') < 6:
+            flash('密码长度至少6位', 'error')
+            return render_template('change_password.html')
+        
+        try:
+            # 更新密码
+            user.password = generate_password_hash(new_password)
+            db.session.commit()
+            flash('密码修改成功', 'success')
+            return redirect(url_for('members'))
+            
+        except Exception as e:
+            db.session.rollback()
+            flash(f'密码修改失败: {str(e)}', 'error')
+    
+    return render_template('change_password.html')
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    """忘记密码 - 请求重置"""
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+        
+        if not email:
+            flash('请输入注册邮箱', 'error')
+            return render_template('forgot_password.html')
+        
+        # 查找用户
+        user = User.query.filter_by(email=email).first()
+        
+        if user:
+            try:
+                # 生成重置令牌
+                import secrets
+                token = secrets.token_urlsafe(32)
+                expires_at = datetime.now() + timedelta(hours=1)  # 1小时有效
+                
+                # 删除用户之前的重置令牌
+                PasswordReset.query.filter_by(user_id=user.id).delete()
+                
+                # 创建新的重置令牌
+                reset_request = PasswordReset(
+                    user_id=user.id,
+                    token=token,
+                    expires_at=expires_at
+                )
+                db.session.add(reset_request)
+                db.session.commit()
+                
+                # 生成重置链接（生产环境应发送邮件）
+                reset_url = url_for('reset_password', token=token, _external=True)
+                
+                # 暂时在控制台输出（生产环境应发送邮件）
+                print(f"🔐 密码重置链接（用户: {user.email}）:")
+                print(f"📧 {reset_url}")
+                print(f"⏰ 有效期至: {expires_at.strftime('%Y-%m-%d %H:%M')}")
+                
+                flash('密码重置链接已生成（请在控制台查看）', 'success')
+                
+            except Exception as e:
+                db.session.rollback()
+                flash(f'重置请求失败: {str(e)}', 'error')
+        else:
+            # 即使邮箱不存在也显示成功，防止邮箱探测
+            flash('如果该邮箱已注册，重置链接将发送到您的邮箱', 'info')
+        
+        return redirect(url_for('forgot_password'))
+    
+    return render_template('forgot_password.html')
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    """通过令牌重置密码"""
+    # 验证令牌
+    reset_request = PasswordReset.query.filter_by(token=token).first()
+    
+    if not reset_request:
+        flash('重置链接无效或已过期', 'error')
+        return redirect(url_for('forgot_password'))
+    
+    if not reset_request.is_valid():
+        flash('重置链接已过期', 'error')
+        return redirect(url_for('forgot_password'))
+    
+    if request.method == 'POST':
+        # 确保从表单获得字符串，避免 None 传入 generate_password_hash
+        new_password = (request.form.get('new_password') or '').strip()
+        confirm_password = (request.form.get('confirm_password') or '').strip()
+        
+        # 验证密码
+        if new_password != confirm_password:
+            flash('密码与确认密码不一致', 'error')
+            return render_template('reset_password.html', token=token)
+        
+        if len(new_password) < 6:
+            flash('密码长度至少6位', 'error')
+            return render_template('reset_password.html', token=token)
+        
+        try:
+            # 更新用户密码
+            user = User.query.get(reset_request.user_id)
+            user.password = generate_password_hash(new_password)
+            
+            # 标记令牌为已使用
+            reset_request.used = True
+            db.session.commit()
+            
+            flash('密码重置成功，请使用新密码登录', 'success')
+            return redirect(url_for('login'))
+            
+        except Exception as e:
+            db.session.rollback()
+            flash(f'密码重置失败: {str(e)}', 'error')
+    
+    return render_template('reset_password.html', token=token)
 
 # ============ 支付相关路由 ============
 @app.route('/payment-manual')
@@ -649,124 +825,8 @@ def knowledge_base():
                          content_categories=CONTENT_CATEGORIES,
                          content_modules=CONTENT_MODULES)
 
-# ============ 知识内容框架 ============
-
-# 内容分类体系
-CONTENT_CATEGORIES = {
-    'mindset': {
-        'name': '🧠 心态调整',
-        'description': '心理调适与情绪管理',
-        'color': 'primary'
-    },
-    'knowledge': {
-        'name': '📖 基础知识', 
-        'description': '债务管理基本原理',
-        'color': 'info'
-    },
-    'tools': {
-        'name': '🛠️ 实用工具',
-        'description': '模板与计算工具',
-        'color': 'success'
-    },
-    'communication': {
-        'name': '💬 沟通技巧',
-        'description': '交流与协商方法',
-        'color': 'warning'
-    },
-    'rebuilding': {
-        'name': '🚀 重建之路',
-        'description': '信用修复与未来规划',
-        'color': 'secondary'
-    }
-}
-
-# 具体内容模块
-CONTENT_MODULES = {
-    # 心态调整系列
-    'mindset_1': {
-        'title': '从恐慌到平静：债务压力的心理调适',
-        'category': 'mindset',
-        'type': 'article',
-        'description': '学习应对债务焦虑的实用方法',
-        'points': [
-            '理解债务压力的心理机制',
-            '实用的情绪调节技巧',
-            '建立积极心态的方法',
-            '应对催收电话的心理准备'
-        ]
-    },
-    'mindset_2': {
-        'title': '如何与家人坦诚沟通债务问题',
-        'category': 'mindset', 
-        'type': 'article',
-        'description': '改善家庭沟通，获得理解支持',
-        'points': [
-            '选择合适时机和方式',
-            '准备沟通的内容要点',
-            '应对可能的情绪反应',
-            '共同制定解决方案'
-        ]
-    },
-    
-    # 基础知识系列
-    'knowledge_1': {
-        'title': '了解债务：基本概念与类型',
-        'category': 'knowledge',
-        'type': 'article', 
-        'description': '掌握债务管理的基础知识',
-        'points': [
-            '债务的基本分类',
-            '利息与罚息的计算原理',
-            '信用记录的影响因素',
-            '不同债务的优先级'
-        ]
-    },
-    'knowledge_2': {
-        'title': '债务人的合法权益',
-        'category': 'knowledge',
-        'type': 'article',
-        'description': '了解相关法律法规的基本规定',
-        'points': [
-            '个人信息保护权利',
-            '合法的催收行为边界',
-            '协商还款的基本权利',
-            '寻求法律援助的途径'
-        ]
-    },
-    
-    # 实用工具系列
-    'tools_1': {
-        'title': '债务清单制作指南',
-        'category': 'tools',
-        'type': 'template',
-        'description': '制作个人债务清单的步骤',
-        'points': [
-            '债务清单模板使用',
-            '数据收集与整理方法', 
-            '优先级排序原则',
-            '进度跟踪技巧'
-        ]
-    },
-    'tools_2': {
-        'title': '个人预算规划模板',
-        'category': 'tools',
-        'type': 'template',
-        'description': '建立可持续的预算计划',
-        'points': [
-            '收入支出分类方法',
-            '必要开支识别技巧',
-            '储蓄与还款平衡',
-            '预算调整机制'
-        ]
-    }
-}
-
-
-
-
 # ============ 启动应用 ============
 if __name__ == '__main__':
     init_db()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-    """支付管理"""
