@@ -760,7 +760,7 @@
 • 心理压力方面的困扰
 专家将在24小时内给您专业的解答..."></textarea>
                 </div>
-                <button class="btn btn-primary" onclick="submitQuestion()">
+                <button class="btn btn-primary" id="submitQuestionBtn">
                     <i class="fas fa-paper-plane me-2"></i> 提交问题
                 </button>
             </div>
@@ -776,494 +776,231 @@
             </div>
         </div>
 
-        <!-- 进度跟踪器 -->
-        <div class="progress-tracker">
-            <h3><i class="fas fa-chart-line me-2"></i>我的上岸进度</h3>
-            <div class="progress" style="height: 20px; margin: 20px 0;">
-                <div class="progress-bar" role="progressbar" style="width: 65%; background: var(--primary);"
-                    aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-3">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">6</div>
-                    <div style="font-size: 0.9rem; color: var(--gray);">已完成步骤</div>
-                </div>
-                <div class="col-md-3">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--warning);">3</div>
-                    <div style="font-size: 0.9rem; color: var(--gray);">进行中步骤</div>
-                </div>
-                <div class="col-md-3">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--secondary);">15</div>
-                    <div style="font-size: 0.9rem; color: var(--gray);">已学习课程</div>
-                </div>
-                <div class="col-md-3">
-                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--danger);">2</div>
-                    <div style="font-size: 0.9rem; color: var(--gray);">待完成任务</div>
-                </div>
-            </div>
-        </div>
+        <script>
+            // ============ 问答功能 - 稳定版本 ============
 
-    </div>
+            // 加载用户的问题列表
+            function loadMyQuestions() {
+                console.log("🔄 加载用户问题...");
 
-    <!-- 工具模态框 -->
-    <div id="toolModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="toolModalTitle">工具箱</h3>
-                <button class="close-modal" onclick="closeModal('toolModal')">&times;</button>
-            </div>
-            <div class="modal-body" id="toolModalContent">
-                <!-- 工具内容将通过JavaScript动态加载 -->
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // 模态框控制函数
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // 滚动到问答区域
-        function scrollToQa() {
-            document.getElementById('qaSection').scrollIntoView({
-                behavior: 'smooth'
-            });
-            // 聚焦到问题输入框
-            setTimeout(() => {
-                document.getElementById('questionContent').focus();
-            }, 500);
-        }
-
-        // 债务计算器功能
-        function calculateDebt() {
-            const totalDebt = parseFloat(document.getElementById('totalDebt').value) || 0;
-            const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value) || 0;
-            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
-
-            if (totalDebt <= 0 || monthlyPayment <= 0) {
-                alert('请输入有效的债务金额和月还款额');
-                return;
-            }
-
-            const monthlyRate = interestRate / 100 / 12;
-            let remainingDebt = totalDebt;
-            let months = 0;
-            let totalInterest = 0;
-
-            // 计算还款月数
-            while (remainingDebt > 0 && months < 600) { // 限制最多50年
-                const interest = remainingDebt * monthlyRate;
-                const principal = monthlyPayment - interest;
-
-                if (principal <= 0) {
-                    alert('月还款额不足以支付利息，请增加月还款额');
-                    return;
-                }
-
-                remainingDebt -= principal;
-                totalInterest += interest;
-                months++;
-
-                if (months > 600) {
-                    alert('还款期限过长，建议调整还款计划');
-                    break;
-                }
-            }
-
-            const years = Math.floor(months / 12);
-            const remainingMonths = months % 12;
-
-            document.getElementById('resultContent').innerHTML = `
-                <p><strong>总债务：</strong>¥${totalDebt.toLocaleString()}</p>
-                <p><strong>月还款：</strong>¥${monthlyPayment.toLocaleString()}</p>
-                <p><strong>还款期限：</strong>${years}年${remainingMonths}个月</p>
-                <p><strong>总利息：</strong>¥${totalInterest.toFixed(2)}</p>
-                <p><strong>总还款：</strong>¥${(totalDebt + totalInterest).toFixed(2)}</p>
-                <div class="mt-3">
-                    <strong>建议：</strong>${getDebtAdvice(totalDebt, monthlyPayment, months)}
-                </div>
-            `;
-
-            document.getElementById('debtResult').style.display = 'block';
-        }
-
-        function getDebtAdvice(totalDebt, monthlyPayment, months) {
-            if (months <= 12) {
-                return "恭喜！您的还款计划很合理，坚持执行很快就能上岸！";
-            } else if (months <= 36) {
-                return "还款计划可行，建议同时寻找增加收入的机会，加速还款进程。";
-            } else {
-                return "还款周期较长，建议：1) 尝试与债权人协商降低利率 2) 寻找额外收入来源 3) 优化支出结构";
-            }
-        }
-
-        // 工具箱功能
-        function openTool(toolType) {
-            let title = '';
-            let content = '';
-
-            switch (toolType) {
-                case 'harassment':
-                    title = '催收应对技巧';
-                    content = `
-                        <h4>合法应对催收电话</h4>
-                        <ul>
-                            <li><strong>保持冷静：</strong>不要与催收人员争吵</li>
-                            <li><strong>录音取证：</strong>所有通话都要录音保存</li>
-                            <li><strong>明确表达：</strong>表明还款意愿但暂时困难</li>
-                            <li><strong>了解权利：</strong>催收不得骚扰家人朋友</li>
-                            <li><strong>投诉渠道：</strong>遭遇违规催收可拨打12378投诉</li>
-                        </ul>
-                        <div class="alert alert-warning mt-3">
-                            <strong>注意：</strong>如果催收人员威胁、辱骂或上门骚扰，立即向银保监会投诉。
-                        </div>
-                    `;
-                    break;
-                case 'legal':
-                    title = '法律保护知识';
-                    content = `
-                        <h4>你的合法权益</h4>
-                        <ul>
-                            <li><strong>个人信息权：</strong>催收不得泄露你的债务信息</li>
-                            <li><strong>休息权：</strong>晚上10点至早上8点不得催收</li>
-                            <li><strong>名誉权：</strong>不得公开侮辱、诽谤</li>
-                            <li><strong>协商权：</strong>有权要求协商还款方案</li>
-                        </ul>
-                        <h4 class="mt-4">常见违法行为</h4>
-                        <ul>
-                            <li>爆通讯录、联系无关第三人</li>
-                            <li>P图、发假律师函</li>
-                            <li>上门骚扰、威胁</li>
-                            <li>冒充公检法人员</li>
-                        </ul>
-                        <div class="alert alert-info mt-3">
-                            <strong>维权方式：</strong>收集证据 → 向银保监会12378投诉 → 必要时报警
-                        </div>
-                    `;
-                    break;
-                case 'psychological':
-                    title = '心理疏导方法';
-                    content = `
-                        <h4>缓解债务焦虑</h4>
-                        <ul>
-                            <li><strong>接受现实：</strong>债务是暂时困难，不是人生终点</li>
-                            <li><strong>分解目标：</strong>将大目标分解为可执行的小步骤</li>
-                            <li><strong>寻求支持：</strong>与家人沟通或加入支持群体</li>
-                            <li><strong>保持运动：</strong>每天30分钟运动缓解压力</li>
-                            <li><strong>正面思考：</strong>关注解决方案而非问题本身</li>
-                        </ul>
-                        <h4 class="mt-4">紧急心理支持</h4>
-                        <p>如果感到极度焦虑、抑郁或有自杀念头，请立即寻求专业帮助：</p>
-                        <ul>
-                            <li>心理援助热线：12320</li>
-                            <li>危机干预热线：800-810-1117</li>
-                            <li>当地心理卫生中心</li>
-                        </ul>
-                    `;
-                    break;
-            }
-
-            document.getElementById('toolModalTitle').textContent = title;
-            document.getElementById('toolModalContent').innerHTML = content;
-            openModal('toolModal');
-        }
-
-        // ============ 问答功能 - 修复版本 ============
-
-        // 加载用户的问题列表 - 修复版本
-        function loadMyQuestions() {
-            console.log("🔄 开始加载用户问题...");
-
-            // 显示加载状态
-            document.getElementById('questionList').innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">加载中...</span>
-            </div>
-            <p class="text-muted mt-2">加载问题列表中...</p>
-        </div>
-    `;
-
-            fetch('/get-my-questions')
-                .then(response => {
-                    console.log("📡 问题列表响应状态:", response.status);
-                    if (!response.ok) {
-                        throw new Error('网络响应不正常: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("✅ 收到问题数据:", data);
-                    if (data.success) {
-                        displayQuestions(data.questions);
-                    } else {
-                        console.error('❌ 加载问题失败:', data.message);
-                        document.getElementById('questionList').innerHTML = `
+                fetch('/get-my-questions')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络响应不正常');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("收到问题数据:", data);
+                        if (data.success) {
+                            displayQuestions(data.questions);
+                        } else {
+                            console.error('加载问题失败:', data.message);
+                            document.getElementById('questionList').innerHTML = `
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-triangle"></i>
                         加载问题失败: ${data.message}
                         <button class="btn btn-sm btn-outline-secondary ms-2" onclick="loadMyQuestions()">重试</button>
                     </div>
                 `;
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ 请求失败:', error);
-                    document.getElementById('questionList').innerHTML = `
+                        }
+                    })
+                    .catch(error => {
+                        console.error('请求失败:', error);
+                        document.getElementById('questionList').innerHTML = `
                 <div class="alert alert-danger">
                     <i class="fas fa-wifi-slash"></i>
-                    网络错误: ${error.message}
+                    网络错误，请检查网络连接后重试
                     <button class="btn btn-sm btn-outline-secondary ms-2" onclick="loadMyQuestions()">重试</button>
                 </div>
             `;
-                });
-        }
-
-        // 显示问题列表
-        function displayQuestions(questions) {
-            const container = document.getElementById('questionList');
-
-            if (!questions || questions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-4">
-                        <i class="fas fa-comments fa-2x text-muted mb-3"></i>
-                        <p class="text-muted">您还没有提问过任何问题</p>
-                        <p class="text-muted small">有什么问题可以随时向专家提问，我们将在24小时内回复</p>
-                    </div>
-                `;
-                return;
+                    });
             }
 
-            let html = '';
-            questions.forEach(q => {
-                // 安全地处理可能为空的时间
-                const questionTime = q.create_time ? new Date(q.create_time).toLocaleString('zh-CN') : '未知时间';
-                const answerTime = q.answer_time ? new Date(q.answer_time).toLocaleString('zh-CN') : '';
+            // 显示问题列表
+            function displayQuestions(questions) {
+                const container = document.getElementById('questionList');
 
-                // 限制内容长度，避免显示过长
-                const shortContent = q.content.length > 100 ? q.content.substring(0, 100) + '...' : q.content;
-
-                html += `
-                    <div class="question-item ${q.answered ? 'answered' : 'pending'}">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h6 class="mb-0" style="flex: 1;">${shortContent}</h6>
-                            <span class="badge ${q.answered ? 'bg-success' : 'bg-warning'} ms-2">
-                                ${q.answered ? '已回答' : '待回答'}
-                            </span>
-                        </div>
-                        <p class="text-muted small mb-2">
-                            <i class="fas fa-clock me-1"></i>提问时间: ${questionTime}
-                        </p>
-                        ${q.answered ? `
-                            <div class="answer-content mt-3 p-3 bg-light rounded">
-                                <strong><i class="fas fa-reply me-1 text-success"></i>专家回答:</strong>
-                                <p class="mb-2 mt-2">${q.answer || '暂无回答内容'}</p>
-                                ${answerTime ? `<small class="text-muted"><i class="fas fa-check-circle me-1"></i>回答时间: ${answerTime}</small>` : ''}
-                            </div>
-                        ` : `
-                            <div class="alert alert-info mt-2 mb-0">
-                                <i class="fas fa-clock me-1"></i>问题已提交，专家将在24小时内回复，请耐心等待
-                            </div>
-                        `}
-                        <hr class="my-3">
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        // 提交新问题 - 完全修复版本
-        function submitQuestion() {
-            console.log("🔍 提交按钮被点击了");
-
-            const content = document.getElementById('questionContent').value.trim();
-            console.log("📝 问题内容:", content);
-
-            if (!content) {
-                showAlert('请输入问题内容', 'warning');
-                return;
-            }
-
-            if (content.length < 5) {
-                showAlert('问题内容太短，请详细描述您的问题', 'warning');
-                return;
-            }
-
-            // 显示加载状态 - 使用更稳定的选择器
-            const submitBtn = document.querySelector('button[onclick="submitQuestion()"]');
-            if (!submitBtn) {
-                console.error("❌ 找不到提交按钮");
-                showAlert('系统错误：找不到提交按钮', 'error');
-                return;
-            }
-
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
-            submitBtn.disabled = true;
-
-            console.log("🔄 开始提交问题到服务器...");
-
-            // 使用 FormData 提交
-            const formData = new FormData();
-            formData.append('content', content);
-
-            fetch('/submit-question', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    console.log("📡 服务器响应状态:", response.status);
-                    if (!response.ok) {
-                        throw new Error(`HTTP错误: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("✅ 服务器响应数据:", data);
-                    if (data.success) {
-                        showAlert('问题已提交成功！专家将在24小时内回复。', 'success');
-                        document.getElementById('questionContent').value = '';
-                        // 重新加载问题列表
-                        loadMyQuestions();
-                    } else {
-                        showAlert('提交失败: ' + data.message, 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ 提交错误:', error);
-                    showAlert('网络错误，请检查网络连接后重试: ' + error.message, 'error');
-                })
-                .finally(() => {
-                    // 恢复按钮状态
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    console.log("🔄 按钮状态已恢复");
-                });
-        }
-
-
-        // 显示提示消息
-        function showAlert(message, type) {
-            // 移除现有的提示
-            const existingAlert = document.querySelector('.alert-floating');
-            if (existingAlert) {
-                existingAlert.remove();
-            }
-
-            const backgroundColor = type === 'success' ? '#d1fae5' :
-                type === 'warning' ? '#fef3c7' : '#fee2e2';
-            const borderColor = type === 'success' ? '#10b981' :
-                type === 'warning' ? '#f59e0b' : '#ef4444';
-            const textColor = type === 'success' ? '#065f46' :
-                type === 'warning' ? '#92400e' : '#991b1b';
-
-            const alertHtml = `
-                <div class="alert-floating" style="background: ${backgroundColor}; border: 1px solid ${borderColor}; color: ${textColor};">
-                    <div class="d-flex align-items-center">
-                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle'} me-2"></i>
-                        <span style="flex: 1;">${message}</span>
-                        <button type="button" onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: ${textColor}; cursor: pointer;">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', alertHtml);
-
-            // 5秒后自动消失
-            setTimeout(() => {
-                const alert = document.querySelector('.alert-floating');
-                if (alert) {
-                    alert.remove();
+                if (!questions || questions.length === 0) {
+                    container.innerHTML = `
+            <div class="text-center py-4">
+                <i class="fas fa-comments fa-2x text-muted mb-3"></i>
+                <p class="text-muted">您还没有提问过任何问题</p>
+                <p class="text-muted small">有什么问题可以随时向专家提问，我们将在24小时内回复</p>
+            </div>
+        `;
+                    return;
                 }
-            }, 5000);
-        }
 
-        // 查看问答历史
-        function showQaHistory() {
-            loadMyQuestions();
-        }
+                let html = '';
+                questions.forEach(q => {
+                    const questionTime = q.create_time ? new Date(q.create_time).toLocaleString('zh-CN') : '未知时间';
+                    const answerTime = q.answer_time ? new Date(q.answer_time).toLocaleString('zh-CN') : '';
+                    const shortContent = q.content.length > 100 ? q.content.substring(0, 100) + '...' : q.content;
 
-        // 其他功能函数
-        function openCourse(courseType) {
-            alert(`开始学习 ${courseType} 课程...`);
-        }
+                    html += `
+            <div class="question-item ${q.answered ? 'answered' : 'pending'}">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="mb-0" style="flex: 1;">${shortContent}</h6>
+                    <span class="badge ${q.answered ? 'bg-success' : 'bg-warning'} ms-2">
+                        ${q.answered ? '已回答' : '待回答'}
+                    </span>
+                </div>
+                <p class="text-muted small mb-2">
+                    <i class="fas fa-clock me-1"></i>提问时间: ${questionTime}
+                </p>
+                ${q.answered ? `
+                    <div class="answer-content mt-3 p-3 bg-light rounded">
+                        <strong><i class="fas fa-reply me-1 text-success"></i>专家回答:</strong>
+                        <p class="mb-2 mt-2">${q.answer || '暂无回答内容'}</p>
+                        ${answerTime ? `<small class="text-muted"><i class="fas fa-check-circle me-1"></i>回答时间: ${answerTime}</small>` : ''}
+                    </div>
+                ` : `
+                    <div class="alert alert-info mt-2 mb-0">
+                        <i class="fas fa-clock me-1"></i>问题已提交，专家将在24小时内回复，请耐心等待
+                    </div>
+                `}
+                <hr class="my-3">
+            </div>
+        `;
+                });
 
-        function downloadResource(resourceName) {
-            alert(`开始下载资源: ${resourceName}`);
-        }
-
-        function showLearningPath() {
-            alert(`推荐学习路径：
-1. 债务管理基础（首先学习）
-2. 协商话术技巧  
-3. 心理建设支持
-4. 赚钱项目实践
-按此顺序学习效果最佳！`);
-        }
-
-        function takeMentalTest() {
-            alert('开始心理测试...');
-        }
-
-        function browseIncomeProjects() {
-            alert('浏览赚钱项目...');
-        }
-
-        function searchProjects() {
-            const searchTerm = prompt('请输入要搜索的项目关键词:');
-            if (searchTerm) {
-                alert(`正在搜索: ${searchTerm}`);
+                container.innerHTML = html;
             }
-        }
 
-        function viewProgressDetails() {
-            alert('查看详细进度...');
-        }
+            // 提交新问题
+            function submitQuestion() {
+                const content = document.getElementById('questionContent').value.trim();
 
-        function setReminder() {
-            alert('设置学习提醒...');
-        }
+                if (!content) {
+                    showAlert('请输入问题内容', 'warning');
+                    return;
+                }
 
-        // 页面加载时初始化
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log("会员页面加载完成，开始初始化...");
+                if (content.length < 5) {
+                    showAlert('问题内容太短，请详细描述您的问题', 'warning');
+                    return;
+                }
 
-            // 加载用户的问题列表
-            loadMyQuestions();
+                // 显示加载状态
+                const submitBtn = document.getElementById('submitQuestionBtn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+                submitBtn.disabled = true;
 
-            // 为所有按钮添加点击效果
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', function () {
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                });
-            });
+                // 使用 FormData 提交
+                const formData = new FormData();
+                formData.append('content', content);
 
-            // 点击模态框外部关闭
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.addEventListener('click', function (e) {
-                    if (e.target === this) {
-                        this.style.display = 'none';
+                fetch('/submit-question', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络请求失败');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            showAlert('问题已提交成功！专家将在24小时内回复。', 'success');
+                            document.getElementById('questionContent').value = '';
+                            // 重新加载问题列表
+                            loadMyQuestions();
+                        } else {
+                            showAlert('提交失败: ' + data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('提交错误:', error);
+                        showAlert('网络错误，请检查网络连接后重试', 'error');
+                    })
+                    .finally(() => {
+                        // 恢复按钮状态
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    });
+            }
+
+            // 显示提示消息
+            function showAlert(message, type) {
+                // 移除现有的提示
+                const existingAlert = document.querySelector('.alert-floating');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+
+                const backgroundColor = type === 'success' ? '#d1fae5' :
+                    type === 'warning' ? '#fef3c7' : '#fee2e2';
+                const borderColor = type === 'success' ? '#10b981' :
+                    type === 'warning' ? '#f59e0b' : '#ef4444';
+                const textColor = type === 'success' ? '#065f46' :
+                    type === 'warning' ? '#92400e' : '#991b1b';
+
+                const alertHtml = `
+        <div class="alert-floating" style="background: ${backgroundColor}; border: 1px solid ${borderColor}; color: ${textColor};">
+            <div class="d-flex align-items-center">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle'} me-2"></i>
+                <span style="flex: 1;">${message}</span>
+                <button type="button" onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: ${textColor}; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    `;
+
+                document.body.insertAdjacentHTML('beforeend', alertHtml);
+
+                // 5秒后自动消失
+                setTimeout(() => {
+                    const alert = document.querySelector('.alert-floating');
+                    if (alert) {
+                        alert.remove();
                     }
+                }, 5000);
+            }
+
+            // 查看问答历史
+            function showQaHistory() {
+                loadMyQuestions();
+            }
+
+            // 页面加载时初始化
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log("会员页面加载完成，开始初始化...");
+
+                // 加载用户的问题列表
+                loadMyQuestions();
+
+                // 绑定提交按钮事件
+                const submitBtn = document.getElementById('submitQuestionBtn');
+                if (submitBtn) {
+                    submitBtn.addEventListener('click', submitQuestion);
+                    console.log("✅ 提交按钮事件绑定成功");
+                }
+
+                // 为所有按钮添加点击效果
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    });
                 });
+
+                // 点击模态框外部关闭
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.addEventListener('click', function (e) {
+                        if (e.target === this) {
+                            this.style.display = 'none';
+                        }
+                    });
+                });
+
+                console.log("✅ 会员页面初始化完成");
             });
-
-            console.log("会员页面初始化完成");
-        });
-    </script>
-</body>
-
-</html>
+        </script>
