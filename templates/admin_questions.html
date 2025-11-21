@@ -8,35 +8,69 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fb;
+            color: #333;
+        }
+
         .sidebar {
-            background: #343a40;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             height: 100vh;
             position: fixed;
             padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar .nav-link {
-            color: #adb5bd;
-            padding: 10px 20px;
-            margin: 5px 0;
+            color: rgba(255, 255, 255, 0.85);
+            padding: 12px 20px;
+            margin: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .sidebar .nav-link:hover,
         .sidebar .nav-link.active {
             color: white;
-            background: #495057;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link i {
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .main-content {
             margin-left: 250px;
             padding: 20px;
+            min-height: 100vh;
         }
 
         .question-content {
-            max-height: 100px;
+            max-height: 80px;
             overflow: hidden;
             position: relative;
+            line-height: 1.5;
         }
 
         .question-content.expanded {
@@ -47,10 +81,84 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            background: white;
-            padding-left: 5px;
+            background: linear-gradient(to right, transparent, white 30%);
+            padding-left: 20px;
             cursor: pointer;
-            color: #007bff;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stats-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .question-row {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .question-row:hover {
+            background-color: #f8f9fa;
+            border-left-color: var(--primary);
+        }
+
+        .question-row.unanswered {
+            background-color: #fff9e6;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-tabs .nav-link {
+            border: none;
+            padding: 10px 20px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .filter-tabs .nav-link.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background: transparent;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
         }
     </style>
 </head>
@@ -59,11 +167,15 @@
     <div class="container-fluid">
         <div class="row">
             <!-- 侧边栏 -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
                 <div class="position-sticky pt-3">
                     <div class="sidebar-header text-center mb-4">
-                        <h4>上岸翻身营管理后台</h4>
-                        <small class="text-muted">欢迎, {{ session.get('admin_username') }}</small>
+                        <h4><i class="fas fa-life-ring me-2"></i>上岸翻身营</h4>
+                        <small class="text-white-50">管理后台</small>
+                        <div class="mt-3 p-2 bg-white bg-opacity-10 rounded">
+                            <i class="fas fa-user-shield me-2"></i>
+                            <span>管理员: {{ session.get('admin_username') }}</span>
+                        </div>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -74,6 +186,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="{{ url_for('admin_questions') }}">
                                 <i class="fas fa-question-circle"></i>问答管理
+                                <span class="badge bg-danger float-end mt-1">{{ unanswered_count }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -87,7 +200,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-4">
-                            <a class="nav-link text-danger" href="{{ url_for('admin_logout') }}">
+                            <a class="nav-link text-warning" href="{{ url_for('admin_logout') }}">
                                 <i class="fas fa-sign-out-alt"></i>退出系统
                             </a>
                         </li>
@@ -97,89 +210,343 @@
 
             <!-- 主内容区 -->
             <main class="col-md-9 ms-sm-auto col-lg-10 main-content">
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">专家问答管理</h1>
-                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">返回仪表板</a>
+                <div class="page-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h3 mb-1"><i class="fas fa-question-circle text-primary me-2"></i>专家问答管理</h1>
+                            <p class="text-muted mb-0">管理用户提问和专家回答</p>
+                        </div>
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-1"></i>返回仪表板
+                        </a>
+                    </div>
                 </div>
 
-                <!-- 在 admin_questions.html 的问题列表部分 -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">用户提问列表</h5>
+                <!-- 统计卡片 -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">{{ total_questions }}</div>
+                            <div class="stats-label">总问题数</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">{{ unanswered_count }}</div>
+                            <div class="stats-label">待回答问题</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">{{ answered_count }}</div>
+                            <div class="stats-label">已回答问题</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">{{ today_questions }}</div>
+                            <div class="stats-label">今日提问</div>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- 调试信息（生产环境可以移除） -->
-                        <div class="alert alert-info">
-                            <small>总问题数: {{ questions|length }} |
-                                未回答: {{ questions|selectattr('answered', 'equalto', false)|list|length }}</small>
+                <!-- 问题列表 -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="p-3 border-bottom bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0"><i class="fas fa-list me-2"></i>用户提问列表</h5>
+                                <div class="d-flex">
+                                    <div class="input-group input-group-sm me-2" style="width: 250px;">
+                                        <input type="text" class="form-control" placeholder="搜索问题内容..."
+                                            id="searchQuestions">
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" id="refreshQuestions">
+                                            <i class="fas fa-sync-alt"></i> 刷新
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        {% if questions %}
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>用户</th>
-                                        <th>问题内容</th>
-                                        <th>提问时间</th>
-                                        <th>状态</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for question in questions %}
-                                    <tr>
-                                        <td>{{ question.id }}</td>
-                                        <td>
-                                            {% if question.user %}
-                                            {{ question.user.username }} (ID: {{ question.user.id }})
-                                            {% else %}
-                                            <span class="text-danger">用户已删除</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <div class="question-content" id="content-{{ question.id }}">
-                                                {{ question.content }}
-                                                <span class="read-more" data-question-id="{{ question.id }}">展开</span>
-                                            </div>
-                                        </td>
-                                        <td>{{ question.create_time.strftime('%Y-%m-%d %H:%M') }}</td>
-                                        <td>
-                                            {% if question.answered %}
-                                            <span class="badge bg-success">已回答</span>
-                                            {% else %}
-                                            <span class="badge bg-warning">待回答</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if not question.answered %}
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#answerModal" data-question-id="{{ question.id }}"
-                                                data-question-content="{{ question.content }}">
-                                                回答
-                                            </button>
-                                            {% else %}
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#viewAnswerModal"
-                                                data-question-content="{{ question.content }}"
-                                                data-answer="{{ question.answer }}">
-                                                查看回答
-                                            </button>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                        <!-- 筛选标签 -->
+                        <ul class="nav nav-tabs filter-tabs px-3 pt-3" id="questionTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
+                                    type="button" role="tab">
+                                    全部问题 <span class="badge bg-secondary ms-1">{{ total_questions }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="unanswered-tab" data-bs-toggle="tab"
+                                    data-bs-target="#unanswered" type="button" role="tab">
+                                    待回答 <span class="badge bg-warning ms-1">{{ unanswered_count }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="answered-tab" data-bs-toggle="tab"
+                                    data-bs-target="#answered" type="button" role="tab">
+                                    已回答 <span class="badge bg-success ms-1">{{ answered_count }}</span>
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content p-3" id="questionTabsContent">
+                            <!-- 全部问题 -->
+                            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                {% if questions %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="60">ID</th>
+                                                <th width="120">用户</th>
+                                                <th>问题内容</th>
+                                                <th width="150">提问时间</th>
+                                                <th width="100">状态</th>
+                                                <th width="150">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for question in questions %}
+                                            <tr
+                                                class="question-row {% if not question.answered %}unanswered{% endif %}">
+                                                <td class="fw-bold text-muted">#{{ question.id }}</td>
+                                                <td>
+                                                    {% if question.user %}
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                            style="width: 32px; height: 32px;">
+                                                            <i class="fas fa-user text-white"
+                                                                style="font-size: 0.8rem;"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-bold">{{ question.user.username }}</div>
+                                                            <small class="text-muted">ID: {{ question.user.id }}</small>
+                                                        </div>
+                                                    </div>
+                                                    {% else %}
+                                                    <span class="text-danger"><i
+                                                            class="fas fa-user-slash me-1"></i>用户已删除</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="question-content" id="content-{{ question.id }}">
+                                                        {{ question.content }}
+                                                        <span class="read-more"
+                                                            onclick="toggleContent('{{ question.id }}')">展开</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-muted">
+                                                        <div>{{ question.create_time.strftime('%Y-%m-%d') }}</div>
+                                                        <small>{{ question.create_time.strftime('%H:%M') }}</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {% if question.answered %}
+                                                    <span class="status-badge bg-success"><i
+                                                            class="fas fa-check-circle me-1"></i>已回答</span>
+                                                    {% else %}
+                                                    <span class="status-badge bg-warning"><i
+                                                            class="fas fa-clock me-1"></i>待回答</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if not question.answered %}
+                                                    <button class="btn btn-primary btn-sm action-btn"
+                                                        data-bs-toggle="modal" data-bs-target="#answerModal"
+                                                        data-question-id="{{ question.id }}"
+                                                        data-question-content="{{ question.content }}">
+                                                        <i class="fas fa-reply me-1"></i>回答
+                                                    </button>
+                                                    {% else %}
+                                                    <button class="btn btn-outline-success btn-sm action-btn"
+                                                        data-bs-toggle="modal" data-bs-target="#viewAnswerModal"
+                                                        data-question-content="{{ question.content }}"
+                                                        data-answer="{{ question.answer }}">
+                                                        <i class="fas fa-eye me-1"></i>查看
+                                                    </button>
+                                                    <button class="btn btn-outline-primary btn-sm action-btn mt-1"
+                                                        data-bs-toggle="modal" data-bs-target="#answerModal"
+                                                        data-question-id="{{ question.id }}"
+                                                        data-question-content="{{ question.content }}"
+                                                        data-answer="{{ question.answer }}">
+                                                        <i class="fas fa-edit me-1"></i>编辑
+                                                    </button>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-question-circle fa-4x text-muted mb-3"></i>
+                                    <h5 class="text-muted">暂无用户提问</h5>
+                                    <p class="text-muted">当用户提交问题后，记录将显示在这里</p>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 待回答问题 -->
+                            <div class="tab-pane fade" id="unanswered" role="tabpanel">
+                                {% set unanswered_questions = questions|selectattr('answered', 'equalto', false)|list %}
+                                {% if unanswered_questions %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="60">ID</th>
+                                                <th width="120">用户</th>
+                                                <th>问题内容</th>
+                                                <th width="150">提问时间</th>
+                                                <th width="150">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for question in unanswered_questions %}
+                                            <tr class="question-row unanswered">
+                                                <td class="fw-bold text-muted">#{{ question.id }}</td>
+                                                <td>
+                                                    {% if question.user %}
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                            style="width: 32px; height: 32px;">
+                                                            <i class="fas fa-user text-white"
+                                                                style="font-size: 0.8rem;"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-bold">{{ question.user.username }}</div>
+                                                            <small class="text-muted">ID: {{ question.user.id }}</small>
+                                                        </div>
+                                                    </div>
+                                                    {% else %}
+                                                    <span class="text-danger"><i
+                                                            class="fas fa-user-slash me-1"></i>用户已删除</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="question-content"
+                                                        id="content-unanswered-{{ question.id }}">
+                                                        {{ question.content }}
+                                                        <span class="read-more"
+                                                            onclick="toggleContent('unanswered-{{ question.id }}')">展开</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-muted">
+                                                        <div>{{ question.create_time.strftime('%Y-%m-%d') }}</div>
+                                                        <small>{{ question.create_time.strftime('%H:%M') }}</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm action-btn"
+                                                        data-bs-toggle="modal" data-bs-target="#answerModal"
+                                                        data-question-id="{{ question.id }}"
+                                                        data-question-content="{{ question.content }}">
+                                                        <i class="fas fa-reply me-1"></i>回答
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                                    <h5 class="text-success">所有问题已回答</h5>
+                                    <p class="text-muted">没有待回答的问题</p>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 已回答问题 -->
+                            <div class="tab-pane fade" id="answered" role="tabpanel">
+                                {% set answered_questions = questions|selectattr('answered', 'equalto', true)|list %}
+                                {% if answered_questions %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="60">ID</th>
+                                                <th width="120">用户</th>
+                                                <th>问题内容</th>
+                                                <th width="150">回答时间</th>
+                                                <th width="150">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for question in answered_questions %}
+                                            <tr class="question-row">
+                                                <td class="fw-bold text-muted">#{{ question.id }}</td>
+                                                <td>
+                                                    {% if question.user %}
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                            style="width: 32px; height: 32px;">
+                                                            <i class="fas fa-user text-white"
+                                                                style="font-size: 0.8rem;"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-bold">{{ question.user.username }}</div>
+                                                            <small class="text-muted">ID: {{ question.user.id }}</small>
+                                                        </div>
+                                                    </div>
+                                                    {% else %}
+                                                    <span class="text-danger"><i
+                                                            class="fas fa-user-slash me-1"></i>用户已删除</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="question-content"
+                                                        id="content-answered-{{ question.id }}">
+                                                        {{ question.content }}
+                                                        <span class="read-more"
+                                                            onclick="toggleContent('answered-{{ question.id }}')">展开</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-muted">
+                                                        <div>{{ question.answer_time.strftime('%Y-%m-%d') }}</div>
+                                                        <small>{{ question.answer_time.strftime('%H:%M') }}</small>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-outline-success btn-sm action-btn"
+                                                        data-bs-toggle="modal" data-bs-target="#viewAnswerModal"
+                                                        data-question-content="{{ question.content }}"
+                                                        data-answer="{{ question.answer }}">
+                                                        <i class="fas fa-eye me-1"></i>查看
+                                                    </button>
+                                                    <button class="btn btn-outline-primary btn-sm action-btn mt-1"
+                                                        data-bs-toggle="modal" data-bs-target="#answerModal"
+                                                        data-question-id="{{ question.id }}"
+                                                        data-question-content="{{ question.content }}"
+                                                        data-answer="{{ question.answer }}">
+                                                        <i class="fas fa-edit me-1"></i>编辑
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-comment-slash fa-4x text-muted mb-3"></i>
+                                    <h5 class="text-muted">暂无已回答问题</h5>
+                                    <p class="text-muted">已回答的问题将显示在这里</p>
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        {% else %}
-                        <div class="text-center py-4">
-                            <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">暂无用户提问</h5>
-                            <p class="text-muted">当用户提交问题后，记录将显示在这里</p>
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
 
@@ -188,25 +555,28 @@
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="answerModalLabel">回答问题</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="answerModalLabel"><i class="fas fa-reply me-2"></i>回答问题</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label class="form-label">用户问题：</label>
+                                    <label class="form-label fw-bold">用户问题：</label>
                                     <div id="questionContentDisplay" class="border p-3 bg-light rounded"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="answerContent" class="form-label">专家回答：</label>
+                                    <label for="answerContent" class="form-label fw-bold">专家回答：</label>
                                     <textarea class="form-control" id="answerContent" rows="6"
                                         placeholder="请输入专业的回答..."></textarea>
+                                    <div class="form-text">回答内容将直接发送给用户，请确保内容准确、专业。</div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary" id="submitAnswer">提交回答</button>
+                                <button type="button" class="btn btn-primary" id="submitAnswer">
+                                    <i class="fas fa-paper-plane me-1"></i>提交回答
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -217,18 +587,19 @@
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="viewAnswerModalLabel">问题与回答</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            <div class="modal-header bg-success text-white">
+                                <h5 class="modal-title" id="viewAnswerModalLabel"><i class="fas fa-eye me-2"></i>问题与回答
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label class="form-label">用户问题：</label>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">用户问题：</label>
                                     <div id="viewQuestionContent" class="border p-3 bg-light rounded"></div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">专家回答：</label>
+                                    <label class="form-label fw-bold">专家回答：</label>
                                     <div id="viewAnswerContent" class="border p-3 bg-light rounded"></div>
                                 </div>
                             </div>
@@ -238,104 +609,163 @@
                         </div>
                     </div>
                 </div>
+            </main>
+        </div>
+    </div>
 
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-                <script>
-                    let currentQuestionId = null;
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentQuestionId = null;
 
-                    // 内容展开/收起
-                    function toggleContent(questionId) {
-                        const contentDiv = document.getElementById('content-' + questionId);
-                        if (!contentDiv) return;
+        // 内容展开/收起
+        function toggleContent(questionId) {
+            const contentDiv = document.getElementById('content-' + questionId);
+            if (!contentDiv) return;
 
-                        const readMoreSpan = contentDiv.querySelector('.read-more');
-                        if (!readMoreSpan) return;
+            const readMoreSpan = contentDiv.querySelector('.read-more');
+            if (!readMoreSpan) return;
 
-                        if (contentDiv.classList.contains('expanded')) {
-                            contentDiv.classList.remove('expanded');
-                            readMoreSpan.textContent = '展开';
+            if (contentDiv.classList.contains('expanded')) {
+                contentDiv.classList.remove('expanded');
+                readMoreSpan.textContent = '展开';
+            } else {
+                contentDiv.classList.add('expanded');
+                readMoreSpan.textContent = '收起';
+            }
+        }
+
+        // 回答模态框
+        const answerModal = document.getElementById('answerModal');
+        if (answerModal) {
+            answerModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                currentQuestionId = button.getAttribute('data-question-id');
+                const questionContent = button.getAttribute('data-question-content');
+                const existingAnswer = button.getAttribute('data-answer');
+
+                const contentDisplay = document.getElementById('questionContentDisplay');
+                const answerContent = document.getElementById('answerContent');
+                const modalTitle = document.getElementById('answerModalLabel');
+
+                if (contentDisplay) contentDisplay.textContent = questionContent;
+                if (answerContent) {
+                    answerContent.value = existingAnswer || '';
+                }
+
+                // 更新模态框标题
+                if (modalTitle) {
+                    modalTitle.innerHTML = existingAnswer ?
+                        '<i class="fas fa-edit me-2"></i>编辑回答' :
+                        '<i class="fas fa-reply me-2"></i>回答问题';
+                }
+            });
+        }
+
+        // 查看回答模态框
+        const viewAnswerModal = document.getElementById('viewAnswerModal');
+        if (viewAnswerModal) {
+            viewAnswerModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const questionContent = button.getAttribute('data-question-content');
+                const answer = button.getAttribute('data-answer');
+
+                const viewQuestion = document.getElementById('viewQuestionContent');
+                const viewAnswer = document.getElementById('viewAnswerContent');
+
+                if (viewQuestion) viewQuestion.textContent = questionContent;
+                if (viewAnswer) viewAnswer.textContent = answer;
+            });
+        }
+
+        // 提交回答
+        const submitAnswerBtn = document.getElementById('submitAnswer');
+        if (submitAnswerBtn) {
+            submitAnswerBtn.addEventListener('click', function () {
+                const answerContentElem = document.getElementById('answerContent');
+                if (!answerContentElem) return;
+
+                const answerContent = answerContentElem.value.trim();
+
+                if (!answerContent) {
+                    alert('请填写回答内容');
+                    return;
+                }
+
+                if (!currentQuestionId) {
+                    alert('未找到问题ID');
+                    return;
+                }
+
+                // 显示加载状态
+                submitAnswerBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>提交中...';
+                submitAnswerBtn.disabled = true;
+
+                fetch('/admin/answer-question/' + currentQuestionId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        answer: answerContent
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('回答提交成功！');
+                            location.reload();
                         } else {
-                            contentDiv.classList.add('expanded');
-                            readMoreSpan.textContent = '收起';
+                            alert('提交失败: ' + data.message);
+                            submitAnswerBtn.innerHTML = '<i class="fas fa-paper-plane me-1"></i>提交回答';
+                            submitAnswerBtn.disabled = false;
                         }
-                    }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('提交失败，请重试');
+                        submitAnswerBtn.innerHTML = '<i class="fas fa-paper-plane me-1"></i>提交回答';
+                        submitAnswerBtn.disabled = false;
+                    });
+            });
+        }
 
-                    // 回答模态框
-                    const answerModal = document.getElementById('answerModal');
-                    if (answerModal) {
-                        answerModal.addEventListener('show.bs.modal', function (event) {
-                            const button = event.relatedTarget;
-                            currentQuestionId = button.getAttribute('data-question-id');
-                            const questionContent = button.getAttribute('data-question-content');
+        // 刷新问题列表
+        document.getElementById('refreshQuestions').addEventListener('click', function () {
+            location.reload();
+        });
 
-                            const contentDisplay = document.getElementById('questionContentDisplay');
-                            const answerContent = document.getElementById('answerContent');
+        // 搜索功能
+        document.getElementById('searchQuestions').addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.question-row');
 
-                            if (contentDisplay) contentDisplay.textContent = questionContent;
-                            if (answerContent) answerContent.value = '';
-                        });
-                    }
+            rows.forEach(row => {
+                const content = row.querySelector('.question-content').textContent.toLowerCase();
+                if (content.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
 
-                    // 查看回答模态框
-                    const viewAnswerModal = document.getElementById('viewAnswerModal');
-                    if (viewAnswerModal) {
-                        viewAnswerModal.addEventListener('show.bs.modal', function (event) {
-                            const button = event.relatedTarget;
-                            const questionContent = button.getAttribute('data-question-content');
-                            const answer = button.getAttribute('data-answer');
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('管理员问答管理页面加载完成');
 
-                            const viewQuestion = document.getElementById('viewQuestionContent');
-                            const viewAnswer = document.getElementById('viewAnswerContent');
-
-                            if (viewQuestion) viewQuestion.textContent = questionContent;
-                            if (viewAnswer) viewAnswer.textContent = answer;
-                        });
-                    }
-
-                    // 提交回答
-                    const submitAnswerBtn = document.getElementById('submitAnswer');
-                    if (submitAnswerBtn) {
-                        submitAnswerBtn.addEventListener('click', function () {
-                            const answerContentElem = document.getElementById('answerContent');
-                            if (!answerContentElem) return;
-
-                            const answerContent = answerContentElem.value.trim();
-
-                            if (!answerContent) {
-                                alert('请填写回答内容');
-                                return;
-                            }
-
-                            if (!currentQuestionId) {
-                                alert('未找到问题ID');
-                                return;
-                            }
-
-                            fetch('/admin/answer-question/' + currentQuestionId, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    answer: answerContent
-                                })
-                            })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        alert('回答提交成功！');
-                                        location.reload();
-                                    } else {
-                                        alert('提交失败: ' + data.message);
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert('提交失败，请重试');
-                                });
-                        });
-                    }
-                </script>
+            // 显示未回答问题的数量：从页面上的 badge 文本解析数值，避免在脚本中直接使用模板语法
+            const unansweredBadge = document.querySelector('.nav-link.active .badge');
+            let unansweredCount = 0;
+            if (unansweredBadge) {
+                const txt = unansweredBadge.textContent.trim();
+                // 提取数字并转换为整数，兼容带有非数字字符的情况
+                unansweredCount = Number(txt.replace(/[^\d]/g, '')) || 0;
+            }
+            if (unansweredBadge && unansweredCount > 0) {
+                unansweredBadge.classList.add('bg-danger');
+            }
+        });
+    </script>
 </body>
 
 </html>
