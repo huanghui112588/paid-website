@@ -335,6 +335,95 @@
             border: 1px solid #e6ffe6;
         }
 
+        /* 债务计算器样式 */
+        .calculator-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-light);
+        }
+
+        .calculator-result {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .calculator-result .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculator-result .table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .calculator-result .progress {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .calculator-result .progress-bar {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        /* 表单样式 */
+        .form-control {
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+
+        .form-control-lg {
+            padding: 15px 20px;
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .calculator-container {
+                padding: 20px;
+                margin: 10px 0;
+            }
+
+            .calculator-result {
+                padding: 20px;
+            }
+
+            .form-control-lg {
+                padding: 12px 15px;
+            }
+        }
+
         /* 债务计算器 */
         .calculator-container {
             background: white;
@@ -480,40 +569,66 @@
         <!-- 债务计算器 -->
         <div class="calculator-container">
             <h3><i class="fas fa-calculator me-2"></i>债务计算器</h3>
-            <p class="text-muted mb-3">计算你的债务情况，制定科学还款计划</p>
+            <p class="text-muted mb-4">计算你的债务情况，制定科学还款计划</p>
 
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">总债务金额（元）</label>
-                        <input type="number" id="totalDebt" class="form-input" placeholder="例如：50000">
+                        <label class="form-label fw-bold">总债务金额（元）</label>
+                        <input type="number" id="totalDebt" class="form-control form-control-lg" placeholder="例如：100000"
+                            min="100" step="100" value="100000">
+                        <div class="form-text">请输入您的总债务金额</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">每月可还款金额（元）</label>
-                        <input type="number" id="monthlyPayment" class="form-input" placeholder="例如：2000">
+                        <label class="form-label fw-bold">平均年利率（%）</label>
+                        <input type="number" id="interestRate" class="form-control form-control-lg" placeholder="例如：12"
+                            min="0" max="36" step="0.1" value="12">
+                        <div class="form-text">信用卡通常15-18%，网贷可能更高</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">每月可还款金额（元）</label>
+                        <input type="number" id="monthlyPayment" class="form-control form-control-lg"
+                            placeholder="例如：3500" min="100" step="100" value="3500">
+                        <div class="form-text">根据您的收入情况设定</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label fw-bold">&nbsp;</label>
+                        <button class="btn btn-primary btn-lg w-100" onclick="calculateDebt()" id="calculateBtn">
+                            <i class="fas fa-calculator me-2"></i> 计算还款计划
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">平均年利率（%）</label>
-                        <input type="number" id="interestRate" class="form-input" placeholder="例如：12" value="12">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">&nbsp;</label>
-                        <button class="btn btn-primary w-100" onclick="calculateDebt()">计算还款计划</button>
+            <!-- 快速设置按钮 -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="d-flex flex-wrap gap-2">
+                        <small class="text-muted me-2">快速设置：</small>
+                        <button class="btn btn-sm btn-outline-secondary"
+                            onclick="setQuickExample(50000, 12, 2000)">5万债务</button>
+                        <button class="btn btn-sm btn-outline-secondary"
+                            onclick="setQuickExample(100000, 15, 3000)">10万债务</button>
+                        <button class="btn btn-sm btn-outline-secondary"
+                            onclick="setQuickExample(200000, 18, 5000)">20万债务</button>
+                        <button class="btn btn-sm btn-outline-secondary"
+                            onclick="setQuickExample(500000, 12, 10000)">50万债务</button>
                     </div>
                 </div>
             </div>
 
-            <div class="calculator-result" id="debtResult">
-                <h4>计算结果</h4>
+            <!-- 计算结果 -->
+            <div class="calculator-result mt-4" id="debtResult" style="display: none;">
+                <div class="text-center mb-4">
+                    <h4><i class="fas fa-chart-line me-2"></i>计算结果</h4>
+                    <p class="mb-0">基于您输入的数据分析</p>
+                </div>
                 <div id="resultContent"></div>
             </div>
         </div>
@@ -867,6 +982,530 @@
 
                 container.innerHTML = html;
             }
+
+            // ============ 债务计算器功能 ============
+
+            // 快速设置示例
+            function setQuickExample(totalDebt, interestRate, monthlyPayment) {
+                document.getElementById('totalDebt').value = totalDebt;
+                document.getElementById('interestRate').value = interestRate;
+                document.getElementById('monthlyPayment').value = monthlyPayment;
+
+                // 显示提示
+                showAlert(`已设置为示例：债务${totalDebt.toLocaleString()}元，利率${interestRate}%，月还${monthlyPayment.toLocaleString()}元`, 'info');
+            }
+
+            // 计算债务
+            function calculateDebt() {
+                // 获取输入值
+                const totalDebt = parseFloat(document.getElementById('totalDebt').value);
+                const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
+                const interestRate = parseFloat(document.getElementById('interestRate').value);
+
+                // 验证输入
+                if (!totalDebt || totalDebt <= 0) {
+                    showAlert('请输入有效的债务金额', 'warning');
+                    return;
+                }
+
+                if (!monthlyPayment || monthlyPayment <= 0) {
+                    showAlert('请输入有效的月还款金额', 'warning');
+                    return;
+                }
+
+                if (!interestRate || interestRate < 0) {
+                    showAlert('请输入有效的利率', 'warning');
+                    return;
+                }
+
+                // 显示加载状态
+                const calculateBtn = document.getElementById('calculateBtn');
+                const originalText = calculateBtn.innerHTML;
+                calculateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 计算中...';
+                calculateBtn.disabled = true;
+
+                // 调用API
+                fetch('/api/calculate-debt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        total_debt: totalDebt,
+                        monthly_payment: monthlyPayment,
+                        interest_rate: interestRate
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络响应不正常');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            displayDebtResult(data.result);
+                        } else {
+                            showAlert(data.message, 'error');
+                            hideDebtResult();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('计算失败:', error);
+                        showAlert('网络错误，请检查连接后重试', 'error');
+                        hideDebtResult();
+                    })
+                    .finally(() => {
+                        // 恢复按钮状态
+                        calculateBtn.innerHTML = originalText;
+                        calculateBtn.disabled = false;
+                    });
+            }
+
+            // 显示计算结果
+            function displayDebtResult(result) {
+                const resultDiv = document.getElementById('debtResult');
+                const contentDiv = document.getElementById('resultContent');
+
+                // 根据建议级别设置颜色
+                const alertClass = {
+                    'success': 'alert-success',
+                    'warning': 'alert-warning',
+                    'danger': 'alert-danger'
+                }[result.advice.level] || 'alert-info';
+
+                // 生成结果HTML
+                const resultHtml = `
+        <!-- 总体概览 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">${result.years}年${result.remaining_months}个月</h5>
+                        <p class="card-text small">还款周期</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">¥${result.total_interest.toLocaleString()}</h5>
+                        <p class="card-text small">总利息</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">¥${result.total_payment.toLocaleString()}</h5>
+                        <p class="card-text small">总还款额</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">${result.total_months}期</h5>
+                        <p class="card-text small">总期数</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 专业建议 -->
+        <div class="alert ${alertClass}">
+            <h5><i class="fas fa-lightbulb me-2"></i>${result.advice.title}</h5>
+            <p class="mb-2">${result.advice.content}</p>
+            <hr>
+            <strong>建议措施：</strong>
+            <ul class="mb-0">
+                ${result.advice.suggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+            </ul>
+        </div>
+
+        <!-- 详细还款计划（前12个月） -->
+        <div class="mt-4">
+            <h5><i class="fas fa-calendar-alt me-2"></i>前12个月还款详情</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>期数</th>
+                            <th>本金（元）</th>
+                            <th>利息（元）</th>
+                            <th>剩余债务（元）</th>
+                            <th>进度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${result.payment_plan.map(month => `
+                            <tr>
+                                <td>第${month.month}期</td>
+                                <td>${month.principal.toLocaleString()}</td>
+                                <td>${month.interest.toLocaleString()}</td>
+                                <td>${month.remaining.toLocaleString()}</td>
+                                <td>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: ${((result.total_debt - month.remaining) / result.total_debt * 100).toFixed(1)}%"></div>
+                                    </div>
+                                    <small>${((result.total_debt - month.remaining) / result.total_debt * 100).toFixed(1)}%</small>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 优化建议 -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-warning text-white">
+                        <i class="fas fa-rocket me-2"></i>加速还款建议
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li>每月多还${Math.round(result.monthly_payment * 0.1)}元，可提前${Math.round(result.total_months * 0.15)}个月</li>
+                            <li>寻找兼职增加收入</li>
+                            <li>削减不必要的开支</li>
+                            <li>与银行协商降低利率</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <i class="fas fa-shield-alt me-2"></i>风险提示
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li>确保月还款不超过收入的50%</li>
+                            <li>保留3-6个月的生活应急金</li>
+                            <li>避免以贷养贷</li>
+                            <li>及时关注信用记录</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 行动按钮 -->
+        <div class="text-center mt-4">
+            <button class="btn btn-success me-2" onclick="saveDebtPlan()">
+                <i class="fas fa-save me-2"></i>保存还款计划
+            </button>
+            <button class="btn btn-outline-primary me-2" onclick="printDebtResult()">
+                <i class="fas fa-print me-2"></i>打印结果
+            </button>
+            <button class="btn btn-outline-secondary" onclick="shareDebtPlan()">
+                <i class="fas fa-share-alt me-2"></i>分享计划
+            </button>
+        </div>
+    `;
+
+                contentDiv.innerHTML = resultHtml;
+                resultDiv.style.display = 'block';
+
+                // 滚动到结果区域
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // 隐藏结果
+            function hideDebtResult() {
+                document.getElementById('debtResult').style.display = 'none';
+            }
+
+            // 保存还款计划
+            function saveDebtPlan() {
+                const debtData = {
+                    totalDebt: document.getElementById('totalDebt').value,
+                    monthlyPayment: document.getElementById('monthlyPayment').value,
+                    interestRate: document.getElementById('interestRate').value,
+                    timestamp: new Date().toLocaleString('zh-CN')
+                };
+
+                // 保存到localStorage
+                localStorage.setItem('lastDebtPlan', JSON.stringify(debtData));
+                showAlert('还款计划已保存到本地', 'success');
+            }
+
+            // 加载上次的还款计划
+            function loadLastDebtPlan() {
+                const saved = localStorage.getItem('lastDebtPlan');
+                if (saved) {
+                    const debtData = JSON.parse(saved);
+                    document.getElementById('totalDebt').value = debtData.totalDebt;
+                    document.getElementById('monthlyPayment').value = debtData.monthlyPayment;
+                    document.getElementById('interestRate').value = debtData.interestRate;
+
+                    showAlert(`已加载上次的还款计划（${debtData.timestamp}）`, 'info');
+                }
+            }
+
+            // 打印结果
+            function printDebtResult() {
+                const printContent = document.getElementById('debtResult').innerHTML;
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>债务还款计划 - 上岸翻身营</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                @media print {
+                    .no-print { display: none !important; }
+                    .btn { display: none !important; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h3>债务还款计划</h3>
+                    <p class="text-muted">上岸翻身营 - 专业债务管理</p>
+                    <hr>
+                </div>
+                ${printContent}
+                <div class="text-center mt-4 text-muted">
+                    <small>生成时间: ${new Date().toLocaleString('zh-CN')}</small>
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+
+            // 分享计划（模拟功能）
+            function shareDebtPlan() {
+                showAlert('分享功能开发中，当前可截图保存或打印分享', 'info');
+            }
+
+            // 添加输入框实时验证
+            document.addEventListener('DOMContentLoaded', function () {
+                // 为输入框添加实时验证
+                const inputs = ['totalDebt', 'monthlyPayment', 'interestRate'];
+                inputs.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        input.addEventListener('input', function () {
+                            validateDebtInput(this);
+                        });
+                    }
+                });
+
+                // 加载上次的计划
+                loadLastDebtPlan();
+            });
+
+            // 输入验证
+            function validateDebtInput(input) {
+                const value = parseFloat(input.value);
+
+                if (input.id === 'interestRate' && value > 36) {
+                    showAlert('利率过高，建议与债权人协商降低', 'warning');
+                }
+
+                if (input.id === 'monthlyPayment' && value < 100) {
+                    showAlert('月还款额过低，可能无法覆盖利息', 'warning');
+                }
+            }
+
+            // ============ 工具箱功能 ============
+
+            // 打开工具箱
+            function openTool(toolType) {
+                console.log(`打开工具箱: ${toolType}`);
+
+                // 显示加载状态
+                showToolModal('加载中...', '<div class="text-center"><div class="spinner-border text-primary"></div><p class="mt-2">加载内容中...</p></div>');
+
+                // 调用API获取内容
+                fetch(`/api/tool-content/${toolType}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('网络响应不正常');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            showToolModal(data.tool.title, data.tool.content);
+                        } else {
+                            showToolModal('错误', `<div class="alert alert-danger">${data.message}</div>`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('加载工具内容失败:', error);
+                        showToolModal('网络错误', `
+                <div class="alert alert-danger">
+                    <i class="fas fa-wifi-slash"></i>
+                    网络连接失败，请检查网络后重试
+                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="openTool('${toolType}')">重试</button>
+                </div>
+            `);
+                    });
+            }
+
+            // 显示工具模态框
+            function showToolModal(title, content) {
+                // 移除现有的模态框
+                const existingModal = document.getElementById('toolModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+
+                const modalHtml = `
+        <div class="modal fade show" id="toolModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${title}</h5>
+                        <button type="button" class="btn-close" onclick="closeToolModal()"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        ${content}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeToolModal()">
+                            <i class="fas fa-times me-1"></i>关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="printToolContent()">
+                            <i class="fas fa-print me-1"></i>打印
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+                // 添加ESC键关闭功能
+                document.addEventListener('keydown', handleEscKey);
+            }
+
+            // 关闭工具模态框
+            function closeToolModal() {
+                const modal = document.getElementById('toolModal');
+                if (modal) {
+                    modal.remove();
+                }
+                document.removeEventListener('keydown', handleEscKey);
+            }
+
+            // ESC键关闭处理
+            function handleEscKey(event) {
+                if (event.key === 'Escape') {
+                    closeToolModal();
+                }
+            }
+
+            // 打印工具内容
+            function printToolContent() {
+                const modalBody = document.querySelector('#toolModal .modal-body');
+                if (modalBody) {
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>上岸翻身营 - 工具箱</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    .tool-content { max-width: 100%; }
+                    @media print {
+                        .no-print { display: none !important; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="text-center mb-4">
+                        <h3>上岸翻身营 - 工具箱</h3>
+                        <p class="text-muted">${document.querySelector('#toolModal .modal-title').textContent}</p>
+                        <hr>
+                    </div>
+                    ${modalBody.innerHTML}
+                    <div class="text-center mt-4 text-muted no-print">
+                        <small>打印时间: ${new Date().toLocaleString('zh-CN')}</small>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
+                    printWindow.document.close();
+                    printWindow.print();
+                }
+            }
+
+            // 添加工具箱样式
+            const toolStyles = `
+    <style>
+        .tool-content h4, .tool-content h5, .tool-content h6 {
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-content .alert {
+            border-left: 4px solid;
+        }
+        
+        .tool-content .list-group-item {
+            border: none;
+            border-left: 3px solid var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-content table th {
+            background-color: var(--light);
+        }
+        
+        .tool-content .card {
+            border: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+        
+        .tool-content .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border: none;
+        }
+        
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+    </style>
+`;
+
+            // 注入样式
+            document.head.insertAdjacentHTML('beforeend', toolStyles);
 
             // 提交新问题
             function submitQuestion() {
