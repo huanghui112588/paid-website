@@ -1,11 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_file
 import os
 from datetime import datetime, timedelta
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from typing import Optional, List  # 确保导入 List
+from typing import Optional, List
+from io import BytesIO, StringIO
 
 # ============ 加载环境变量 ============
 try:
@@ -851,7 +852,7 @@ def knowledge_base():
                          content_categories=CONTENT_CATEGORIES,
                          content_modules=CONTENT_MODULES)
 
-# ============ 新增：债务计算器API ============
+# ============ 债务计算器API ============
 @app.route('/api/calculate-debt', methods=['POST'])
 @login_required
 def calculate_debt():
@@ -962,7 +963,7 @@ def generate_debt_advice(total_debt, monthly_payment, months):
             ]
         }
 
-# ============ 新增：获取用户进度 ============
+# ============ 获取用户进度 ============
 @app.route('/api/user-progress')
 @payment_required
 def get_user_progress():
@@ -991,7 +992,7 @@ def get_user_progress():
     except Exception as e:
         return jsonify({'success': False, 'message': f'获取进度失败: {str(e)}'})
 
-# ============ 新增：工具箱内容API ============
+# ============ 工具箱内容API ============
 @app.route('/api/tool-content/<tool_type>')
 @payment_required
 def get_tool_content(tool_type):
@@ -1115,7 +1116,7 @@ def api_my_questions():
     except Exception as e:
         return jsonify({'success': False, 'message': f'获取问题列表失败: {str(e)}'})
 
-# ============ 新增：资源下载 ============
+# ============ 资源下载 ============
 @app.route('/download/<resource_type>')
 @payment_required
 def download_resource(resource_type):
@@ -1144,7 +1145,7 @@ def download_resource(resource_type):
     else:
         return jsonify({'success': False, 'message': '资源不存在'})
     
-    # ============ 新增：调试路由 ============
+# ============ 调试路由 ============
 @app.route('/debug/questions')
 @admin_required
 def debug_questions():
@@ -1180,7 +1181,712 @@ def debug_questions():
         
     except Exception as e:
         return jsonify({'error': str(e)})
+
+# ============ 债务管理相关路由 ============
+
+@app.route('/api/debt-management/progress')
+@payment_required
+def get_debt_management_progress():
+    """获取债务管理学习进度"""
+    try:
+        user_id = session['user_id']
+        
+        # 这里可以从数据库获取用户的实际进度
+        # 暂时返回模拟数据
+        return jsonify({
+            'success': True,
+            'progress': {
+                'total_progress': 65,
+                'completed_steps': 6,
+                'in_progress_steps': 3,
+                'total_steps': 10,
+                'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M')
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取进度失败: {str(e)}'})
+
+@app.route('/api/debt-management/update-progress', methods=['POST'])
+@payment_required
+def update_debt_management_progress():
+    """更新学习进度"""
+    try:
+        data = request.get_json()
+        step_completed = data.get('step')
+        
+        # 这里可以更新数据库中的用户进度
+        # 暂时返回成功响应
+        return jsonify({
+            'success': True,
+            'message': f'步骤 {step_completed} 已完成',
+            'progress': 65  # 模拟进度
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'更新进度失败: {str(e)}'})
+
+@app.route('/debt-management-course')
+@payment_required
+def debt_management_course():
+    """债务管理课程页面 - 完整版本"""
+    try:
+        course_content = {
+            'title': '债务管理基础',
+            'sections': [
+                {
+                    'title': '停止以贷养贷',
+                    'icon': 'ban',
+                    'content': """
+                        <h4>🛑 为什么必须停止以贷养贷？</h4>
+                        <div class="alert alert-danger">
+                            <strong>恶性循环警告：</strong>以贷养贷就像在流沙中挣扎，越挣扎陷得越深！
+                        </div>
+                        
+                        <h5>💸 以贷养贷的真实代价</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-danger mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-danger"><i class="fas fa-chart-line me-2"></i>利息翻倍</h6>
+                                        <p class="card-text">新贷款利息 + 旧债务利息 = 双重利息负担</p>
+                                        <small class="text-muted">例：5万债务一年可能多付1-2万利息</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-danger mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-danger"><i class="fas fa-snowflake me-2"></i>债务雪球</h6>
+                                        <p class="card-text">小额债务滚成大额债务，最终无法控制</p>
+                                        <small class="text-muted">很多大额负债都是从几千元开始的</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-danger mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-danger"><i class="fas fa-credit-card me-2"></i>信用破产</h6>
+                                        <p class="card-text">多头借贷导致征信记录彻底损坏</p>
+                                        <small class="text-muted">影响未来5-7年的信贷资格</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-danger mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-danger"><i class="fas fa-brain me-2"></i>心理崩溃</h6>
+                                        <p class="card-text">每天为还款发愁，生活质量严重下降</p>
+                                        <small class="text-muted">焦虑、抑郁、失眠成为常态</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5>🚫 立即停止的实战方法</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>行动</th>
+                                        <th>具体做法</th>
+                                        <th>效果</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>注销信用卡</strong></td>
+                                        <td>剪掉所有信用卡，消除透支可能</td>
+                                        <td>立即切断透支渠道</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>删除借贷APP</strong></td>
+                                        <td>卸载所有网贷应用程序</td>
+                                        <td>消除冲动借贷可能</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>资金隔离</strong></td>
+                                        <td>将生活费与还款资金分开管理</td>
+                                        <td>避免挪用生活费还款</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>告知家人</strong></td>
+                                        <td>寻求家人理解和支持监督</td>
+                                        <td>获得情感支持和监督</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="alert alert-success mt-4">
+                            <h6><i class="fas fa-lightbulb me-2"></i>成功案例分享</h6>
+                            <p class="mb-0">"我曾经欠款30万，通过停止以贷养贷，制定科学还款计划，3年时间成功上岸。现在回想，停止养贷是我做过最正确的决定！" — 王先生，32岁</p>
+                        </div>
+                    """,
+                    'tools': [
+                        {
+                            'name': '债务计算器',
+                            'icon': 'calculator',
+                            'color': 'primary',
+                            'description': '计算您的真实债务成本和还款周期',
+                            'button_text': '使用计算器',
+                            'button_icon': 'calculator',
+                            'action': 'window.location.href="/members#debtCalculator"'
+                        },
+                        {
+                            'name': '紧急应对指南',
+                            'icon': 'first-aid',
+                            'color': 'warning',
+                            'description': '应对催收压力的实用技巧',
+                            'button_text': '查看指南',
+                            'button_icon': 'book-open',
+                            'action': 'openTool("harassment")'
+                        }
+                    ],
+                    'actions': [
+                        {'text': '我已停止以贷养贷', 'type': 'success', 'step': 'stop_borrowing'},
+                        {'text': '需要更多帮助', 'type': 'warning', 'step': 'need_help_stop'}
+                    ]
+                },
+                {
+                    'title': '全面清点债务',
+                    'icon': 'clipboard-list',
+                    'content': """
+                        <h4>📊 全面清点债务清单</h4>
+                        <div class="alert alert-info">
+                            <strong>重要原则：</strong>只有清楚知道欠多少钱、欠谁的钱，才能制定有效的还款计划！
+                        </div>
+                        
+                        <h5>🔍 债务信息收集清单</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-warning">
+                                    <tr>
+                                        <th>信息项目</th>
+                                        <th>具体内容</th>
+                                        <th>获取方式</th>
+                                        <th>重要性</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>债权人</strong></td>
+                                        <td>银行、网贷平台、个人等</td>
+                                        <td>查看借款合同、APP</td>
+                                        <td><span class="badge bg-danger">必须</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>总借款金额</strong></td>
+                                        <td>初始借款总额</td>
+                                        <td>合同文件、借款记录</td>
+                                        <td><span class="badge bg-danger">必须</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>当前欠款总额</strong></td>
+                                        <td>剩余本金 + 利息 + 罚息</td>
+                                        <td>联系客服、查看账单</td>
+                                        <td><span class="badge bg-danger">必须</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>年化利率</strong></td>
+                                        <td>真实年化利率计算</td>
+                                        <td>合同条款、IRR计算</td>
+                                        <td><span class="badge bg-warning">重要</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>每月最低还款</strong></td>
+                                        <td>每月必须还款金额</td>
+                                        <td>账单信息、客服确认</td>
+                                        <td><span class="badge bg-warning">重要</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>逾期状态</strong></td>
+                                        <td>是否逾期、逾期天数</td>
+                                        <td>自查记录、催收信息</td>
+                                        <td><span class="badge bg-warning">重要</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h5>🎯 债务分类管理策略</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>紧急债务</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><strong>特征：</strong>已逾期、催收紧急、可能起诉</p>
+                                        <ul class="small">
+                                            <li>信用卡逾期</li>
+                                            <li>银行贷款逾期</li>
+                                            <li>收到律师函</li>
+                                        </ul>
+                                        <span class="badge bg-danger">优先处理</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning text-white">
+                                        <h6 class="mb-0"><i class="fas fa-fire me-2"></i>高息债务</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><strong>特征：</strong>利率超过15%，成本快速增加</p>
+                                        <ul class="small">
+                                            <li>网贷平台</li>
+                                            <li>信用卡分期</li>
+                                            <li>小额贷款</li>
+                                        </ul>
+                                        <span class="badge bg-warning">重点处理</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-info">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>常规债务</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><strong>特征：</strong>正常还款中，利率合理</p>
+                                        <ul class="small">
+                                            <li>房贷</li>
+                                            <li>车贷</li>
+                                            <li>亲友借款</li>
+                                        </ul>
+                                        <span class="badge bg-info">按时还款</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success mt-4">
+                            <h6><i class="fas fa-trophy me-2"></i>清点成果</h6>
+                            <p class="mb-0">完成债务清点后，您将：① 清楚知道总负债金额 ② 了解每个债务的紧急程度 ③ 为制定还款计划打下基础</p>
+                        </div>
+                    """,
+                    'tools': [
+                        {
+                            'name': '债务清单表格',
+                            'icon': 'file-excel',
+                            'color': 'success',
+                            'description': '专业债务清单记录表格',
+                            'button_text': '下载表格',
+                            'button_icon': 'download',
+                            'action': 'downloadDebtTemplate()'
+                        },
+                        {
+                            'name': '利率计算器',
+                            'icon': 'percentage',
+                            'color': 'info',
+                            'description': '计算真实年化利率',
+                            'button_text': '计算利率',
+                            'button_icon': 'calculator',
+                            'action': 'openTool("legal")'
+                        }
+                    ],
+                    'actions': [
+                        {'text': '已完成债务清点', 'type': 'success', 'step': 'debt_inventory'},
+                        {'text': '开始制定计划', 'type': 'primary', 'step': 'start_planning'}
+                    ]
+                },
+                {
+                    'title': '科学还款计划',
+                    'icon': 'calendar-check',
+                    'content': """
+                        <h4>🎯 科学制定还款计划</h4>
+                        <div class="alert alert-success">
+                            <strong>核心原则：</strong>量入为出，先急后缓，坚持执行！
+                        </div>
+                        
+                        <h5>💰 收入支出分析模板</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-header">
+                                        <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i>月收入分析</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">工资收入</label>
+                                            <input type="number" class="form-control" placeholder="元">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">兼职/副业收入</label>
+                                            <input type="number" class="form-control" placeholder="元">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">其他收入</label>
+                                            <input type="number" class="form-control" placeholder="元">
+                                        </div>
+                                        <div class="border-top pt-2">
+                                            <strong>月总收入：<span id="totalIncome">0</span> 元</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-header">
+                                        <h6 class="mb-0"><i class="fas fa-home me-2"></i>必要支出</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">房租/房贷</label>
+                                            <input type="number" class="form-control" placeholder="元">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">基本生活费</label>
+                                            <input type="number" class="form-control" placeholder="元">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">交通通讯费</label>
+                                            <input type="number" class="form-control" placeholder="元">
+                                        </div>
+                                        <div class="border-top pt-2">
+                                            <strong>月总支出：<span id="totalExpense">0</span> 元</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center my-4">
+                            <div class="alert alert-primary">
+                                <h5 class="mb-2">月可还款金额</h5>
+                                <h3 class="text-success mb-0" id="availablePayment">0 元</h3>
+                                <small class="text-muted">总收入 - 必要支出 = 可还款金额</small>
+                            </div>
+                        </div>
+
+                        <h5>📈 还款策略对比分析</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>策略</th>
+                                        <th>操作方法</th>
+                                        <th>适合人群</th>
+                                        <th>优点</th>
+                                        <th>缺点</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>雪球法</strong></td>
+                                        <td>先还清最小额债务</td>
+                                        <td>多笔小额债务</td>
+                                        <td>快速减少债务笔数，增强信心</td>
+                                        <td>总利息可能较高</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>雪崩法</strong></td>
+                                        <td>先还最高利率债务</td>
+                                        <td>高利率债务较多</td>
+                                        <td>总利息最少，还款效率最高</td>
+                                        <td>前期成就感较低</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>协商法</strong></td>
+                                        <td>与债权人协商还款</td>
+                                        <td>收入不稳定</td>
+                                        <td>减轻还款压力，避免逾期</td>
+                                        <td>可能影响征信记录</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h5>🔄 还款计划执行模板</h5>
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>月度还款计划表</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <strong>每月1-5日：</strong>还款 <input type="number" class="form-control form-control-sm d-inline-block w-50" placeholder="金额"> 元
+                                        <small class="text-muted">（债权人：<input type="text" class="form-control form-control-sm d-inline-block w-50" placeholder="名称">）</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>每月6-10日：</strong>还款 <input type="number" class="form-control form-control-sm d-inline-block w-50" placeholder="金额"> 元
+                                        <small class="text-muted">（债权人：<input type="text" class="form-control form-control-sm d-inline-block w-50" placeholder="名称">）</small>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <strong>每月11-15日：</strong>还款 <input type="number" class="form-control form-control-sm d-inline-block w-50" placeholder="金额"> 元
+                                        <small class="text-muted">（债权人：<input type="text" class="form-control form-control-sm d-inline-block w-50" placeholder="名称">）</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>每月16-20日：</strong>还款 <input type="number" class="form-control form-control-sm d-inline-block w-50" placeholder="金额"> 元
+                                        <small class="text-muted">（债权人：<input type="text" class="form-control form-control-sm d-inline-block w-50" placeholder="名称">）</small>
+                                    </div>
+                                </div>
+                                <div class="alert alert-info mb-0">
+                                    <strong>每月剩余应急资金：</strong> <span id="emergencyFund">0</span> 元
+                                    <small class="text-muted d-block">建议保留至少1000元作为应急资金</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning mt-4">
+                            <h6><i class="fas fa-exclamation-circle me-2"></i>重要提醒</h6>
+                            <ul class="mb-0">
+                                <li>确保月还款金额不超过月收入的50%</li>
+                                <li>保留3-6个月的生活应急金</li>
+                                <li>坚持执行计划，不要中途放弃</li>
+                                <li>每月复盘调整计划</li>
+                            </ul>
+                        </div>
+                    """,
+                    'tools': [
+                        {
+                            'name': '还款计划表',
+                            'icon': 'calendar-plus',
+                            'color': 'primary',
+                            'description': '专业月度还款计划表格',
+                            'button_text': '下载计划表',
+                            'button_icon': 'download',
+                            'action': 'downloadDebtTemplate()'
+                        },
+                        {
+                            'name': '债务计算器',
+                            'icon': 'calculator',
+                            'color': 'info',
+                            'description': '计算详细还款计划',
+                            'button_text': '使用计算器',
+                            'button_icon': 'calculator',
+                            'action': 'window.location.href="/members#debtCalculator"'
+                        }
+                    ],
+                    'actions': [
+                        {'text': '已制定还款计划', 'type': 'success', 'step': 'repayment_plan'},
+                        {'text': '需要专业指导', 'type': 'warning', 'step': 'need_pro_help'}
+                    ]
+                }
+            ]
+        }
+        
+        return render_template('debt_management_course.html', 
+                             course=course_content,
+                             progress=65)
+    except Exception as e:
+        print(f"债务管理课程页面错误: {e}")
+        return "债务管理课程页面暂时不可用", 500
     
+@app.route('/download/debt-management-template')
+@payment_required
+def download_debt_template():
+    """下载专业的债务管理表格"""
+    try:
+        print("🔍 DEBUG: 下载专业债务管理表格")
+        
+        # 尝试创建专业的Excel文件
+        try:
+            import openpyxl
+            from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+            
+            wb = openpyxl.Workbook()
+            
+            # ===== 债务清单表 =====
+            ws_debts = wb.active
+            ws_debts.title = "债务清单总表"
+            
+            # 设置表头样式
+            headers = ['序号', '债权人', '债务类型', '总借款金额(元)', '已还金额(元)', 
+                      '剩余本金(元)', '年利率(%)', '每月最低还款', '逾期状态', 
+                      '最后还款日', '紧急程度', '还款优先级', '备注']
+            
+            for col, header in enumerate(headers, 1):
+                cell = ws_debts.cell(row=1, column=col, value=header)
+                cell.font = Font(bold=True, color="FFFFFF", size=12)
+                cell.fill = PatternFill(start_color="366092", end_color="366092", fill_type="solid")
+                cell.alignment = Alignment(horizontal="center", vertical="center")
+                cell.border = Border(left=Side(style='thin'), right=Side(style='thin'), 
+                                   top=Side(style='thin'), bottom=Side(style='thin'))
+            
+            # 添加示例数据和公式
+            example_data = [
+                [1, '招商银行信用卡', '信用卡', 50000, 5000, 45000, 18.25, 2500, '逾期', '2024-03-15', '紧急', 1, '已协商分期60期'],
+                [2, '支付宝借呗', '网贷', 30000, 0, 30000, 15.5, 1800, '正常', '2024-03-20', '高息', 2, '正常还款中'],
+                [3, '微信微粒贷', '网贷', 20000, 2000, 18000, 16.8, 1200, '逾期', '2024-03-10', '紧急', 3, '催收中，需协商'],
+                [4, '建设银行房贷', '房贷', 500000, 50000, 450000, 4.5, 3500, '正常', '2024-03-25', '常规', 5, '正常还款'],
+                [5, '亲友借款', '个人借款', 100000, 20000, 80000, 0, 2000, '正常', '2024-03-30', '常规', 4, '无利息，可协商']
+            ]
+            
+            for row, data in enumerate(example_data, 2):
+                for col, value in enumerate(data, 1):
+                    cell = ws_debts.cell(row=row, column=col, value=value)
+                    cell.border = Border(left=Side(style='thin'), right=Side(style='thin'), 
+                                       top=Side(style='thin'), bottom=Side(style='thin'))
+            
+            # 添加汇总行
+            summary_row = len(example_data) + 3
+            ws_debts.cell(row=summary_row, column=4, value="总债务金额:").font = Font(bold=True)
+            ws_debts.cell(row=summary_row, column=5, value="=SUM(D2:D6)").font = Font(bold=True, color="FF0000")
+            
+            ws_debts.cell(row=summary_row+1, column=4, value="剩余债务总额:").font = Font(bold=True)
+            ws_debts.cell(row=summary_row+1, column=5, value="=SUM(F2:F6)").font = Font(bold=True, color="FF0000")
+            
+            ws_debts.cell(row=summary_row+2, column=4, value="月最低还款总额:").font = Font(bold=True)
+            ws_debts.cell(row=summary_row+2, column=5, value="=SUM(H2:H6)").font = Font(bold=True, color="FF0000")
+            
+            # 设置列宽
+            column_widths = [8, 15, 12, 15, 15, 15, 12, 15, 12, 15, 12, 12, 20]
+            for col, width in enumerate(column_widths, 1):
+                ws_debts.column_dimensions[openpyxl.utils.get_column_letter(col)].width = width
+            
+            # ===== 还款计划表 =====
+            ws_plan = wb.create_sheet("还款计划表")
+            
+            plan_headers = ['月份', '总收入', '必要支出', '可还款金额', '信用卡还款', '网贷还款', 
+                          '其他还款', '应急储备', '剩余债务', '完成情况', '备注']
+            
+            for col, header in enumerate(plan_headers, 1):
+                cell = ws_plan.cell(row=1, column=col, value=header)
+                cell.font = Font(bold=True, color="FFFFFF", size=12)
+                cell.fill = PatternFill(start_color="70AD47", end_color="70AD47", fill_type="solid")
+                cell.alignment = Alignment(horizontal="center", vertical="center")
+                cell.border = Border(left=Side(style='thin'), right=Side(style='thin'), 
+                                   top=Side(style='thin'), bottom=Side(style='thin'))
+            
+            # ===== 使用指南表 =====
+            ws_guide = wb.create_sheet("使用指南")
+            guide_content = [
+                ["债务管理专业表格使用指南"],
+                [""],
+                ["📋 债务清单总表使用说明"],
+                ["1. 填写所有债务的详细信息"],
+                ["   - 如实填写每个债权人的债务情况"],
+                ["   - 准确计算剩余本金和利息"],
+                ["   - 根据紧急程度和利率确定还款优先级"],
+                [""],
+                ["📅 还款计划表使用说明"],
+                ["1. 根据收入制定月度还款计划"],
+                ["   - 优先处理紧急和高息债务"],
+                ["   - 确保还款金额在承受范围内"],
+                ["   - 保留必要的应急资金"],
+                [""],
+                ["💡 专业建议"],
+                ["1. 每周更新一次表格，跟踪进度"],
+                ["2. 不要以贷养贷，切断恶性循环"],
+                ["3. 与债权人保持沟通，积极协商"],
+                ["4. 坚持执行计划，不要中途放弃"],
+                ["5. 寻求专业帮助 if needed"],
+                [""],
+                ["🎯 还款优先级策略"],
+                ["第一优先级：已逾期、可能起诉的债务"],
+                ["第二优先级：高利率（>15%）的债务"],
+                ["第三优先级：正常还款中的常规债务"],
+                ["第四优先级：亲友借款等无息债务"],
+                [""],
+                ["📞 紧急求助"],
+                ["银保监会投诉热线：12378"],
+                ["心理援助热线：12320"],
+                ["上岸翻身营专家咨询：会员专属"],
+                [""],
+                ["生成时间：{}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))],
+                ["上岸翻身营 - 专业的债务管理指导"]
+            ]
+            
+            for row, content in enumerate(guide_content, 1):
+                cell = ws_guide.cell(row=row, column=1, value=content[0])
+                if row == 1:
+                    cell.font = Font(bold=True, size=14, color="366092")
+                elif content[0] and any(marker in content[0] for marker in ["📋", "📅", "💡", "🎯", "📞"]):
+                    cell.font = Font(bold=True, color="366092")
+            
+            # 返回Excel文件
+            output = BytesIO()
+            wb.save(output)
+            output.seek(0)
+            
+            return send_file(
+                output,
+                as_attachment=True,
+                download_name='债务管理专业表格.xlsx',
+                mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+            
+        except ImportError:
+            # 如果没有openpyxl，创建专业的CSV文件
+            template_content = create_professional_csv_template()
+            output = StringIO()
+            output.write(template_content)
+            output.seek(0)
+            
+            return send_file(
+                BytesIO(output.getvalue().encode('utf-8')),
+                as_attachment=True,
+                download_name='债务管理专业表格.csv',
+                mimetype='text/csv'
+            )
+            
+    except Exception as e:
+        print(f"❌ 下载错误: {e}")
+        flash(f'下载失败: {str(e)}', 'error')
+        return redirect(url_for('members'))
+
+def create_professional_csv_template():
+    """创建专业的CSV格式债务管理表格"""
+    template_content = """上岸翻身营 - 债务管理专业表格
+生成时间：{}
+
+=== 债务清单总表 ===
+序号,债权人,债务类型,总借款金额(元),已还金额(元),剩余本金(元),年利率(%),每月最低还款,逾期状态,最后还款日,紧急程度,还款优先级,备注
+1,招商银行信用卡,信用卡,50000,5000,45000,18.25,2500,逾期,2024-03-15,紧急,1,已协商分期60期
+2,支付宝借呗,网贷,30000,0,30000,15.5,1800,正常,2024-03-20,高息,2,正常还款中
+3,微信微粒贷,网贷,20000,2000,18000,16.8,1200,逾期,2024-03-10,紧急,3,催收中，需协商
+4,建设银行房贷,房贷,500000,50000,450000,4.5,3500,正常,2024-03-25,常规,5,正常还款
+5,亲友借款,个人借款,100000,20000,80000,0,2000,正常,2024-03-30,常规,4,无利息，可协商
+
+汇总：
+总债务金额,700000
+剩余债务总额,623000
+月最低还款总额,11000
+
+=== 还款计划表 ===
+月份,总收入,必要支出,可还款金额,信用卡还款,网贷还款,其他还款,应急储备,剩余债务,完成情况,备注
+2024-03,8000,4000,4000,2500,1500,0,0,619000,进行中,首月执行
+2024-04,8000,4000,4000,2500,1500,0,0,615000,计划中,坚持计划
+
+=== 使用指南 ===
+📋 债务清单总表使用说明
+1. 填写所有债务的详细信息
+   - 如实填写每个债权人的债务情况
+   - 准确计算剩余本金和利息
+   - 根据紧急程度和利率确定还款优先级
+
+📅 还款计划表使用说明  
+1. 根据收入制定月度还款计划
+   - 优先处理紧急和高息债务
+   - 确保还款金额在承受范围内
+   - 保留必要的应急资金
+
+💡 专业建议
+1. 每周更新一次表格，跟踪进度
+2. 不要以贷养贷，切断恶性循环
+3. 与债权人保持沟通，积极协商
+4. 坚持执行计划，不要中途放弃
+5. 寻求专业帮助 if needed
+
+🎯 还款优先级策略
+第一优先级：已逾期、可能起诉的债务
+第二优先级：高利率（>15%）的债务  
+第三优先级：正常还款中的常规债务
+第四优先级：亲友借款等无息债务
+
+📞 紧急求助
+银保监会投诉热线：12378
+心理援助热线：12320
+上岸翻身营专家咨询：会员专属
+
+上岸翻身营 - 专业的债务管理指导
+为您提供全方位的债务解决方案
+""".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    
+    return template_content
+ 
 # ============ 启动应用 ============
 if __name__ == '__main__':
     init_db()

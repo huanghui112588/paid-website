@@ -408,6 +408,140 @@
             }
         }
 
+        /* 债务管理卡片专业样式 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon i {
+            font-size: 1.5rem;
+        }
+
+        .feature-content h5 {
+            margin: 0 0 5px 0;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .feature-content p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* 成就预览样式 */
+        .achievement-preview {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .achievement-item {
+            padding: 10px;
+        }
+
+        .achievement-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .achievement-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* 进度条优化 */
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(-45deg,
+                    rgba(255, 255, 255, 0.2) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    rgba(255, 255, 255, 0.2) 75%,
+                    transparent 75%,
+                    transparent);
+            background-size: 20px 20px;
+            animation: move 2s linear infinite;
+        }
+
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 20px 0;
+            }
+        }
+
         /* 响应式调整 */
         @media (max-width: 768px) {
             .calculator-container {
@@ -636,47 +770,89 @@
         <!-- 主要内容区域 -->
         <div class="content-grid">
 
-            <!-- 债务管理卡片 -->
+            <!-- 债务管理基础卡片 -->
             <div class="content-card">
                 <div class="card-header">
-                    <h2 class="card-title">债务管理基础</h2>
-                    <span class="card-badge">必备</span>
+                    <h2 class="card-title"><i class="fas fa-chart-line me-2"></i>债务管理基础</h2>
+                    <span class="card-badge">必备技能</span>
                 </div>
                 <div class="card-content">
-                    <p class="card-description">停止以贷养贷，科学规划还款，从根源解决债务问题</p>
+                    <p class="card-description">停止以贷养贷，科学规划还款，从根源解决债务问题。专为负债人群设计的实用解决方案。</p>
 
-                    <div class="stats-container">
-                        <div class="stat-item">
-                            <span class="stat-value">停止养贷</span>
-                            <span class="stat-label">切断恶性循环</span>
+                    <!-- 功能特性展示 -->
+                    <div class="features-grid mb-4">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-ban text-danger"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>停止养贷</h5>
+                                <p>切断恶性循环，防止债务雪球</p>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-value">清点债务</span>
-                            <span class="stat-label">制作债务清单</span>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-clipboard-list text-primary"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>清点债务</h5>
+                                <p>制作完整债务清单，清晰掌握负债情况</p>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-value">制定计划</span>
-                            <span class="stat-label">科学还款规划</span>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-calendar-check text-success"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>制定计划</h5>
+                                <p>科学还款规划，稳步上岸</p>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 学习进度 -->
                     <div class="progress-container">
                         <div class="progress-info">
-                            <span>学习进度</span>
-                            <span>65%</span>
+                            <span><i class="fas fa-graduation-cap me-1"></i>学习进度</span>
+                            <span id="debtProgress">65%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 65%"></div>
+                            <div class="progress-fill" id="debtProgressBar" style="width: 65%"></div>
                         </div>
                     </div>
 
+                    <!-- 行动按钮 -->
                     <div class="card-actions">
-                        <button class="btn btn-primary" onclick="openCourse('debt-management')">
-                            <i class="fas fa-play-circle"></i> 学习债务管理
-                        </button>
-                        <button class="btn btn-outline" onclick="downloadResource('debt-template')">
-                            <i class="fas fa-download"></i> 下载管理表格
-                        </button>
+                        <a href="/debt-management-course" class="btn btn-primary">
+                            <i class="fas fa-play-circle me-2"></i>开始学习债务管理
+                        </a>
+                        <a href="/download/debt-management-template" class="btn btn-outline">
+                            <i class="fas fa-download me-2"></i>下载专业管理表格
+                        </a>
+                    </div>
+
+                    <!-- 学习成果预览 -->
+                    <div class="achievement-preview mt-3">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="achievement-item">
+                                    <div class="achievement-number">3</div>
+                                    <div class="achievement-label">核心模块</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="achievement-item">
+                                    <div class="achievement-number">12</div>
+                                    <div class="achievement-label">实用技巧</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="achievement-item">
+                                    <div class="achievement-number">5</div>
+                                    <div class="achievement-label">专业工具</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -892,6 +1068,18 @@
         </div>
 
         <script>
+            // 测试按钮功能
+            function testButton(type) {
+                console.log(`🔍 DEBUG: ${type} 测试按钮被点击`);
+                alert(`${type} 测试按钮正常工作`);
+
+                if (type === '学习') {
+                    window.location.href = "/debt-management-course";
+                } else {
+                    window.location.href = "/download/debt-management-template";
+                }
+            }
+
             // ============ 问答功能 - 稳定版本 ============
 
             // 加载用户的问题列表
@@ -1316,6 +1504,109 @@
                     showAlert('月还款额过低，可能无法覆盖利息', 'warning');
                 }
             }
+
+            // ============ 债务管理功能 - 调试版本 ============
+
+            // 打开债务管理课程
+            function openDebtManagementCourse() {
+                console.log('🔍 DEBUG: openDebtManagementCourse 函数被调用');
+                console.log('🔍 DEBUG: 当前URL:', window.location.href);
+
+                // 测试直接跳转
+                window.location.href = "/debt-management-course";
+            }
+
+            // 下载债务管理表格
+            function downloadDebtTemplate() {
+                console.log('🔍 DEBUG: downloadDebtTemplate 函数被调用');
+                console.log('🔍 DEBUG: 当前URL:', window.location.href);
+
+                // 测试直接下载
+                window.location.href = "/download/debt-management-template";
+            }
+
+            // 页面加载时添加事件监听器
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log('🔍 DEBUG: 页面加载完成');
+
+                // 为债务管理按钮添加事件监听器（备用方案）
+                const debtButtons = document.querySelectorAll('[onclick*="openDebtManagementCourse"], [onclick*="downloadDebtTemplate"]');
+                console.log('🔍 DEBUG: 找到债务管理按钮:', debtButtons.length);
+
+                debtButtons.forEach(button => {
+                    const originalOnClick = button.getAttribute('onclick');
+                    console.log('🔍 DEBUG: 按钮原始onclick:', originalOnClick);
+
+                    button.addEventListener('click', function (e) {
+                        console.log('🔍 DEBUG: 按钮被点击:', this);
+                        e.preventDefault();
+
+                        if (originalOnClick.includes('openDebtManagementCourse')) {
+                            openDebtManagementCourse();
+                        } else if (originalOnClick.includes('downloadDebtTemplate')) {
+                            downloadDebtTemplate();
+                        }
+                    });
+                });
+            });
+
+            // ============ 债务管理功能 ============
+
+            // 打开债务管理课程
+            function openDebtManagementCourse() {
+                console.log('打开债务管理课程');
+                window.location.href = "/debt-management-course";
+            }
+
+            // 下载债务管理表格
+            function downloadDebtTemplate() {
+                console.log('下载债务管理表格');
+                window.location.href = "/download/debt-management-template";
+            }
+
+            // 加载债务管理进度
+            function loadDebtManagementProgress() {
+                fetch('/api/debt-management/progress')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const progress = data.progress.total_progress;
+                            document.getElementById('debtProgress').textContent = progress + '%';
+                            document.getElementById('debtProgressBar').style.width = progress + '%';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('加载进度失败:', error);
+                    });
+            }
+
+            // 页面加载时初始化
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log('页面加载完成，初始化债务管理功能...');
+
+                // 加载债务管理进度
+                loadDebtManagementProgress();
+
+                // 为债务管理按钮添加事件监听（备用方案）
+                const debtCourseBtn = document.querySelector('[onclick="openDebtManagementCourse()"]');
+                const downloadTemplateBtn = document.querySelector('[onclick="downloadDebtTemplate()"]');
+
+                if (debtCourseBtn) {
+                    debtCourseBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        console.log('备用：打开债务管理课程');
+                        window.location.href = "/debt-management-course";
+                    });
+                }
+
+                if (downloadTemplateBtn) {
+                    downloadTemplateBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        console.log('备用：下载债务管理表格');
+                        window.location.href = "/download/debt-management-template";
+                    });
+                }
+            });
 
             // ============ 工具箱功能 ============
 
