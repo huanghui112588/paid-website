@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理建设支持 - 上岸翻身营</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 主卡片样式 */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 30px;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* 功能网格 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--purple);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* 进度条 */
+        .progress-container {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--pink));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 测试卡片 */
+        .test-card {
+            background: linear-gradient(135deg, #fef3c7, #f59e0b);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-body,
+            .card-header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-heart text-primary me-2 fs-4"></i>
+                    <h4 class="mb-0">心理建设支持中心</h4>
+                </div>
+                <a href="members.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left me-2"></i>返回会员中心
+                </a>
+            </div>
+        </nav>
+
+        <!-- 主卡片 -->
+        <div class="main-card fade-in">
+            <div class="card-header">
+                <h1><i class="fas fa-hands-helping me-2"></i>心理建设支持</h1>
+                <p class="mb-0 mt-2 opacity-90">负债不是终点，调整心态，重拾信心，迎接新生</p>
+            </div>
+            <div class="card-body">
+                <!-- 心理状态概览 -->
+                <div class="row mb-4">
+                    <div class="col-md-4 text-center">
+                        <div class="feature-card">
+                            <div class="feature-icon bg-danger text-white">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <h5>缓解焦虑</h5>
+                            <p class="text-muted">实用技巧和练习，帮助您减轻心理压力</p>
+                            <div class="progress-container">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small>掌握程度</small>
+                                    <small>65%</small>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="feature-card">
+                            <div class="feature-icon bg-success text-white">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <h5>重建信心</h5>
+                            <p class="text-muted">心理疏导方法，帮助您重拾生活信心</p>
+                            <div class="progress-container">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small>掌握程度</small>
+                                    <small>45%</small>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="feature-card">
+                            <div class="feature-icon bg-info text-white">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h5>家庭关系</h5>
+                            <p class="text-muted">沟通技巧，改善家庭关系和支持系统</p>
+                            <div class="progress-container">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small>掌握程度</small>
+                                    <small>55%</small>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 55%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 主要功能区域 -->
+                <div class="features-grid">
+                    <!-- 心理调适课程 -->
+                    <div class="feature-card">
+                        <div class="feature-icon bg-primary text-white">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>心理调适课程</h4>
+                        <p class="text-muted mb-3">系统学习心理调适方法，掌握应对压力的技巧</p>
+
+                        <div class="course-list">
+                            <div
+                                class="course-item d-flex justify-content-between align-items-center p-3 mb-2 bg-light rounded">
+                                <div>
+                                    <h6 class="mb-1">应对焦虑的5个方法</h6>
+                                    <small class="text-muted">15分钟 · 基础课程</small>
+                                </div>
+                                <span class="badge bg-success">已完成</span>
+                            </div>
+
+                            <div
+                                class="course-item d-flex justify-content-between align-items-center p-3 mb-2 bg-light rounded">
+                                <div>
+                                    <h6 class="mb-1">重建自信的心理学</h6>
+                                    <small class="text-muted">25分钟 · 进阶课程</small>
+                                </div>
+                                <span class="badge bg-warning">进行中</span>
+                            </div>
+
+                            <div
+                                class="course-item d-flex justify-content-between align-items-center p-3 mb-2 bg-light rounded">
+                                <div>
+                                    <h6 class="mb-1">家庭沟通的艺术</h6>
+                                    <small class="text-muted">20分钟 · 实用技巧</small>
+                                </div>
+                                <span class="badge bg-secondary">未开始</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-100 mt-3" onclick="startLearning()">
+                            <i class="fas fa-play-circle me-2"></i>开始学习心理调适
+                        </button>
+                    </div>
+
+                    <!-- 心理测试 -->
+                    <div class="feature-card">
+                        <div class="feature-icon bg-warning text-white">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h4>心理健康测试</h4>
+                        <p class="text-muted mb-3">专业心理评估，了解当前心理状态</p>
+
+                        <div class="test-list">
+                            <div class="test-item p-3 mb-3 bg-light rounded">
+                                <h6>焦虑自评量表(SAS)</h6>
+                                <p class="small text-muted mb-2">评估您的焦虑程度和影响因素</p>
+                                <button class="btn btn-sm btn-outline" onclick="startTest('anxiety')">
+                                    开始测试
+                                </button>
+                            </div>
+
+                            <div class="test-item p-3 mb-3 bg-light rounded">
+                                <h6>压力应对能力测试</h6>
+                                <p class="small text-muted mb-2">评估您的压力管理和应对能力</p>
+                                <button class="btn btn-sm btn-outline" onclick="startTest('stress')">
+                                    开始测试
+                                </button>
+                            </div>
+
+                            <div class="test-item p-3 bg-light rounded">
+                                <h6>心理韧性评估</h6>
+                                <p class="small text-muted mb-2">测试您的心理恢复和适应能力</p>
+                                <button class="btn btn-sm btn-outline" onclick="startTest('resilience')">
+                                    开始测试
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速帮助工具 -->
+                <div class="test-card">
+                    <h4><i class="fas fa-first-aid me-2"></i>快速心理急救</h4>
+                    <p class="mb-3">当您感到焦虑或压力时，可以立即使用的技巧</p>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-light w-100 text-start" onclick="showBreathingExercise()">
+                                <i class="fas fa-wind text-info me-2"></i>
+                                呼吸放松法
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-light w-100 text-start" onclick="showGroundingTechnique()">
+                                <i class="fas fa-mountain text-success me-2"></i>
+                                接地练习
+                            </button>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-light w-100 text-start" onclick="showPositiveAffirmation()">
+                                <i class="fas fa-comment-dots text-primary me-2"></i>
+                                积极暗示
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 行动按钮 -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary me-3" onclick="startLearning()">
+                        <i class="fas fa-graduation-cap me-2"></i>学习心理调适
+                    </button>
+                    <button class="btn btn-outline" onclick="takeMentalTest()">
+                        <i class="fas fa-clipboard-check me-2"></i>心理测试
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 心理测试模态框 -->
+    <div class="modal-overlay" id="testModal">
+        <div class="modal-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 id="testTitle">心理测试</h4>
+                <button class="btn-close" onclick="closeTestModal()"></button>
+            </div>
+            <div id="testContent">
+                <!-- 测试内容将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速帮助模态框 -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 id="helpTitle">快速帮助</h4>
+                <button class="btn-close" onclick="closeHelpModal()"></button>
+            </div>
+            <div id="helpContent">
+                <!-- 帮助内容将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 心理测试数据
+        const tests = {
+            anxiety: {
+                title: "焦虑自评量表(SAS)",
+                questions: [
+                    "我感到比往常更加紧张和焦虑",
+                    "我无缘无故感到害怕",
+                    "我容易心烦意乱或感到恐慌",
+                    "我感到自己可能将要发疯",
+                    "我感到事事都很顺利，不会有倒霉的事情发生",
+                    "我的四肢抖动和发颤",
+                    "我因头痛、颈痛和背痛而烦恼",
+                    "我感到无力且容易疲劳",
+                    "我感到很平静，能安静坐下来",
+                    "我感到我的心跳较快"
+                ],
+                scoring: "根据最近一周的情况回答"
+            },
+            stress: {
+                title: "压力应对能力测试",
+                questions: [
+                    "面对压力时，我能够保持冷静",
+                    "我有有效的放松方法",
+                    "我能够向他人寻求支持",
+                    "我能从困难中看到积极的一面",
+                    "我有规律的运动习惯",
+                    "我能够合理安排时间",
+                    "我对自己应对压力的能力有信心",
+                    "在压力下我仍然能够清晰思考"
+                ],
+                scoring: "评估您的压力管理能力"
+            },
+            resilience: {
+                title: "心理韧性评估",
+                questions: [
+                    "我能从挫折中快速恢复",
+                    "我相信自己能够克服困难",
+                    "我能够适应变化的环境",
+                    "在压力下我仍能保持乐观",
+                    "我有明确的生活目标",
+                    "我能从失败中学习成长",
+                    "我有强大的支持系统",
+                    "我对自己应对挑战的能力有信心"
+                ],
+                scoring: "评估您的心理恢复和适应能力"
+            }
+        };
+
+        // 快速帮助内容
+        const helpTools = {
+            breathing: {
+                title: "呼吸放松法",
+                content: `
+                    <h5>4-7-8呼吸法</h5>
+                    <p>这是一种简单有效的放松技巧：</p>
+                    <ol>
+                        <li>通过鼻子安静地吸气，默数4秒</li>
+                        <li>屏住呼吸，默数7秒</li>
+                        <li>通过嘴巴呼气，默数8秒</li>
+                    </ol>
+                    <p>重复3-5次，您会感到明显的放松效果。</p>
+                    <div class="text-center mt-4">
+                        <div class="breathing-animation">
+                            <div class="circle" style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                吸气
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            grounding: {
+                title: "接地练习",
+                content: `
+                    <h5>5-4-3-2-1接地法</h5>
+                    <p>当感到焦虑时，使用这个方法重新连接当下：</p>
+                    <ul>
+                        <li><strong>5</strong> 看：找出你能看到的5样东西</li>
+                        <li><strong>4</strong> 触：感受你能触摸到的4样东西</li>
+                        <li><strong>3</strong> 听：仔细听你能听到的3种声音</li>
+                        <li><strong>2</strong> 闻：识别你能闻到的2种气味</li>
+                        <li><strong>1</strong> 尝：感受你能尝到的1种味道</li>
+                    </ul>
+                    <p>这个练习能帮助你从焦虑思维中回到现实。</p>
+                `
+            },
+            affirmation: {
+                title: "积极自我暗示",
+                content: `
+                    <h5>积极肯定语</h5>
+                    <p>重复这些积极的自我肯定语：</p>
+                    <div class="p-3 bg-light rounded mb-3">
+                        <p class="mb-2"><i class="fas fa-check text-success me-2"></i>我有能力应对这个挑战</p>
+                        <p class="mb-2"><i class="fas fa-check text-success me-2"></i>这只是暂时的，我会好起来的</p>
+                        <p class="mb-2"><i class="fas fa-check text-success me-2"></i>我每天都在进步</p>
+                        <p class="mb-2"><i class="fas fa-check text-success me-2"></i>我值得拥有平静和幸福</p>
+                        <p class="mb-0"><i class="fas fa-check text-success me-2"></i>我有力量和韧性</p>
+                    </div>
+                    <p>每天重复这些肯定语，最好对着镜子说，效果更好。</p>
+                `
+            }
+        };
+
+        // 开始学习心理调适
+        function startLearning() {
+            alert('即将带您进入心理调适课程学习页面...');
+            // 实际应用中这里应该是页面跳转或加载课程内容
+        }
+
+        // 开始心理测试
+        function takeMentalTest() {
+            // 默认打开焦虑测试
+            startTest('anxiety');
+        }
+
+        // 开始特定测试
+        function startTest(testType) {
+            const test = tests[testType];
+            if (!test) return;
+
+            const modal = document.getElementById('testModal');
+            const title = document.getElementById('testTitle');
+            const content = document.getElementById('testContent');
+
+            title.textContent = test.title;
+
+            let questionsHtml = `
+                <p class="text-muted mb-4">${test.scoring}</p>
+                <form id="testForm">
+            `;
+
+            test.questions.forEach((question, index) => {
+                questionsHtml += `
+                    <div class="mb-4">
+                        <p class="fw-bold">${index + 1}. ${question}</p>
+                        <div class="btn-group-vertical w-100" role="group">
+                            <input type="radio" class="btn-check" name="q${index}" id="q${index}a" value="1" autocomplete="off">
+                            <label class="btn btn-outline-primary mb-1" for="q${index}a">很少或没有</label>
+                            
+                            <input type="radio" class="btn-check" name="q${index}" id="q${index}b" value="2" autocomplete="off">
+                            <label class="btn btn-outline-primary mb-1" for="q${index}b">有时</label>
+                            
+                            <input type="radio" class="btn-check" name="q${index}" id="q${index}c" value="3" autocomplete="off">
+                            <label class="btn btn-outline-primary mb-1" for="q${index}c">经常</label>
+                            
+                            <input type="radio" class="btn-check" name="q${index}" id="q${index}d" value="4" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="q${index}d">总是</label>
+                        </div>
+                    </div>
+                `;
+            });
+
+            questionsHtml += `
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-primary" onclick="submitTest('${testType}')">
+                            <i class="fas fa-paper-plane me-2"></i>提交测试
+                        </button>
+                    </div>
+                </form>
+            `;
+
+            content.innerHTML = questionsHtml;
+            modal.style.display = 'flex';
+        }
+
+        // 提交测试
+        function submitTest(testType) {
+            const test = tests[testType];
+            if (!test) return;
+
+            // 收集用户答案
+            let totalScore = 0;
+            let answeredAll = true;
+            const answers = [];
+
+            for (let i = 0; i < test.questions.length; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    answeredAll = false;
+                    break;
+                }
+                const score = parseInt(selected.value);
+                answers.push(score);
+                totalScore += score;
+            }
+
+            if (!answeredAll) {
+                showAlert('请回答所有问题', 'warning');
+                return;
+            }
+
+            // 计算分数和分析结果
+            const maxScore = test.questions.length * 4;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+
+            // 根据测试类型生成个性化分析
+            const analysis = generateTestAnalysis(testType, totalScore, answers, percentage);
+
+            // 显示结果
+            showTestResult(testType, totalScore, percentage, analysis);
+        }
+
+        // 生成测试分析
+        function generateTestAnalysis(testType, totalScore, answers, percentage) {
+            const analysis = {
+                level: '',
+                title: '',
+                description: '',
+                suggestions: [],
+                riskFactors: []
+            };
+
+            switch (testType) {
+                case 'anxiety':
+                    // 焦虑测试分析 (SAS标准)
+                    if (percentage < 50) {
+                        analysis.level = 'success';
+                        analysis.title = '焦虑水平正常';
+                        analysis.description = '您的焦虑水平在正常范围内，能够较好地应对日常压力。';
+                        analysis.suggestions = [
+                            '继续保持健康的生活习惯',
+                            '定期进行放松练习',
+                            '维持良好的社交支持'
+                        ];
+                    } else if (percentage < 60) {
+                        analysis.level = 'warning';
+                        analysis.title = '轻度焦虑';
+                        analysis.description = '您可能感到一些焦虑，但仍在可控范围内。建议关注压力管理。';
+                        analysis.suggestions = [
+                            '每天练习呼吸放松法',
+                            '适当减少工作压力',
+                            '增加体育锻炼',
+                            '寻求朋友或家人支持'
+                        ];
+                    } else if (percentage < 70) {
+                        analysis.level = 'warning';
+                        analysis.title = '中度焦虑';
+                        analysis.description = '您的焦虑水平较高，可能影响到日常生活。建议采取积极措施。';
+                        analysis.suggestions = [
+                            '定期进行心理咨询',
+                            '学习认知行为疗法技巧',
+                            '建立规律的作息时间',
+                            '避免咖啡因和酒精'
+                        ];
+                        analysis.riskFactors = ['持续紧张', '睡眠困难', '注意力不集中'];
+                    } else {
+                        analysis.level = 'danger';
+                        analysis.title = '重度焦虑';
+                        analysis.description = '您的焦虑水平很高，强烈建议寻求专业心理帮助。';
+                        analysis.suggestions = [
+                            '立即咨询专业心理医生',
+                            '考虑药物治疗（在医生指导下）',
+                            '参加焦虑管理课程',
+                            '建立紧急支持网络'
+                        ];
+                        analysis.riskFactors = ['惊恐发作', '回避行为', '身体症状明显'];
+                    }
+                    break;
+
+                case 'stress':
+                    // 压力测试分析
+                    if (percentage < 40) {
+                        analysis.level = 'success';
+                        analysis.title = '压力应对能力良好';
+                        analysis.description = '您有很好的压力管理能力，能够有效应对生活中的挑战。';
+                        analysis.suggestions = [
+                            '继续保持当前的应对策略',
+                            '帮助他人学习压力管理',
+                            '定期自我反思和调整'
+                        ];
+                    } else if (percentage < 60) {
+                        analysis.level = 'warning';
+                        analysis.title = '中等压力水平';
+                        analysis.description = '您面临一定的压力，但仍在可控范围内。需要关注压力源。';
+                        analysis.suggestions = [
+                            '识别主要压力源',
+                            '学习时间管理技巧',
+                            '增加休闲活动',
+                            '练习正念冥想'
+                        ];
+                    } else {
+                        analysis.level = 'danger';
+                        analysis.title = '高压状态';
+                        analysis.description = '您正处于高压状态，可能影响到身心健康。需要立即采取措施。';
+                        analysis.suggestions = [
+                            '立即减少工作量',
+                            '寻求专业心理咨询',
+                            '学习紧急放松技巧',
+                            '建立支持系统'
+                        ];
+                        analysis.riskFactors = [' burnout风险', '健康问题', '关系紧张'];
+                    }
+                    break;
+
+                case 'resilience':
+                    // 心理韧性分析
+                    if (percentage > 70) {
+                        analysis.level = 'success';
+                        analysis.title = '心理韧性很强';
+                        analysis.description = '您有很强的心理韧性，能够很好地从挫折中恢复。';
+                        analysis.suggestions = [
+                            '继续保持积极心态',
+                            '帮助他人建立韧性',
+                            '挑战新的目标'
+                        ];
+                    } else if (percentage > 50) {
+                        analysis.level = 'warning';
+                        analysis.title = '心理韧性中等';
+                        analysis.description = '您的心理韧性有待提升，面对重大挑战时可能需要更多支持。';
+                        analysis.suggestions = [
+                            '培养乐观思维',
+                            '建立更强的支持网络',
+                            '学习问题解决技巧',
+                            '接受不完美'
+                        ];
+                    } else {
+                        analysis.level = 'danger';
+                        analysis.title = '需要提升心理韧性';
+                        analysis.description = '您的心理韧性较低，容易受到挫折影响。建议系统学习韧性建设。';
+                        analysis.suggestions = [
+                            '参加心理韧性培训',
+                            '建立日常韧性练习',
+                            '寻求专业指导',
+                            '从小挑战开始锻炼'
+                        ];
+                        analysis.riskFactors = ['容易放弃', '负面思维', '缺乏支持'];
+                    }
+                    break;
+            }
+
+            // 添加具体的行为建议
+            addBehavioralSuggestions(analysis, answers, testType);
+
+            return analysis;
+        }
+
+        // 添加具体行为建议
+        function addBehavioralSuggestions(analysis, answers, testType) {
+            // 根据具体答案模式添加个性化建议
+            const highScoreItems = [];
+            answers.forEach((score, index) => {
+                if (score >= 3) {
+                    highScoreItems.push(index + 1);
+                }
+            });
+
+            if (highScoreItems.length > 0) {
+                analysis.detailedAdvice = `您在第${highScoreItems.join('、')}题得分较高，这些方面需要特别关注。`;
+            }
+
+            // 添加测试特定的额外建议
+            if (testType === 'anxiety') {
+                analysis.suggestions.push('记录焦虑触发因素和应对方法');
+                analysis.suggestions.push('练习渐进式肌肉放松法');
+            } else if (testType === 'stress') {
+                analysis.suggestions.push('建立健康的工作生活平衡');
+                analysis.suggestions.push('学习说"不"的技巧');
+            } else if (testType === 'resilience') {
+                analysis.suggestions.push('培养感恩的习惯');
+                analysis.suggestions.push('从每次挑战中寻找学习机会');
+            }
+        }
+
+        // 显示测试结果
+        function showTestResult(testType, score, percentage, analysis) {
+            const modal = document.getElementById('testModal');
+            const title = document.getElementById('testTitle');
+            const content = document.getElementById('testContent');
+
+            title.textContent = `${tests[testType].title} - 结果`;
+
+            // 根据分析级别设置颜色
+            const alertClass = {
+                'success': 'alert-success',
+                'warning': 'alert-warning',
+                'danger': 'alert-danger'
+            }[analysis.level] || 'alert-info';
+
+            let resultHtml = `
+        <div class="text-center mb-4">
+            <div class="score-circle" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: bold;">
+                ${score}
+            </div>
+            <p class="mt-3">原始分数 | 相当于 ${percentage}%</p>
+        </div>
+        
+        <div class="alert ${alertClass}">
+            <h5><i class="fas fa-chart-bar me-2"></i>${analysis.title}</h5>
+            <p class="mb-2">${analysis.description}</p>
+            ${analysis.detailedAdvice ? `<p class="mb-0"><strong>详细分析:</strong> ${analysis.detailedAdvice}</p>` : ''}
+        </div>
+    `;
+
+            // 添加风险因素（如果有）
+            if (analysis.riskFactors && analysis.riskFactors.length > 0) {
+                resultHtml += `
+            <div class="alert alert-danger">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>需要关注的风险因素</h6>
+                <ul class="mb-0">
+                    ${analysis.riskFactors.map(factor => `<li>${factor}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+            }
+
+            resultHtml += `
+        <div class="mt-4">
+            <h6><i class="fas fa-lightbulb me-2"></i>个性化建议：</h6>
+            <ul>
+                ${analysis.suggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+            </ul>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-book me-2"></i>推荐学习内容
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li>应对焦虑的5个方法</li>
+                            <li>压力管理技巧</li>
+                            <li>心理韧性训练</li>
+                            <li>正念冥想入门</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-tools me-2"></i>实用工具
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><a href="javascript:void(0)" onclick="showBreathingExercise()">呼吸放松法</a></li>
+                            <li><a href="javascript:void(0)" onclick="showGroundingTechnique()">接地练习</a></li>
+                            <li><a href="javascript:void(0)" onclick="showPositiveAffirmation()">积极暗示</a></li>
+                            <li>情绪记录表下载</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <button class="btn btn-primary me-2" onclick="startLearning()">
+                <i class="fas fa-graduation-cap me-2"></i>开始学习建议课程
+            </button>
+            <button class="btn btn-outline me-2" onclick="printTestResult()">
+                <i class="fas fa-print me-2"></i>打印结果
+            </button>
+            <button class="btn btn-outline" onclick="closeTestModal()">
+                <i class="fas fa-times me-2"></i>关闭
+            </button>
+        </div>
+    `;
+
+            content.innerHTML = resultHtml;
+            modal.style.display = 'flex';
+        }
+
+        // 打印测试结果
+        function printTestResult() {
+            const modalContent = document.querySelector('#testModal .modal-content');
+            const printWindow = window.open('', '_blank');
+
+            printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>心理测试结果 - 上岸翻身营</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                .score-circle { 
+                    width: 100px; height: 100px; border-radius: 50%; 
+                    background: linear-gradient(135deg, #667eea, #764ba2); 
+                    display: flex; align-items: center; justify-content: center; 
+                    color: white; font-size: 1.5rem; font-weight: bold; 
+                    margin: 0 auto; 
+                }
+                @media print {
+                    .no-print { display: none !important; }
+                    .btn { display: none !important; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h3>心理测试分析报告</h3>
+                    <p class="text-muted">上岸翻身营 - 专业心理支持</p>
+                    <hr>
+                </div>
+                ${modalContent.innerHTML}
+                <div class="text-center mt-4 text-muted">
+                    <small>生成时间: ${new Date().toLocaleString('zh-CN')} | 本报告仅供参考，如需专业诊断请咨询心理医生</small>
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // 关闭测试模态框
+        function closeTestModal() {
+            document.getElementById('testModal').style.display = 'none';
+        }
+
+        // 显示快速帮助工具
+        function showBreathingExercise() {
+            showHelpTool('breathing');
+        }
+
+        function showGroundingTechnique() {
+            showHelpTool('grounding');
+        }
+
+        function showPositiveAffirmation() {
+            showHelpTool('affirmation');
+        }
+
+        // 显示帮助工具
+        function showHelpTool(toolType) {
+            const tool = helpTools[toolType];
+            if (!tool) return;
+
+            const modal = document.getElementById('helpModal');
+            const title = document.getElementById('helpTitle');
+            const content = document.getElementById('helpContent');
+
+            title.textContent = tool.title;
+            content.innerHTML = tool.content;
+
+            modal.style.display = 'flex';
+        }
+
+        // 关闭帮助模态框
+        function closeHelpModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('心理建设支持页面加载完成');
+        });
+    </script>
+</body>
+
+</html>

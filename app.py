@@ -7,6 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from typing import Optional, List
 from io import BytesIO, StringIO
+from flask import Flask, render_template
+
+app = Flask(__name__)
 
 # ============ 加载环境变量 ============
 try:
@@ -1144,6 +1147,48 @@ def download_resource(resource_type):
         return jsonify({'success': True, 'message': f'开始下载 {resource["description"]}'})
     else:
         return jsonify({'success': False, 'message': '资源不存在'})
+    
+    # ============ 心理建设支持路由 ============
+@app.route('/psychological-support')
+@payment_required
+def psychological_support():
+    """心理建设支持页面 - 修复版本"""
+    try:
+        print("🔄 正在渲染心理建设支持页面...")
+        user_id = session.get('user_id')
+        username = session.get('username')
+        print(f"👤 用户: {username} (ID: {user_id})")
+        
+        return render_template('psychological-support.html')
+    except Exception as e:
+        print(f"❌ 心理建设支持页面错误: {e}")
+        flash(f'页面加载失败: {str(e)}', 'error')
+        return redirect(url_for('members'))
+    
+# ============ 重定向路由（兼容旧链接） ============
+@app.route('/members.html')
+@payment_required
+def redirect_members():
+    """将 members.html 重定向到 /members"""
+    return redirect(url_for('members'))
+
+@app.route('/psychological-support.html')
+@payment_required
+def redirect_psychological_support():
+    """将 psychological-support.html 重定向到 /psychological-support"""
+    return redirect(url_for('psychological_support'))
+
+@app.route('/debt-management-course.html')
+@payment_required
+def redirect_debt_management_course():
+    """重定向债务管理课程"""
+    return redirect(url_for('debt_management_course'))
+
+@app.route('/negotiation-guide.html')
+@payment_required
+def redirect_negotiation_guide():
+    """重定向协商话术指南"""
+    return redirect(url_for('negotiation_guide'))
     
 # ============ 调试路由 ============
 @app.route('/debug/questions')
