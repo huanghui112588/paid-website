@@ -894,19 +894,204 @@
                 <div class="card-content">
                     <p class="card-description">100+实用话术模板，助你成功与银行/平台协商</p>
 
-                    <div
-                        style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; padding: 30px; text-align: center; color: white; margin-bottom: 20px;">
-                        <i class="fas fa-handshake" style="font-size: 3rem; margin-bottom: 16px;"></i>
-                        <h3 style="margin-bottom: 8px;">协商话术库</h3>
-                        <p>银行协商 | 网贷平台 | 法律依据</p>
+                    <!-- 视频教学播放器 -->
+                    <div class="video-section">
+                        <h2>债务协商视频教学</h2>
+                        <p class="subtitle">专业指导，助您成功协商还款方案</p>
+
+                        <div class="video-container">
+                            <video id="debtVideo" controls>
+                                <source src="/static/videos/video1.mp4" type="video/mp4">
+                                您的浏览器不支持HTML5视频播放器。
+                            </video>
+                        </div>
+
+                        <div class="video-controls">
+                            <button class="control-btn" onclick="playPause()">播放/暂停</button>
+                            <button class="control-btn" onclick="makeBig()">放大尺寸</button>
+                            <button class="control-btn" onclick="makeNormal()">默认尺寸</button>
+                            <button class="control-btn" onclick="makeSmall()">缩小尺寸</button>
+                        </div>
+
+                        <div class="video-info">
+                            <h3>债务协商实战技巧</h3>
+                            <ul>
+                                <li>如何与银行有效沟通</li>
+                                <li>减免利息的谈判策略</li>
+                                <li>分期还款方案制定</li>
+                                <li>法律条款运用技巧</li>
+                                <li>应对催收的合规方法</li>
+                                <li>协商失败后的备选方案</li>
+                            </ul>
+                        </div>
+
+                        <div class="tips">
+                            <strong>温馨提示：</strong> 建议在WiFi环境下观看本视频，如有疑问可联系我们的债务顾问。
+                        </div>
                     </div>
+
+                    <style>
+                        .video-section {
+                            padding: 20px;
+                            background: #f8f9fa;
+                            border-radius: 10px;
+                            margin: 20px 0;
+                        }
+
+                        .video-section h2 {
+                            color: #2c3e50;
+                            margin-bottom: 10px;
+                            text-align: center;
+                        }
+
+                        .subtitle {
+                            color: #7f8c8d;
+                            margin-bottom: 20px;
+                            text-align: center;
+                        }
+
+                        .video-container {
+                            max-width: 800px;
+                            margin: 0 auto 20px;
+                            background: white;
+                            padding: 15px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                        }
+
+                        video {
+                            width: 100%;
+                            border-radius: 5px;
+                        }
+
+                        .video-controls {
+                            display: flex;
+                            justify-content: center;
+                            gap: 10px;
+                            margin-bottom: 20px;
+                            flex-wrap: wrap;
+                        }
+
+                        .control-btn {
+                            background: #3498db;
+                            color: white;
+                            border: none;
+                            padding: 8px 15px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            transition: background 0.3s;
+                        }
+
+                        .control-btn:hover {
+                            background: #2980b9;
+                        }
+
+                        .video-info {
+                            margin-top: 20px;
+                            padding: 15px;
+                            background: #ecf0f1;
+                            border-radius: 6px;
+                        }
+
+                        .video-info h3 {
+                            color: #2c3e50;
+                            margin-bottom: 10px;
+                        }
+
+                        .video-info ul {
+                            list-style-type: none;
+                            padding-left: 0;
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                            gap: 10px;
+                        }
+
+                        .video-info li {
+                            padding: 5px 0;
+                            color: #34495e;
+                            position: relative;
+                            padding-left: 20px;
+                        }
+
+                        .video-info li:before {
+                            content: "✓";
+                            color: #27ae60;
+                            position: absolute;
+                            left: 0;
+                        }
+
+                        .tips {
+                            margin-top: 15px;
+                            padding: 10px;
+                            background: #e8f4fc;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            color: #2c3e50;
+                        }
+
+                        @media (max-width: 768px) {
+                            .video-controls {
+                                flex-direction: column;
+                                align-items: center;
+                            }
+
+                            .control-btn {
+                                width: 80%;
+                            }
+
+                            .video-info ul {
+                                grid-template-columns: 1fr;
+                            }
+                        }
+                    </style>
+
+                    <script>
+                        // 视频播放器控制函数
+                        function playPause() {
+                            var video = document.getElementById("debtVideo");
+                            if (video.paused) {
+                                video.play();
+                            } else {
+                                video.pause();
+                            }
+                        }
+
+                        function makeBig() {
+                            var video = document.getElementById("debtVideo");
+                            video.style.maxWidth = "100%";
+                        }
+
+                        function makeNormal() {
+                            var video = document.getElementById("debtVideo");
+                            video.style.maxWidth = "800px";
+                        }
+
+                        function makeSmall() {
+                            var video = document.getElementById("debtVideo");
+                            video.style.maxWidth = "400px";
+                        }
+
+                        // 视频加载事件
+                        document.getElementById("debtVideo").addEventListener("loadeddata", function () {
+                            console.log("视频已加载");
+                        });
+
+                        // 视频播放进度跟踪
+                        document.getElementById("debtVideo").addEventListener("timeupdate", function () {
+                            var percentage = Math.round((this.currentTime / this.duration) * 100);
+                            // 可以在这里添加进度统计逻辑
+                            if (percentage % 25 === 0) {
+                                console.log("视频播放进度: " + percentage + "%");
+                            }
+                        });
+                    </script>
 
                     <div class="card-actions">
                         <button class="btn btn-primary" onclick="openCourse('negotiation')">
-                            <i class="fas fa-graduation-cap"></i> 学习话术技巧
+                            <i class="fas fa-graduation-cap"></i> 持续为你更新
                         </button>
                         <button class="btn btn-outline" onclick="showLearningPath()">
-                            <i class="fas fa-road"></i> 查看学习路径
+                            <i class="fas fa-road"></i> 更多功能逐渐开发
                         </button>
                     </div>
                 </div>
