@@ -1200,6 +1200,16 @@ def psychological_course():
         print(f"心理调适课程页面错误: {e}")
         return "心理调适课程页面暂时不可用", 500
     
+@app.route('/income-projects')
+@payment_required
+def income_projects():
+    """赚钱项目分享页面"""
+    try:
+        return render_template('income-projects.html')
+    except Exception as e:
+        print(f"赚钱项目页面错误: {e}")
+        return "赚钱项目页面暂时不可用", 500
+    
 # ============ 调试路由 ============
 @app.route('/debug/questions')
 @admin_required

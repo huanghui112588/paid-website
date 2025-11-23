@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赚钱项目大全 - 上岸翻身营</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 主卡片样式 */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* 搜索区域 */
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 项目卡片 */
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 2;
+        }
+
+        /* 分类导航 */
+        .category-nav {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .category-btn {
+            border: none;
+            background: var(--light);
+            color: var(--dark);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 过滤器 */
+        .filter-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 统计卡片 */
+        .stats-card {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* 标签样式 */
+        .tag {
+            display: inline-block;
+            background: var(--light);
+            color: var(--dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 2px;
+            border: 1px solid var(--light);
+        }
+
+        .tag-difficulty-1 {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .tag-difficulty-2 {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .tag-difficulty-3 {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .tag-difficulty-4 {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag-difficulty-5 {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag-income-1 {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .tag-income-2 {
+            background: #bbf7d0;
+            color: #166534;
+        }
+
+        .tag-income-3 {
+            background: #86efac;
+            color: #15803d;
+        }
+
+        .tag-income-4 {
+            background: #4ade80;
+            color: #15803d;
+        }
+
+        .tag-income-5 {
+            background: #22c55e;
+            color: #166534;
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+
+            .card-body,
+            .card-header {
+                padding: 20px;
+            }
+
+            .project-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-money-bill-trend-up text-primary me-2 fs-4"></i>
+                    <h4 class="mb-0">赚钱项目大全</h4>
+                </div>
+                <a href="members.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left me-2"></i>返回会员中心
+                </a>
+            </div>
+        </nav>
+
+        <!-- 主卡片 -->
+        <div class="main-card fade-in">
+            <div class="card-header">
+                <h1><i class="fas fa-money-bill-trend-up me-2"></i>赚钱项目分享</h1>
+                <p class="mb-0 mt-2 opacity-90">100+ 实用赚钱项目，低门槛高收益，助你增加收入，加速上岸</p>
+            </div>
+            <div class="card-body">
+                <!-- 统计信息 -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="totalProjects">128</div>
+                            <div class="stats-label">总项目数量</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="lowDifficulty">56</div>
+                            <div class="stats-label">低门槛项目</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="highIncome">42</div>
+                            <div class="stats-label">高收益项目</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number" id="onlineProjects">89</div>
+                            <div class="stats-label">线上项目</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 搜索区域 -->
+                <div class="search-section">
+                    <div class="row align-items-end">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="form-label fw-bold">搜索赚钱项目</label>
+                                <div class="input-group">
+                                    <input type="text" id="searchInput" class="form-control form-control-lg"
+                                        placeholder="输入项目名称、关键词、技能要求...">
+                                    <button class="btn btn-primary" onclick="searchProjects()">
+                                        <i class="fas fa-search me-2"></i>搜索
+                                    </button>
+                                </div>
+                                <div class="form-text">支持项目名称、描述、技能、平台等关键词搜索</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline w-100" onclick="showAdvancedSearch()">
+                                <i class="fas fa-sliders-h me-2"></i>高级筛选
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 热门搜索标签 -->
+                    <div class="mt-3">
+                        <small class="text-muted me-2">热门搜索：</small>
+                        <button class="btn btn-sm btn-outline-secondary me-1 mb-1"
+                            onclick="quickSearch('兼职')">兼职</button>
+                        <button class="btn btn-sm btn-outline-secondary me-1 mb-1"
+                            onclick="quickSearch('线上')">线上工作</button>
+                        <button class="btn btn-sm btn-outline-secondary me-1 mb-1"
+                            onclick="quickSearch('技能')">技能变现</button>
+                        <button class="btn btn-sm btn-outline-secondary me-1 mb-1"
+                            onclick="quickSearch('零成本')">零成本</button>
+                        <button class="btn btn-sm btn-outline-secondary me-1 mb-1"
+                            onclick="quickSearch('日结')">日结项目</button>
+                    </div>
+                </div>
+
+                <!-- 高级筛选区域 -->
+                <div class="filter-section" id="advancedSearch" style="display: none;">
+                    <h5><i class="fas fa-filter me-2"></i>高级筛选</h5>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">项目类型</label>
+                            <select class="form-select" id="filterType">
+                                <option value="">全部类型</option>
+                                <option value="online">线上工作</option>
+                                <option value="offline">线下兼职</option>
+                                <option value="skill">技能变现</option>
+                                <option value="business">小生意</option>
+                                <option value="investment">投资理财</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">难度级别</label>
+                            <select class="form-select" id="filterDifficulty">
+                                <option value="">全部难度</option>
+                                <option value="1">★☆☆☆☆ 入门级</option>
+                                <option value="2">★★☆☆☆ 初级</option>
+                                <option value="3">★★★☆☆ 中级</option>
+                                <option value="4">★★★★☆ 高级</option>
+                                <option value="5">★★★★★ 专家级</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">收入水平</label>
+                            <select class="form-select" id="filterIncome">
+                                <option value="">全部收入</option>
+                                <option value="1">★☆☆☆☆ 零花钱</option>
+                                <option value="2">★★☆☆☆ 兼职收入</option>
+                                <option value="3">★★★☆☆ 可观收入</option>
+                                <option value="4">★★★★☆ 高收入</option>
+                                <option value="5">★★★★★ 财富自由</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">时间投入</label>
+                            <select class="form-select" id="filterTime">
+                                <option value="">全部时间</option>
+                                <option value="flexible">灵活时间</option>
+                                <option value="part-time">兼职时间</option>
+                                <option value="full-time">全职时间</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button class="btn btn-primary me-2" onclick="applyFilters()">
+                                <i class="fas fa-check me-2"></i>应用筛选
+                            </button>
+                            <button class="btn btn-outline" onclick="resetFilters()">
+                                <i class="fas fa-undo me-2"></i>重置筛选
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分类导航 -->
+                <div class="category-nav">
+                    <h5><i class="fas fa-tags me-2"></i>项目分类</h5>
+                    <div class="d-flex flex-wrap">
+                        <button class="category-btn active" onclick="filterByCategory('all')">全部项目</button>
+                        <button class="category-btn" onclick="filterByCategory('online')">线上工作</button>
+                        <button class="category-btn" onclick="filterByCategory('offline')">线下兼职</button>
+                        <button class="category-btn" onclick="filterByCategory('skill')">技能变现</button>
+                        <button class="category-btn" onclick="filterByCategory('content')">内容创作</button>
+                        <button class="category-btn" onclick="filterByCategory('business')">小本生意</button>
+                        <button class="category-btn" onclick="filterByCategory('investment')">投资理财</button>
+                        <button class="category-btn" onclick="filterByCategory('new')">最新项目</button>
+                        <button class="category-btn" onclick="filterByCategory('hot')">热门推荐</button>
+                    </div>
+                </div>
+
+                <!-- 项目列表 -->
+                <div class="row" id="projectsList">
+                    <!-- 项目将通过JavaScript动态加载 -->
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p class="text-muted mt-2">正在加载赚钱项目...</p>
+                    </div>
+                </div>
+
+                <!-- 分页控件 -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <nav aria-label="项目分页">
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <!-- 分页将通过JavaScript动态生成 -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 项目详情模态框 -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 id="projectModalTitle">项目详情</h4>
+                <button class="btn-close" onclick="closeProjectModal()"></button>
+            </div>
+            <div id="projectModalContent">
+                <!-- 项目详情内容将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 赚钱项目数据
+        const projectsData = [
+            // ============ 线上工作类 ============
+            {
+                id: 1,
+                title: "自媒体内容创作",
+                category: "online",
+                type: "content",
+                difficulty: 3,
+                income: 4,
+                time: "flexible",
+                tags: ["自媒体", "内容创作", "写作", "视频", "长期收益"],
+                description: "通过创作优质内容在各大平台获取流量和收益",
+                platform: ["微信公众号", "知乎", "B站", "抖音", "小红书"],
+                incomeRange: "月入1000-20000元",
+                timeCommitment: "每天2-8小时",
+                startupCost: "0-1000元",
+                skills: ["写作能力", "视频剪辑", "内容策划", "平台运营"],
+                steps: [
+                    "选择擅长领域（美食、旅游、科技、教育等）",
+                    "注册并完善各大平台账号",
+                    "制定内容发布计划",
+                    "创作高质量内容并定期发布",
+                    "与粉丝互动，建立社群",
+                    "通过广告、带货、知识付费变现"
+                ],
+                advantages: [
+                    "时间自由，可兼职可全职",
+                    "长期积累，收益持续增长",
+                    "个人品牌价值提升",
+                    "技能全面提升"
+                ],
+                challenges: [
+                    "前期收入不稳定",
+                    "需要持续输出内容",
+                    "竞争激烈，需要差异化"
+                ],
+                tips: [
+                    "专注一个细分领域更容易成功",
+                    "保持内容质量和更新频率",
+                    "多平台同步运营扩大影响力",
+                    "关注平台政策和算法变化"
+                ],
+                successRate: 65,
+                popularity: 95,
+                isNew: false,
+                isHot: true
+            },
+            {
+                id: 2,
+                title: "电商代运营",
+                category: "online",
+                type: "business",
+                difficulty: 4,
+                income: 5,
+                time: "part-time",
+                tags: ["电商", "代运营", "淘宝", "拼多多", "高收入"],
+                description: "为企业或个人店铺提供电商平台运营服务",
+                platform: ["淘宝", "京东", "拼多多", "抖音电商"],
+                incomeRange: "月入5000-50000元",
+                timeCommitment: "每天4-10小时",
+                startupCost: "0元（技能变现）",
+                skills: ["电商运营", "数据分析", "美工设计", "客服沟通"],
+                steps: [
+                    "学习电商平台运营知识",
+                    "在威客平台或社群接单",
+                    "与客户沟通需求并制定方案",
+                    "执行店铺装修、商品上架、推广等",
+                    "定期汇报运营数据",
+                    "根据效果调整优化策略"
+                ],
+                advantages: [
+                    "收入上限高",
+                    "可远程工作",
+                    "技能可复用",
+                    "积累行业资源"
+                ],
+                challenges: [
+                    "需要较强的综合能力",
+                    "压力较大，需要承担业绩责任",
+                    "需要不断学习平台新规则"
+                ],
+                tips: [
+                    "先从中小店铺开始积累经验",
+                    "建立自己的服务标准和流程",
+                    "注重数据分析和效果优化",
+                    "维护好客户关系，争取长期合作"
+                ],
+                successRate: 60,
+                popularity: 85,
+                isNew: false,
+                isHot: true
+            },
+            {
+                id: 3,
+                title: "在线教育辅导",
+                category: "online",
+                type: "skill",
+                difficulty: 3,
+                income: 4,
+                time: "flexible",
+                tags: ["教育", "辅导", "在线教学", "知识变现"],
+                description: "通过网络平台为学生提供学科辅导或技能培训",
+                platform: ["学而思网校", "作业帮", "猿辅导", "自有平台"],
+                incomeRange: "月入3000-30000元",
+                timeCommitment: "每天2-6小时",
+                startupCost: "0-500元",
+                skills: ["学科知识", "教学能力", "沟通表达", "课程设计"],
+                steps: [
+                    "确定教学方向和目标学员",
+                    "准备教学材料和课程大纲",
+                    "在平台注册或自建教学渠道",
+                    "开展试听课吸引学员",
+                    "制定个性化教学计划",
+                    "定期评估教学效果"
+                ],
+                advantages: [
+                    "时间安排灵活",
+                    "收入稳定可观",
+                    "社会价值高",
+                    "技能持续提升"
+                ],
+                challenges: [
+                    "需要专业知识和教学能力",
+                    "竞争较为激烈",
+                    "需要耐心和责任心"
+                ],
+                tips: [
+                    "选择自己擅长的学科或技能",
+                    "注重教学效果和学员反馈",
+                    "建立个人教学品牌",
+                    "利用多媒体提升教学体验"
+                ],
+                successRate: 70,
+                popularity: 80,
+                isNew: false,
+                isHot: true
+            },
+
+            // ============ 线下兼职类 ============
+            {
+                id: 4,
+                title: "外卖骑手",
+                category: "offline",
+                type: "service",
+                difficulty: 2,
+                income: 3,
+                time: "flexible",
+                tags: ["外卖", "骑手", "日结", "体力劳动"],
+                description: "通过配送外卖订单获得收入，时间自由，日结薪资",
+                platform: ["美团", "饿了么"],
+                incomeRange: "月入4000-12000元",
+                timeCommitment: "每天4-12小时",
+                startupCost: "1000-3000元（电动车等）",
+                skills: ["骑行技能", "路线规划", "时间管理", "服务态度"],
+                steps: [
+                    "下载外卖平台APP并注册",
+                    "参加平台培训和考核",
+                    "准备配送装备（电动车、保温箱等）",
+                    "选择接单时间和区域",
+                    "开始接单配送",
+                    "每日结算收入"
+                ],
+                advantages: [
+                    "时间自由，随时可做",
+                    "收入日结，现金流好",
+                    "入职门槛低",
+                    "多劳多得"
+                ],
+                challenges: [
+                    "体力消耗较大",
+                    "交通安全风险",
+                    "受天气影响较大",
+                    "竞争较为激烈"
+                ],
+                tips: [
+                    "选择订单密集的商圈",
+                    "熟悉配送区域路线",
+                    "注意交通安全和防护",
+                    "利用高峰时段提高收入"
+                ],
+                successRate: 85,
+                popularity: 75,
+                isNew: false,
+                isHot: false
+            },
+            {
+                id: 5,
+                title: "家教辅导",
+                category: "offline",
+                type: "skill",
+                difficulty: 3,
+                income: 4,
+                time: "part-time",
+                tags: ["家教", "辅导", "教育", "稳定收入"],
+                description: "为学生提供一对一或小班制学科辅导",
+                platform: ["家教平台", "熟人介绍", "社区推广"],
+                incomeRange: "月入2000-15000元",
+                timeCommitment: "每周10-30小时",
+                startupCost: "0-200元",
+                skills: ["学科知识", "教学方法", "沟通能力", "耐心细致"],
+                steps: [
+                    "确定辅导科目和年级",
+                    "准备个人简历和教学案例",
+                    "通过平台或熟人介绍寻找学员",
+                    "进行试听课和家长沟通",
+                    "制定教学计划和进度",
+                    "定期反馈学习效果"
+                ],
+                advantages: [
+                    "收入相对稳定",
+                    "时间安排灵活",
+                    "社会认可度高",
+                    "积累教学经验"
+                ],
+                challenges: [
+                    "需要专业知识和能力",
+                    "家长期望值较高",
+                    "需要往返学生家中"
+                ],
+                tips: [
+                    "专注自己擅长的学科",
+                    "建立良好的家长关系",
+                    "注重教学效果和成绩提升",
+                    "可以考虑小班制提高收入"
+                ],
+                successRate: 75,
+                popularity: 70,
+                isNew: false,
+                isHot: false
+            },
+
+            // ============ 技能变现类 ============
+            {
+                id: 6,
+                title: "编程接单",
+                category: "skill",
+                type: "online",
+                difficulty: 5,
+                income: 5,
+                time: "flexible",
+                tags: ["编程", "开发", "接单", "高收入", "技术"],
+                description: "通过承接软件开发、网站建设等项目获得收入",
+                platform: ["猪八戒", "程序员客栈", "GitHub", "自有客户"],
+                incomeRange: "月入5000-50000元",
+                timeCommitment: "每天4-12小时",
+                startupCost: "0元（技能变现）",
+                skills: ["编程语言", "系统设计", "项目管理", "沟通协调"],
+                steps: [
+                    "确定技术栈和接单方向",
+                    "在平台注册并完善作品集",
+                    "参与项目竞标或客户推荐",
+                    "与客户沟通需求并报价",
+                    "按计划完成开发任务",
+                    "交付项目并维护"
+                ],
+                advantages: [
+                    "收入上限很高",
+                    "可远程工作",
+                    "技能持续提升",
+                    "积累项目经验"
+                ],
+                challenges: [
+                    "技术要求较高",
+                    "项目周期压力",
+                    "客户需求变更",
+                    "需要不断学习新技术"
+                ],
+                tips: [
+                    "专注一个技术领域建立专长",
+                    "建立个人品牌和口碑",
+                    "合理评估项目难度和时间",
+                    "注重代码质量和文档"
+                ],
+                successRate: 55,
+                popularity: 80,
+                isNew: false,
+                isHot: true
+            },
+            {
+                id: 7,
+                title: "设计服务",
+                category: "skill",
+                type: "online",
+                difficulty: 4,
+                income: 4,
+                time: "flexible",
+                tags: ["设计", "美工", "UI", "平面设计", "创意"],
+                description: "提供logo设计、海报制作、UI设计等服务",
+                platform: ["猪八戒", "特赞", "站酷", "自有客户"],
+                incomeRange: "月入3000-20000元",
+                timeCommitment: "每天3-8小时",
+                startupCost: "0-1000元（软件设备）",
+                skills: ["设计软件", "创意思维", "审美能力", "客户沟通"],
+                steps: [
+                    "确定设计服务范围",
+                    "准备作品集和个人简历",
+                    "在平台注册或主动寻找客户",
+                    "与客户沟通设计需求",
+                    "提供设计方案和修改",
+                    "完成交付并收款"
+                ],
+                advantages: [
+                    "创意性强，工作有趣",
+                    "可远程工作",
+                    "技能可复用",
+                    "收入相对稳定"
+                ],
+                challenges: [
+                    "需要较强的审美能力",
+                    "客户审美差异",
+                    "修改次数可能较多",
+                    "需要不断学习新风格"
+                ],
+                tips: [
+                    "建立个人设计风格",
+                    "注重作品集质量",
+                    "学习商业设计思维",
+                    "维护好客户关系"
+                ],
+                successRate: 65,
+                popularity: 75,
+                isNew: false,
+                isHot: false
+            },
+
+            // ============ 内容创作类 ============
+            {
+                id: 8,
+                title: "短视频创作",
+                category: "content",
+                type: "online",
+                difficulty: 3,
+                income: 4,
+                time: "flexible",
+                tags: ["短视频", "抖音", "快手", "内容创作", "网红"],
+                description: "通过创作短视频内容获取平台分成和商业合作",
+                platform: ["抖音", "快手", "B站", "视频号"],
+                incomeRange: "月入1000-100000元",
+                timeCommitment: "每天2-6小时",
+                startupCost: "500-5000元",
+                skills: ["视频拍摄", "剪辑技巧", "内容策划", "表演能力"],
+                steps: [
+                    "确定内容定位和风格",
+                    "准备拍摄设备和场地",
+                    "学习视频拍摄和剪辑",
+                    "定期发布优质内容",
+                    "与粉丝互动建立社群",
+                    "通过广告、带货、直播变现"
+                ],
+                advantages: [
+                    "爆发增长可能",
+                    "个人IP价值高",
+                    "创作自由度大",
+                    "多元变现渠道"
+                ],
+                challenges: [
+                    "内容同质化严重",
+                    "算法变化影响流量",
+                    "需要持续创意输出",
+                    "前期投入时间成本高"
+                ],
+                tips: [
+                    "选择垂直细分领域",
+                    "注重内容质量和独特性",
+                    "保持稳定的更新频率",
+                    "多平台同步运营"
+                ],
+                successRate: 50,
+                popularity: 95,
+                isNew: false,
+                isHot: true
+            },
+            {
+                id: 9,
+                title: "写作投稿",
+                category: "content",
+                type: "online",
+                difficulty: 3,
+                income: 3,
+                time: "flexible",
+                tags: ["写作", "投稿", "文案", "自媒体", "文字工作"],
+                description: "向媒体平台、企业或个人提供文字创作服务",
+                platform: ["微信公众号", "知乎", "头条号", "投稿平台"],
+                incomeRange: "月入2000-15000元",
+                timeCommitment: "每天2-6小时",
+                startupCost: "0元",
+                skills: ["写作能力", "文案技巧", "话题敏感度", "快速学习"],
+                steps: [
+                    "确定写作方向和擅长领域",
+                    "准备个人作品集",
+                    "寻找投稿渠道和客户",
+                    "按要求完成写作任务",
+                    "根据反馈修改完善",
+                    "建立长期合作关系"
+                ],
+                advantages: [
+                    "入门门槛相对较低",
+                    "时间地点自由",
+                    "技能可迁移性强",
+                    "积累写作经验"
+                ],
+                challenges: [
+                    "收入不稳定",
+                    "需要较强的自律性",
+                    "竞争较为激烈",
+                    "创意枯竭风险"
+                ],
+                tips: [
+                    "专注一个领域建立专长",
+                    "保持阅读和学习",
+                    "建立个人写作风格",
+                    "维护好编辑和客户关系"
+                ],
+                successRate: 60,
+                popularity: 70,
+                isNew: false,
+                isHot: false
+            },
+
+            // ============ 小本生意类 ============
+            {
+                id: 10,
+                title: "社区团购",
+                category: "business",
+                type: "offline",
+                difficulty: 3,
+                income: 4,
+                time: "part-time",
+                tags: ["团购", "社区", "电商", "小生意", "稳定收入"],
+                description: "组织社区居民进行商品团购，赚取差价或服务费",
+                platform: ["微信群", "小程序", "自有渠道"],
+                incomeRange: "月入3000-20000元",
+                timeCommitment: "每天3-8小时",
+                startupCost: "1000-5000元",
+                skills: ["选品能力", "社群运营", "客户服务", "物流管理"],
+                steps: [
+                    "调研社区居民需求",
+                    "寻找优质供应商",
+                    "建立社区微信群",
+                    "组织团购活动",
+                    "处理订单和配送",
+                    "提供售后服务和维护"
+                ],
+                advantages: [
+                    "客户粘性高",
+                    "现金流较好",
+                    "可扩展性强",
+                    "风险相对可控"
+                ],
+                challenges: [
+                    "需要较强的组织能力",
+                    "售后问题处理",
+                    "供应链管理",
+                    "竞争日益激烈"
+                ],
+                tips: [
+                    "选择高频消费品类",
+                    "注重产品质量和服务",
+                    "建立信任关系",
+                    "利用数字化工具提升效率"
+                ],
+                successRate: 70,
+                popularity: 75,
+                isNew: true,
+                isHot: true
+            },
+            {
+                id: 11,
+                title: "小吃摊创业",
+                category: "business",
+                type: "offline",
+                difficulty: 4,
+                income: 4,
+                time: "full-time",
+                tags: ["小吃", "餐饮", "创业", "实体店", "现金流"],
+                description: "经营小型小吃摊位，投资小回报快",
+                platform: ["夜市", "学校周边", "商业区", "流动摊位"],
+                incomeRange: "月入5000-30000元",
+                timeCommitment: "每天8-12小时",
+                startupCost: "5000-20000元",
+                skills: ["烹饪技术", "成本控制", "客户服务", "卫生管理"],
+                steps: [
+                    "学习特色小吃制作技术",
+                    "考察选址和客流情况",
+                    "办理相关证照手续",
+                    "准备设备和原材料",
+                    "制定菜单和定价策略",
+                    "开业运营和持续优化"
+                ],
+                advantages: [
+                    "现金流好，回本快",
+                    "门槛相对较低",
+                    "市场需求稳定",
+                    "可复制扩张"
+                ],
+                challenges: [
+                    "体力消耗大",
+                    "竞争激烈",
+                    "受天气和季节影响",
+                    "卫生和食品安全要求高"
+                ],
+                tips: [
+                    "选择有特色的小吃品类",
+                    "注重口味和品质",
+                    "选择人流量大的位置",
+                    "利用社交媒体宣传"
+                ],
+                successRate: 60,
+                popularity: 70,
+                isNew: false,
+                isHot: false
+            },
+
+            // ============ 投资理财类 ============
+            {
+                id: 12,
+                title: "基金定投",
+                category: "investment",
+                type: "online",
+                difficulty: 3,
+                income: 4,
+                time: "flexible",
+                tags: ["基金", "定投", "理财", "长期收益", "低风险"],
+                description: "通过定期定额投资基金，实现长期财富增值",
+                platform: ["支付宝", "天天基金", "银行APP"],
+                incomeRange: "年化收益5%-15%",
+                timeCommitment: "每月1-2小时",
+                startupCost: "100元起",
+                skills: ["理财知识", "市场分析", "风险控制", "长期规划"],
+                steps: [
+                    "学习基金投资基础知识",
+                    "选择适合自己的基金类型",
+                    "开设证券或基金账户",
+                    "制定定投计划和金额",
+                    "坚持执行定投策略",
+                    "定期复盘和调整"
+                ],
+                advantages: [
+                    "风险相对较低",
+                    "时间投入少",
+                    "强制储蓄功能",
+                    "长期收益稳定"
+                ],
+                challenges: [
+                    "需要长期坚持",
+                    "短期可能亏损",
+                    "需要一定的理财知识",
+                    "收益相对有限"
+                ],
+                tips: [
+                    "选择优质基金公司产品",
+                    "坚持定投不轻易中断",
+                    "合理设置止盈止损",
+                    "定期学习理财知识"
+                ],
+                successRate: 80,
+                popularity: 85,
+                isNew: false,
+                isHot: true
+            },
+            {
+                id: 13,
+                title: "可转债打新",
+                category: "investment",
+                type: "online",
+                difficulty: 2,
+                income: 3,
+                time: "flexible",
+                tags: ["可转债", "打新", "低风险", "理财", "稳定收益"],
+                description: "参与可转债申购，获取稳定的打新收益",
+                platform: ["券商APP", "证券账户"],
+                incomeRange: "年化收益10%-30%",
+                timeCommitment: "每月2-4小时",
+                startupCost: "1000-5000元",
+                skills: ["基础理财知识", "账户操作", "风险意识"],
+                steps: [
+                    "开设证券账户",
+                    "学习可转债打新知识",
+                    "关注新债发行信息",
+                    "参与新债申购",
+                    "中签后缴款",
+                    "上市后适时卖出"
+                ],
+                advantages: [
+                    "风险极低",
+                    "收益稳定",
+                    "时间投入少",
+                    "资金门槛低"
+                ],
+                challenges: [
+                    "中签率较低",
+                    "收益相对有限",
+                    "需要多个账户提高中签率"
+                ],
+                tips: [
+                    "坚持每只新债都申购",
+                    "可以家人多开账户",
+                    "学习分析转债质量",
+                    "制定卖出策略"
+                ],
+                successRate: 90,
+                popularity: 75,
+                isNew: true,
+                isHot: false
+            },
+
+            // 继续添加更多项目...
+            {
+                id: 14,
+                title: "网络问卷调查",
+                category: "online",
+                type: "service",
+                difficulty: 1,
+                income: 2,
+                time: "flexible",
+                tags: ["问卷", "调查", "零门槛", "碎片时间"],
+                description: "参与各类网络问卷调查，赚取小额报酬",
+                platform: ["问卷星", "腾讯问卷", "第一调查网"],
+                incomeRange: "月入500-2000元",
+                timeCommitment: "每天1-3小时",
+                startupCost: "0元",
+                skills: ["认真仔细", "基础电脑操作"],
+                steps: [
+                    "注册多个问卷调查平台",
+                    "完善个人资料提高匹配度",
+                    "定期参与符合条件的问卷",
+                    "认真填写保证通过率",
+                    "累积积分或现金奖励",
+                    "达到门槛后提现"
+                ],
+                advantages: [
+                    "零门槛入门",
+                    "时间极其灵活",
+                    "无资金风险",
+                    "可利用碎片时间"
+                ],
+                challenges: [
+                    "收入相对较低",
+                    "问卷数量有限",
+                    "需要较多平台",
+                    "可能不符合某些问卷条件"
+                ],
+                tips: [
+                    "注册多个平台增加机会",
+                    "认真填写提高通过率",
+                    "关注高单价问卷",
+                    "合理安排时间避免沉迷"
+                ],
+                successRate: 95,
+                popularity: 65,
+                isNew: false,
+                isHot: false
+            },
+
+            // 可以继续添加更多项目...
+        ];
+
+        // 页面状态
+        let currentPage = 1;
+        const projectsPerPage = 9;
+        let filteredProjects = [...projectsData];
+        let currentCategory = 'all';
+        let currentSearch = '';
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('赚钱项目页面加载完成');
+            updateStats();
+            displayProjects();
+            setupEventListeners();
+        });
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('totalProjects').textContent = projectsData.length;
+
+            const lowDifficulty = projectsData.filter(p => p.difficulty <= 2).length;
+            document.getElementById('lowDifficulty').textContent = lowDifficulty;
+
+            const highIncome = projectsData.filter(p => p.income >= 4).length;
+            document.getElementById('highIncome').textContent = highIncome;
+
+            const onlineProjects = projectsData.filter(p => p.category === 'online').length;
+            document.getElementById('onlineProjects').textContent = onlineProjects;
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 搜索框回车键搜索
+            document.getElementById('searchInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    searchProjects();
+                }
+            });
+
+            // 筛选条件变化时自动搜索
+            ['filterType', 'filterDifficulty', 'filterIncome', 'filterTime'].forEach(id => {
+                document.getElementById(id).addEventListener('change', function () {
+                    applyFilters();
+                });
+            });
+        }
+
+        // 搜索项目
+        function searchProjects() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            currentSearch = searchTerm;
+
+            if (searchTerm) {
+                filteredProjects = projectsData.filter(project =>
+                    project.title.toLowerCase().includes(searchTerm) ||
+                    project.description.toLowerCase().includes(searchTerm) ||
+                    project.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                    project.skills.some(skill => skill.toLowerCase().includes(searchTerm)) ||
+                    project.platform.some(platform => platform.toLowerCase().includes(searchTerm))
+                );
+            } else {
+                filteredProjects = [...projectsData];
+            }
+
+            currentPage = 1;
+            displayProjects();
+
+            // 显示搜索结果统计
+            if (searchTerm) {
+                showAlert(`找到 ${filteredProjects.length} 个相关项目`, 'info');
+            }
+        }
+
+        // 快速搜索
+        function quickSearch(term) {
+            document.getElementById('searchInput').value = term;
+            searchProjects();
+        }
+
+        // 显示高级搜索
+        function showAdvancedSearch() {
+            const advancedSearch = document.getElementById('advancedSearch');
+            if (advancedSearch.style.display === 'none') {
+                advancedSearch.style.display = 'block';
+            } else {
+                advancedSearch.style.display = 'none';
+            }
+        }
+
+        // 应用筛选条件
+        function applyFilters() {
+            const type = document.getElementById('filterType').value;
+            const difficulty = document.getElementById('filterDifficulty').value;
+            const income = document.getElementById('filterIncome').value;
+            const time = document.getElementById('filterTime').value;
+
+            filteredProjects = projectsData.filter(project => {
+                let match = true;
+
+                if (type && project.type !== type) match = false;
+                if (difficulty && project.difficulty != difficulty) match = false;
+                if (income && project.income != income) match = false;
+                if (time && project.time !== time) match = false;
+                if (currentCategory !== 'all' && project.category !== currentCategory) match = false;
+                if (currentCategory === 'new' && !project.isNew) match = false;
+                if (currentCategory === 'hot' && !project.isHot) match = false;
+
+                // 如果有搜索词，继续筛选
+                if (currentSearch && match) {
+                    match = project.title.toLowerCase().includes(currentSearch) ||
+                        project.description.toLowerCase().includes(currentSearch) ||
+                        project.tags.some(tag => tag.toLowerCase().includes(currentSearch));
+                }
+
+                return match;
+            });
+
+            currentPage = 1;
+            displayProjects();
+        }
+
+        // 重置筛选条件
+        function resetFilters() {
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterDifficulty').value = '';
+            document.getElementById('filterIncome').value = '';
+            document.getElementById('filterTime').value = '';
+            document.getElementById('searchInput').value = '';
+
+            currentSearch = '';
+            filteredProjects = [...projectsData];
+            currentPage = 1;
+            displayProjects();
+        }
+
+        // 按分类筛选
+        function filterByCategory(category) {
+            currentCategory = category;
+
+            // 更新分类按钮状态
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (category === 'all') {
+                filteredProjects = [...projectsData];
+            } else if (category === 'new') {
+                filteredProjects = projectsData.filter(p => p.isNew);
+            } else if (category === 'hot') {
+                filteredProjects = projectsData.filter(p => p.isHot);
+            } else {
+                filteredProjects = projectsData.filter(p => p.category === category);
+            }
+
+            // 应用其他筛选条件
+            applyFilters();
+        }
+
+        // 显示项目列表
+        function displayProjects() {
+            const projectsList = document.getElementById('projectsList');
+            const pagination = document.getElementById('pagination');
+
+            if (filteredProjects.length === 0) {
+                projectsList.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">没有找到符合条件的项目</h5>
+                        <p class="text-muted">尝试调整搜索条件或筛选条件</p>
+                        <button class="btn btn-primary" onclick="resetFilters()">
+                            <i class="fas fa-undo me-2"></i>重置筛选条件
+                        </button>
+                    </div>
+                `;
+                pagination.innerHTML = '';
+                return;
+            }
+
+            // 计算分页
+            const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+            const startIndex = (currentPage - 1) * projectsPerPage;
+            const endIndex = startIndex + projectsPerPage;
+            const currentProjects = filteredProjects.slice(startIndex, endIndex);
+
+            // 生成项目卡片
+            let projectsHTML = '';
+            currentProjects.forEach(project => {
+                const difficultyStars = '★'.repeat(project.difficulty) + '☆'.repeat(5 - project.difficulty);
+                const incomeStars = '★'.repeat(project.income) + '☆'.repeat(5 - project.income);
+
+                projectsHTML += `
+                    <div class="col-md-4 mb-4">
+                        <div class="project-card" onclick="showProjectDetail(${project.id})">
+                            ${project.isNew ? '<span class="project-badge badge bg-success">新项目</span>' : ''}
+                            ${project.isHot ? '<span class="project-badge badge bg-danger">热门</span>' : ''}
+                            
+                            <h5 class="mb-3">${project.title}</h5>
+                            <p class="text-muted mb-3">${project.description}</p>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">难度:</small>
+                                <span class="tag tag-difficulty-${project.difficulty}">${difficultyStars}</span>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">收入:</small>
+                                <span class="tag tag-income-${project.income}">${incomeStars}</span>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">收入范围:</small>
+                                <div class="fw-bold text-success">${project.incomeRange}</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">时间投入:</small>
+                                <div>${project.timeCommitment}</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">成功率: ${project.successRate}%</small>
+                                <small class="text-muted">热度: ${project.popularity}%</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            projectsList.innerHTML = projectsHTML;
+
+            // 生成分页控件
+            let paginationHTML = '';
+            if (totalPages > 1) {
+                paginationHTML += `
+                    <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">上一页</a>
+                    </li>
+                `;
+
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                        </li>
+                    `;
+                }
+
+                paginationHTML += `
+                    <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">下一页</a>
+                    </li>
+                `;
+            }
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // 切换页面
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            displayProjects();
+
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 显示项目详情
+        function showProjectDetail(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+
+            const difficultyStars = '★'.repeat(project.difficulty) + '☆'.repeat(5 - project.difficulty);
+            const incomeStars = '★'.repeat(project.income) + '☆'.repeat(5 - project.income);
+
+            let modalContent = `
+                <div class="project-detail">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h3>${project.title}</h3>
+                            <p class="text-muted mb-0">${project.description}</p>
+                        </div>
+                        <div class="text-end">
+                            ${project.isNew ? '<span class="badge bg-success me-1">新项目</span>' : ''}
+                            ${project.isHot ? '<span class="badge bg-danger">热门</span>' : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>项目概览</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>收入范围:</strong> <span class="text-success">${project.incomeRange}</span></p>
+                                    <p><strong>时间投入:</strong> ${project.timeCommitment}</p>
+                                    <p><strong>启动成本:</strong> ${project.startupCost}</p>
+                                    <p><strong>难度级别:</strong> <span class="tag tag-difficulty-${project.difficulty}">${difficultyStars}</span></p>
+                                    <p><strong>收入潜力:</strong> <span class="tag tag-income-${project.income}">${incomeStars}</span></p>
+                                    <p><strong>成功率:</strong> ${project.successRate}%</p>
+                                    <p><strong>热门程度:</strong> ${project.popularity}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-cogs me-2"></i>所需技能</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="mb-3">
+                                        ${project.skills.map(skill => `<li>${skill}</li>`).join('')}
+                                    </ul>
+                                    <p><strong>操作平台:</strong> ${project.platform.join(', ')}</p>
+                                    <div class="mt-2">
+                                        ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="fas fa-list-ol me-2"></i>操作步骤</h6>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                ${project.steps.map(step => `<li>${step}</li>`).join('')}
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0"><i class="fas fa-thumbs-up me-2"></i>项目优势</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        ${project.advantages.map(advantage => `<li>${advantage}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-warning text-white">
+                                    <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>挑战与风险</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        ${project.challenges.map(challenge => `<li>${challenge}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>专业建议</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                ${project.tips.map(tip => `<li>${tip}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary me-2" onclick="saveProject(${project.id})">
+                            <i class="fas fa-bookmark me-2"></i>收藏项目
+                        </button>
+                        <button class="btn btn-outline me-2" onclick="shareProject(${project.id})">
+                            <i class="fas fa-share-alt me-2"></i>分享项目
+                        </button>
+                        <button class="btn btn-success" onclick="startProject(${project.id})">
+                            <i class="fas fa-play me-2"></i>开始这个项目
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('projectModalTitle').textContent = project.title;
+            document.getElementById('projectModalContent').innerHTML = modalContent;
+            document.getElementById('projectModal').style.display = 'flex';
+        }
+
+        // 关闭项目详情模态框
+        function closeProjectModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+
+        // 收藏项目
+        function saveProject(projectId) {
+            showAlert('项目已收藏！你可以在会员中心的"我的收藏"中查看。', 'success');
+        }
+
+        // 分享项目
+        function shareProject(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (navigator.share) {
+                navigator.share({
+                    title: project.title,
+                    text: project.description,
+                    url: window.location.href
+                });
+            } else {
+                showAlert('复制链接分享给朋友: ' + window.location.href, 'info');
+            }
+        }
+
+        // 开始项目
+        function startProject(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            showAlert(`开始执行"${project.title}"项目！建议先制定详细计划，分步骤实施。`, 'success');
+            closeProjectModal();
+        }
+
+        // 显示提示消息
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

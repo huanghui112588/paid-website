@@ -962,14 +962,14 @@
                         <h3 style="margin-bottom: 8px;">赚钱项目库</h3>
                         <p>50+ 实用赚钱项目</p>
                     </div>
-
+                    <a href="/income-projects" class="btn btn-primary">
+                        <i class="fas fa-folder-open"></i> 浏览赚钱项目
+                    </a>
+                    <a href="/income-projects" class="btn btn-outline">
+                        <i class="fas fa-search"></i> 搜索项目
+                    </a>
                     <div class="card-actions">
-                        <button class="btn btn-primary" onclick="browseIncomeProjects()">
-                            <i class="fas fa-folder-open"></i> 浏览赚钱项目
-                        </button>
-                        <button class="btn btn-outline" onclick="searchProjects()">
-                            <i class="fas fa-search"></i> 搜索项目
-                        </button>
+
                     </div>
                 </div>
             </div>
@@ -1635,6 +1635,16 @@
                     });
                 }
             });
+
+            // 浏览赚钱项目
+            function browseIncomeProjects() {
+                window.location.href = "/income-projects";
+            }
+
+            // 搜索项目
+            function searchProjects() {
+                window.location.href = "/income-projects";
+            }
 
             // ============ 工具箱功能 ============
 
