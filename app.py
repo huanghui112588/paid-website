@@ -1886,6 +1886,275 @@ def create_professional_csv_template():
 """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     
     return template_content
+
+# ============ 学习进度管理 ============
+
+class LearningProgress(db.Model):
+    """学习进度模型"""
+    __tablename__ = "learning_progress"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, index=True)
+    course_id = db.Column(db.String(50), nullable=False, index=True)
+    step_completed = db.Column(db.String(100), nullable=False)
+    progress_percentage = db.Column(db.Integer, default=0, nullable=False)
+    time_spent = db.Column(db.Integer, default=0)  # 学习时长（分钟）
+    completed = db.Column(db.Boolean, default=False, nullable=False)
+    last_updated = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    
+    def __init__(self, user_id: int, course_id: str, step_completed: str, 
+                 progress_percentage: int = 0, time_spent: int = 0):
+        self.user_id = user_id
+        self.course_id = course_id
+        self.step_completed = step_completed
+        self.progress_percentage = progress_percentage
+        self.time_spent = time_spent
+
+# 债务管理课程结构
+DEBT_MANAGEMENT_COURSE = {
+    'id': 'debt-management',
+    'title': '债务管理专家课程',
+    'description': '系统学习债务管理，科学制定还款计划',
+    'total_steps': 10,
+    'estimated_time': '8-12小时',
+    'level': '初级到高级',
+    'sections': [
+        {
+            'id': 'foundation',
+            'title': '基础认知',
+            'steps': [
+                {'id': 'stop_borrowing', 'title': '停止以贷养贷', 'duration': 30},
+                {'id': 'debt_assessment', 'title': '全面评估债务', 'duration': 45},
+                {'id': 'mindset_change', 'title': '建立正确心态', 'duration': 25}
+            ]
+        },
+        {
+            'id': 'planning',
+            'title': '制定计划',
+            'steps': [
+                {'id': 'debt_inventory', 'title': '制作债务清单', 'duration': 60},
+                {'id': 'income_analysis', 'title': '分析收支状况', 'duration': 45},
+                {'id': 'repayment_strategy', 'title': '选择还款策略', 'duration': 50}
+            ]
+        },
+        {
+            'id': 'implementation',
+            'title': '执行优化',
+            'steps': [
+                {'id': 'negotiation_skills', 'title': '债务协商技巧', 'duration': 55},
+                {'id': 'legal_protection', 'title': '法律权益保护', 'duration': 40},
+                {'id': 'psychological_support', 'title': '心理支持疏导', 'duration': 35},
+                {'id': 'long_term_planning', 'title': '长期财务规划', 'duration': 50}
+            ]
+        }
+    ]
+}
+
+@app.route('/api/learning-progress', methods=['GET'])
+@payment_required
+def get_learning_progress():
+    """获取用户学习进度 - 专业版本"""
+    try:
+        user_id = session['user_id']
+        
+        # 获取用户的学习记录
+        progress_records = LearningProgress.query.filter_by(
+            user_id=user_id, 
+            course_id='debt-management'
+        ).all()
+        
+        # 计算总体进度
+        completed_steps = set([p.step_completed for p in progress_records])
+        total_steps = DEBT_MANAGEMENT_COURSE['total_steps']
+        progress_percentage = min(100, int((len(completed_steps) / total_steps) * 100))
+        
+        # 计算学习时长
+        total_time_spent = sum([p.time_spent for p in progress_records])
+        
+        # 构建详细进度信息
+        sections_progress = []
+        for section in DEBT_MANAGEMENT_COURSE['sections']:
+            section_completed = 0
+            section_total = len(section['steps'])
+            
+            for step in section['steps']:
+                if step['id'] in completed_steps:
+                    section_completed += 1
+            
+            sections_progress.append({
+                'id': section['id'],
+                'title': section['title'],
+                'completed': section_completed,
+                'total': section_total,
+                'progress': int((section_completed / section_total) * 100) if section_total > 0 else 0
+            })
+        
+        # 获取最近学习活动
+        recent_activity = []
+        for record in sorted(progress_records, key=lambda x: x.last_updated, reverse=True)[:5]:
+            # 查找步骤标题
+            step_title = "未知步骤"
+            for section in DEBT_MANAGEMENT_COURSE['sections']:
+                for step in section['steps']:
+                    if step['id'] == record.step_completed:
+                        step_title = step['title']
+                        break
+            
+            recent_activity.append({
+                'step': step_title,
+                'completion_time': record.last_updated.strftime('%Y-%m-%d %H:%M'),
+                'time_spent': record.time_spent
+            })
+        
+        return jsonify({
+            'success': True,
+            'progress': {
+                'overall_progress': progress_percentage,
+                'completed_steps': len(completed_steps),
+                'total_steps': total_steps,
+                'total_time_spent': total_time_spent,
+                'estimated_remaining': max(0, (total_steps - len(completed_steps)) * 45),  # 预估剩余时间
+                'started_learning': len(progress_records) > 0,
+                'last_activity': progress_records[0].last_updated.strftime('%Y-%m-%d %H:%M') if progress_records else None
+            },
+            'sections': sections_progress,
+            'recent_activity': recent_activity,
+            'course_info': {
+                'title': DEBT_MANAGEMENT_COURSE['title'],
+                'description': DEBT_MANAGEMENT_COURSE['description'],
+                'level': DEBT_MANAGEMENT_COURSE['level'],
+                'estimated_time': DEBT_MANAGEMENT_COURSE['estimated_time']
+            }
+        })
+        
+    except Exception as e:
+        print(f"获取学习进度错误: {e}")
+        return jsonify({
+            'success': False, 
+            'message': f'获取学习进度失败: {str(e)}',
+            'progress': {
+                'overall_progress': 0,
+                'completed_steps': 0,
+                'total_steps': DEBT_MANAGEMENT_COURSE['total_steps'],
+                'total_time_spent': 0,
+                'estimated_remaining': DEBT_MANAGEMENT_COURSE['total_steps'] * 45,
+                'started_learning': False,
+                'last_activity': None
+            },
+            'sections': [],
+            'recent_activity': [],
+            'course_info': DEBT_MANAGEMENT_COURSE
+        })
+
+@app.route('/api/update-learning-progress', methods=['POST'])
+@payment_required
+def update_learning_progress():
+    """更新学习进度"""
+    try:
+        data = request.get_json()
+        user_id = session['user_id']
+        step_id = data.get('step_id')
+        time_spent = data.get('time_spent', 0)
+        
+        if not step_id:
+            return jsonify({'success': False, 'message': '步骤ID不能为空'})
+        
+        # 检查是否已经记录过
+        existing_record = LearningProgress.query.filter_by(
+            user_id=user_id,
+            course_id='debt-management',
+            step_completed=step_id
+        ).first()
+        
+        if not existing_record:
+            # 创建新的进度记录
+            new_progress = LearningProgress(
+                user_id=user_id,
+                course_id='debt-management',
+                step_completed=step_id,
+                time_spent=time_spent
+            )
+            db.session.add(new_progress)
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': '学习进度已更新'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'更新进度失败: {str(e)}'})
+
+@app.route('/learning-dashboard')
+@payment_required
+def learning_dashboard():
+    """专业的学习仪表板页面"""
+    return render_template('learning_dashboard.html')
+
+# ============ 专业模板内容 ============
+
+@app.route('/api/professional-tools')
+@payment_required
+def get_professional_tools():
+    """获取专业工具列表"""
+    tools = [
+        {
+            'id': 'debt-calculator',
+            'name': '智能债务计算器',
+            'description': '精确计算还款周期、利息成本，制定最优还款方案',
+            'icon': 'calculator',
+            'color': 'primary',
+            'features': ['多债务同时计算', '利息对比分析', '还款方案优化'],
+            'button_text': '开始计算',
+            'url': '/members#debtCalculator'
+        },
+        {
+            'id': 'debt-template',
+            'name': '专业债务管理表',
+            'description': 'Excel专业模板，自动计算、图表分析、进度跟踪',
+            'icon': 'file-excel',
+            'color': 'success',
+            'features': ['自动债务清单', '还款计划表', '进度可视化'],
+            'button_text': '下载模板',
+            'url': '/download/debt-management-template'
+        },
+        {
+            'id': 'negotiation-guide',
+            'name': '债务协商指南',
+            'description': '专业协商话术、法律依据、应对策略全套方案',
+            'icon': 'comments',
+            'color': 'info',
+            'features': ['标准协商流程', '法律条款引用', '案例话术模板'],
+            'button_text': '查看指南',
+            'url': '/knowledge-base'
+        },
+        {
+            'id': 'progress-tracker',
+            'name': '进度跟踪系统',
+            'description': '可视化学习进度、债务减少趋势、成就奖励',
+            'icon': 'chart-line',
+            'color': 'warning',
+            'features': ['学习进度可视化', '债务减少曲线', '成就徽章系统'],
+            'button_text': '查看进度',
+            'url': '/learning-dashboard'
+        }
+    ]
+    
+    return jsonify({'success': True, 'tools': tools})
+
+# ============ 初始化学习进度表 ============
+def init_learning_progress():
+    """初始化学习进度表"""
+    with app.app_context():
+        try:
+            # 检查表是否存在，如果不存在则创建
+            db.create_all()
+            print("✅ 学习进度表初始化完成")
+        except Exception as e:
+            print(f"❌ 学习进度表初始化失败: {e}")
  
 # ============ 启动应用 ============
 if __name__ == '__main__':
