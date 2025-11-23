@@ -1189,6 +1189,16 @@ def redirect_debt_management_course():
 def redirect_negotiation_guide():
     """重定向协商话术指南"""
     return redirect(url_for('negotiation_guide'))
+
+@app.route('/psychological-course')
+@payment_required
+def psychological_course():
+    """心理调适课程页面"""
+    try:
+        return render_template('psychological-course.html')
+    except Exception as e:
+        print(f"心理调适课程页面错误: {e}")
+        return "心理调适课程页面暂时不可用", 500
     
 # ============ 调试路由 ============
 @app.route('/debug/questions')

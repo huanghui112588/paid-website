@@ -344,9 +344,9 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary w-100 mt-3" onclick="startLearning()">
+                        <a href="/psychological-course" class="btn btn-primary w-100 mt-3">
                             <i class="fas fa-play-circle me-2"></i>开始学习心理调适
-                        </button>
+                        </a>
                     </div>
 
                     <!-- 心理测试 -->
@@ -414,9 +414,9 @@
 
                 <!-- 行动按钮 -->
                 <div class="text-center mt-4">
-                    <button class="btn btn-primary me-3" onclick="startLearning()">
+                    <a href="/psychological-course" class="btn btn-primary me-3">
                         <i class="fas fa-graduation-cap me-2"></i>学习心理调适
-                    </button>
+                    </a>
                     <button class="btn btn-outline" onclick="takeMentalTest()">
                         <i class="fas fa-clipboard-check me-2"></i>心理测试
                     </button>
@@ -556,8 +556,8 @@
 
         // 开始学习心理调适
         function startLearning() {
-            alert('即将带您进入心理调适课程学习页面...');
-            // 实际应用中这里应该是页面跳转或加载课程内容
+            // 跳转到心理调适课程页面
+            window.location.href = "/psychological-course";
         }
 
         // 开始心理测试
