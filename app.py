@@ -2155,6 +2155,384 @@ def init_learning_progress():
             print("✅ 学习进度表初始化完成")
         except Exception as e:
             print(f"❌ 学习进度表初始化失败: {e}")
+
+# ============ 协商话术管理 ============
+
+# 协商话术分类和内容
+NEGOTIATION_PHRASES = {
+    'categories': [
+        {
+            'id': 'bank',
+            'name': '银行协商',
+            'icon': 'university',
+            'color': 'primary',
+            'description': '信用卡、银行贷款等银行机构协商话术'
+        },
+        {
+            'id': 'online_loan',
+            'name': '网贷平台',
+            'icon': 'mobile-alt',
+            'color': 'info',
+            'description': '各类网贷平台协商还款话术'
+        },
+        {
+            'id': 'legal',
+            'name': '法律依据',
+            'icon': 'balance-scale',
+            'color': 'warning',
+            'description': '法律法规依据和维权话术'
+        },
+        {
+            'id': 'psychological',
+            'name': '心理技巧',
+            'icon': 'brain',
+            'color': 'success',
+            'description': '沟通心理技巧和情绪管理'
+        }
+    ],
+    'phrases': [
+        # 银行协商话术
+        {
+            'id': 1,
+            'category': 'bank',
+            'title': '信用卡逾期协商开场白',
+            'content': """
+尊敬的客服您好，我是贵行信用卡持卡人[姓名]，卡号尾号[XXXX]。由于近期遇到一些经济困难，暂时无法按时全额还款，但我有强烈的还款意愿。希望能与贵行协商一个双方都能接受的还款方案。
+
+我目前的情况是：[简要说明困难原因，如失业、疾病、家庭变故等]。但我有稳定的[收入来源]，每月可以拿出[具体金额]用于还款。
+
+请问是否可以申请：
+1. 利息和违约金的减免
+2. 分期还款方案（[期数]期）
+3. 停止催收骚扰
+
+我愿意提供相关证明材料，希望能得到您的理解和支持。
+            """,
+            'difficulty': '初级',
+            'usage_count': 1250,
+            'success_rate': 85,
+            'tags': ['开场白', '信用卡', '逾期'],
+            'key_points': [
+                '态度诚恳，表达还款意愿',
+                '说明困难原因但不过多抱怨',
+                '提出具体可行的还款方案',
+                '主动要求提供证明材料'
+            ]
+        },
+        {
+            'id': 2,
+            'category': 'bank',
+            'title': '个性化分期还款申请',
+            'content': """
+您好，根据《商业银行信用卡业务监督管理办法》第70条规定，在特殊情况下，确认信用卡欠款金额超出持卡人还款能力、且持卡人仍有还款意愿的，发卡银行可以与持卡人平等协商，达成个性化分期还款协议。
+
+我目前的情况符合上述规定，希望申请个性化分期还款，协议最长可以分期60期。我每月可还款[金额]元，希望贵行能够考虑我的实际情况。
+
+如需要，我可以提供：
+- 收入证明
+- 困难情况说明
+- 征信报告
+- 其他相关材料
+
+请告知具体的申请流程和所需材料，我会积极配合。
+            """,
+            'difficulty': '中级',
+            'usage_count': 890,
+            'success_rate': 78,
+            'tags': ['分期还款', '法律法规', '证明材料'],
+            'key_points': [
+                '引用具体法规条款',
+                '明确分期期数要求',
+                '列出可提供的证明材料',
+                '表达配合态度'
+            ]
+        },
+        {
+            'id': 3,
+            'category': 'bank',
+            'title': '利息违约金减免话术',
+            'content': """
+客服您好，我理解逾期会产生利息和违约金，但由于我目前的实际困难，这些额外费用确实加重了我的还款压力。
+
+根据《民法典》的相关规定，违约金应以实际损失为基础，过分高于实际损失的，当事人可以请求适当减少。目前我逾期[时间]，产生的违约金已远超本金，希望能申请适当减免。
+
+我承诺：
+- 一次性结清本金
+- 按时执行还款计划
+- 配合提供所有必要材料
+
+请求贵行考虑我的实际情况，给予利息和违约金的减免，让我能够真正摆脱债务困境。
+            """,
+            'difficulty': '高级',
+            'usage_count': 670,
+            'success_rate': 65,
+            'tags': ['减免', '违约金', '法律法规'],
+            'key_points': [
+                '引用法律依据',
+                '说明减免理由',
+                '承诺具体行动',
+                '强调实际困难'
+            ]
+        },
+        # 网贷平台话术
+        {
+            'id': 4,
+            'category': 'online_loan',
+            'title': '网贷平台延期还款申请',
+            'content': """
+您好，我在贵平台的借款[合同编号]目前因临时困难无法按时还款，但绝非恶意拖欠。希望能申请延期[时间]还款。
+
+我目前的情况：[说明具体困难]。预计在[时间]后情况会好转，届时可以正常还款。
+
+申请事项：
+1. 延期至[具体日期]还款
+2. 期间停止计算罚息
+3. 暂停催收联系
+
+我愿意支付正常的借款利息，只是需要一些时间周转。请考虑我的申请，谢谢！
+            """,
+            'difficulty': '初级',
+            'usage_count': 980,
+            'success_rate': 72,
+            'tags': ['延期', '网贷', '暂停催收'],
+            'key_points': [
+                '强调非恶意拖欠',
+                '给出明确时间节点',
+                '要求暂停不合理收费',
+                '承诺支付正常利息'
+            ]
+        },
+        {
+            'id': 5,
+            'category': 'online_loan',
+            'title': '高利率网贷协商话术',
+            'content': """
+您好，我注意到贵平台的借款利率较高，综合年化利率达到[利率]%，超过了国家规定的民间借贷利率司法保护上限。
+
+根据最高人民法院的相关规定，借贷利率超过合同成立时一年期LPR四倍的部分不受法律保护。我愿意偿还合法范围内的本息，但超出部分希望能予以减免。
+
+我提议：
+- 偿还本金+合法利息（LPR四倍以内）
+- 制定可行的还款计划
+- 结清后开具结清证明
+
+如果贵平台坚持要求支付超出法律保护范围的利息，我将不得不向金融监管部门投诉维权。
+            """,
+            'difficulty': '高级',
+            'usage_count': 540,
+            'success_rate': 82,
+            'tags': ['利率', '法律维权', '监管部门'],
+            'key_points': [
+                '指出利率问题',
+                '引用法律依据',
+                '提出合理方案',
+                '表明维权决心'
+            ]
+        },
+        # 法律依据话术
+        {
+            'id': 6,
+            'category': 'legal',
+            'title': '违规催收应对话术',
+            'content': """
+根据《中华人民共和国网络安全法》和《商业银行信用卡业务监督管理办法》规定，催收行为必须合法合规。
+
+我目前遭遇到的以下行为涉嫌违规：
+1. 非工作时间频繁拨打电话
+2. 骚扰无关第三人（家人、同事）
+3. 使用威胁、辱骂性语言
+4. 冒充司法人员
+
+我已对相关通话进行录音，对短信、微信聊天记录进行截屏保存。如果贵方不立即停止违规催收行为，我将：
+- 向银保监会12378热线投诉
+- 向公安机关报案
+- 通过法律途径维权
+
+请立即停止违规行为，通过合法渠道协商还款事宜。
+            """,
+            'difficulty': '中级',
+            'usage_count': 1120,
+            'success_rate': 88,
+            'tags': ['违规催收', '投诉', '法律维权'],
+            'key_points': [
+                '列举具体违规行为',
+                '引用相关法律法规',
+                '表明已保存证据',
+                '明确维权途径'
+            ]
+        },
+        {
+            'id': 7,
+            'category': 'legal',
+            'title': '征信异议申诉话术',
+            'content': """
+尊敬的征信中心/银行客服：
+
+我对贵机构报送的征信记录有异议，具体情况如下：
+
+1. 逾期记录与实际情况不符：[说明具体情况]
+2. 金额数据存在错误：[指出具体错误]
+3. 非本人主观意愿造成的逾期：[说明原因]
+
+根据《征信业管理条例》第25条规定，信息主体认为征信机构采集、保存、提供的信息存在错误、遗漏的，有权提出异议并要求更正。
+
+现正式提出征信异议申请，要求：
+1. 核实并更正错误信息
+2. 如确属错误，删除相关逾期记录
+3. 出具征信异议处理结果
+
+附上相关证明材料，请依法处理。
+            """,
+            'difficulty': '中级',
+            'usage_count': 430,
+            'success_rate': 70,
+            'tags': ['征信', '异议申诉', '法律法规'],
+            'key_points': [
+                '明确指出征信问题',
+                '引用具体法规条款',
+                '提出明确诉求',
+                '承诺提供证明材料'
+            ]
+        },
+        # 心理技巧话术
+        {
+            'id': 8,
+            'category': 'psychological',
+            'title': '情绪控制与沟通技巧',
+            'content': """
+在与催收或客服沟通时，保持冷静和专业非常重要：
+
+1. 深呼吸，保持平和心态
+2. 明确沟通目标：协商还款方案
+3. 不被对方情绪影响，专注于解决问题
+4. 记录关键信息：对方工号、承诺内容、时间等
+5. 适时结束不愉快的对话，换个时间再联系
+
+记住：您的目标是达成还款协议，不是争吵获胜。即使对方态度不好，也要保持礼貌和理性。
+
+有效话术：
+"我理解您的工作职责，但也请您理解我的实际困难。"
+"我们能不能一起找个双方都能接受的解决方案？"
+"刚才您承诺的[内容]，我会记录下来，希望您也能履行承诺。"
+            """,
+            'difficulty': '初级',
+            'usage_count': 1560,
+            'success_rate': 90,
+            'tags': ['情绪管理', '沟通技巧', '心理调节'],
+            'key_points': [
+                '保持冷静和专业',
+                '明确沟通目标',
+                '记录关键信息',
+                '使用建设性语言'
+            ]
+        }
+    ],
+    'learning_path': [
+        {
+            'step': 1,
+            'title': '基础认知',
+            'description': '了解协商基本原则和准备工作',
+            'duration': '20分钟',
+            'phrases': [1, 8]
+        },
+        {
+            'step': 2,
+            'title': '银行协商',
+            'description': '掌握银行信用卡和贷款协商技巧',
+            'duration': '30分钟',
+            'phrases': [2, 3]
+        },
+        {
+            'step': 3,
+            'title': '网贷协商',
+            'description': '学习网贷平台协商策略',
+            'duration': '25分钟',
+            'phrases': [4, 5]
+        },
+        {
+            'step': 4,
+            'title': '法律维权',
+            'description': '运用法律武器保护合法权益',
+            'duration': '35分钟',
+            'phrases': [6, 7]
+        }
+    ]
+}
+
+@app.route('/negotiation-guide')
+@payment_required
+def negotiation_guide():
+    """协商话术大全主页面"""
+    return render_template('negotiation_guide.html')
+
+@app.route('/api/negotiation-phrases')
+@payment_required
+def get_negotiation_phrases():
+    """获取协商话术数据"""
+    try:
+        # 计算热门话术（按使用次数排序）
+        popular_phrases = sorted(
+            [p for p in NEGOTIATION_PHRASES['phrases']],
+            key=lambda x: x['usage_count'],
+            reverse=True
+        )[:6]
+        
+        return jsonify({
+            'success': True,
+            'categories': NEGOTIATION_PHRASES['categories'],
+            'phrases': NEGOTIATION_PHRASES['phrases'],
+            'learning_path': NEGOTIATION_PHRASES['learning_path'],
+            'popular_phrases': popular_phrases,
+            'stats': {
+                'total_phrases': len(NEGOTIATION_PHRASES['phrases']),
+                'total_categories': len(NEGOTIATION_PHRASES['categories']),
+                'avg_success_rate': sum(p['success_rate'] for p in NEGOTIATION_PHRASES['phrases']) // len(NEGOTIATION_PHRASES['phrases'])
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取话术数据失败: {str(e)}'})
+
+@app.route('/api/negotiation-phrase/<int:phrase_id>')
+@payment_required
+def get_negotiation_phrase(phrase_id):
+    """获取特定话术的详细信息"""
+    try:
+        phrase = next((p for p in NEGOTIATION_PHRASES['phrases'] if p['id'] == phrase_id), None)
+        if phrase:
+            # 增加使用计数（在实际应用中应该持久化到数据库）
+            phrase['usage_count'] += 1
+            
+            # 获取相关话术推荐
+            category_phrases = [p for p in NEGOTIATION_PHRASES['phrases'] 
+                              if p['category'] == phrase['category'] and p['id'] != phrase_id][:3]
+            
+            return jsonify({
+                'success': True,
+                'phrase': phrase,
+                'related_phrases': category_phrases
+            })
+        else:
+            return jsonify({'success': False, 'message': '话术不存在'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取话术详情失败: {str(e)}'})
+
+@app.route('/api/negotiation-category/<category_id>')
+@payment_required
+def get_negotiation_category(category_id):
+    """获取特定分类的话术"""
+    try:
+        category = next((c for c in NEGOTIATION_PHRASES['categories'] if c['id'] == category_id), None)
+        if category:
+            category_phrases = [p for p in NEGOTIATION_PHRASES['phrases'] if p['category'] == category_id]
+            return jsonify({
+                'success': True,
+                'category': category,
+                'phrases': category_phrases
+            })
+        else:
+            return jsonify({'success': False, 'message': '分类不存在'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取分类话术失败: {str(e)}'})
  
 # ============ 启动应用 ============
 if __name__ == '__main__':

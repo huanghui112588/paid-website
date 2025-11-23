@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>协商话术大全 - 上岸翻身营</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .category-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .phrase-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .phrase-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .success-rate-badge {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            font-weight: 600;
+        }
+
+        .difficulty-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+        }
+
+        .learning-path-step {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        .learning-path-step::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: -25px;
+            width: 2px;
+            background: #e9ecef;
+        }
+
+        .learning-path-step:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #0d6efd;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .tag-badge {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            font-size: 0.75rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .phrase-content {
+            max-height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phrase-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(transparent, white);
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .key-point {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #0d6efd;
+        }
+
+        .usage-count {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .search-box {
+            border-radius: 25px;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid py-4">
+        <!-- 页面标题和统计 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h1 class="h2 mb-1">协商话术大全</h1>
+                        <p class="text-muted mb-0">100+实用话术模板，助你成功与银行/平台协商</p>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge bg-primary fs-6">专业版</span>
+                    </div>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card p-3 text-center">
+                            <h3 class="mb-1" id="totalPhrases">0</h3>
+                            <p class="mb-0">话术模板</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card p-3 text-center">
+                            <h3 class="mb-1" id="avgSuccessRate">0%</h3>
+                            <p class="mb-0">平均成功率</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card p-3 text-center">
+                            <h3 class="mb-1" id="totalCategories">0</h3>
+                            <p class="mb-0">分类</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card p-3 text-center">
+                            <h3 class="mb-1">100+</h3>
+                            <p class="mb-0">用户成功案例</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- 左侧内容 -->
+            <div class="col-lg-8">
+                <!-- 搜索框 -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control search-box border-0" placeholder="搜索话术模板..."
+                                        id="searchInput">
+                                    <button class="btn btn-primary rounded-pill px-4" onclick="searchPhrases()">
+                                        <i class="fas fa-search me-2"></i>搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分类导航 -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-layer-group me-2 text-primary"></i>
+                                    协商话术库
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3" id="categoriesContainer">
+                                    <!-- 分类将通过JavaScript动态加载 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 话术列表 -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-list me-2 text-info"></i>
+                                    精选话术模板
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3" id="phrasesContainer">
+                                    <!-- 话术将通过JavaScript动态加载 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧边栏 -->
+            <div class="col-lg-4">
+                <!-- 学习路径 -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 py-3">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-road me-2 text-warning"></i>
+                            学习话术技巧
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">按照学习路径系统掌握协商技巧</p>
+                        <div id="learningPathContainer">
+                            <!-- 学习路径将通过JavaScript动态加载 -->
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary" onclick="startLearningPath()">
+                                <i class="fas fa-play me-2"></i>开始学习路径
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 热门话术 -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 py-3">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-fire me-2 text-danger"></i>
+                            热门话术
+                        </h5>
+                    </div>
+                    <div class="card-body" id="popularPhrasesContainer">
+                        <!-- 热门话术将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 话术详情模态框 -->
+    <div class="modal fade" id="phraseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title" id="phraseModalTitle">话术详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div id="phraseModalContent">
+                        <!-- 话术详情内容将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="copyPhraseContent()">
+                        <i class="fas fa-copy me-2"></i>复制话术
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let allPhrases = [];
+        let currentPhrase = null;
+
+        // 页面加载完成后获取话术数据
+        document.addEventListener('DOMContentLoaded', function () {
+            loadNegotiationPhrases();
+        });
+
+        function loadNegotiationPhrases() {
+            fetch('/api/negotiation-phrases')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allPhrases = data.phrases;
+                        updateStats(data.stats);
+                        updateCategories(data.categories);
+                        updatePhrases(data.phrases);
+                        updateLearningPath(data.learning_path);
+                        updatePopularPhrases(data.popular_phrases);
+                    } else {
+                        showError('加载话术数据失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('网络错误，请重试');
+                });
+        }
+
+        function updateStats(stats) {
+            document.getElementById('totalPhrases').textContent = stats.total_phrases;
+            document.getElementById('avgSuccessRate').textContent = stats.avg_success_rate + '%';
+            document.getElementById('totalCategories').textContent = stats.total_categories;
+        }
+
+        function updateCategories(categories) {
+            const container = document.getElementById('categoriesContainer');
+            let html = '';
+
+            categories.forEach(category => {
+                const categoryPhrases = allPhrases.filter(p => p.category === category.id);
+                html += `
+                    <div class="col-sm-6">
+                        <div class="card category-card h-100" onclick="filterByCategory('${category.id}')">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-${category.icon} fa-2x text-${category.color}"></i>
+                                </div>
+                                <h6 class="card-title">${category.name}</h6>
+                                <p class="card-text small text-muted">${category.description}</p>
+                                <span class="badge bg-light text-dark">${categoryPhrases.length} 个话术</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updatePhrases(phrases) {
+            const container = document.getElementById('phrasesContainer');
+            let html = '';
+
+            phrases.forEach(phrase => {
+                const category = getCategoryById(phrase.category);
+                html += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card phrase-card h-100" onclick="showPhraseDetail(${phrase.id})">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-${getDifficultyColor(phrase.difficulty)} difficulty-badge">
+                                        ${phrase.difficulty}
+                                    </span>
+                                    <span class="success-rate-badge badge">
+                                        ${phrase.success_rate}% 成功
+                                    </span>
+                                </div>
+                                <h6 class="card-title">${phrase.title}</h6>
+                                <div class="phrase-content mb-2">
+                                    <p class="card-text small text-muted">${phrase.content.trim().split('\n')[0]}</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        ${phrase.tags.map(tag =>
+                    `<span class="badge tag-badge">${tag}</span>`
+                ).join('')}
+                                    </div>
+                                    <small class="usage-count">
+                                        <i class="fas fa-eye me-1"></i>${phrase.usage_count}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updateLearningPath(learningPath) {
+            const container = document.getElementById('learningPathContainer');
+            let html = '';
+
+            learningPath.forEach(step => {
+                html += `
+                    <div class="learning-path-step">
+                        <div class="step-number">${step.step}</div>
+                        <h6 class="mb-1">${step.title}</h6>
+                        <p class="small text-muted mb-2">${step.description}</p>
+                        <div class="small">
+                            <i class="fas fa-clock me-1"></i>${step.duration}
+                            <span class="ms-2">
+                                <i class="fas fa-file-alt me-1"></i>${step.phrases.length} 个话术
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updatePopularPhrases(popularPhrases) {
+            const container = document.getElementById('popularPhrasesContainer');
+            let html = '';
+
+            popularPhrases.forEach(phrase => {
+                html += `
+                    <div class="card phrase-card mb-3" onclick="showPhraseDetail(${phrase.id})">
+                        <div class="card-body py-2">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="card-title small mb-1">${phrase.title}</h6>
+                                <span class="badge bg-danger small">热</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-${getDifficultyColor(phrase.difficulty)} small">
+                                    ${phrase.difficulty}
+                                </span>
+                                <small class="text-muted">
+                                    <i class="fas fa-eye me-1"></i>${phrase.usage_count}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function showPhraseDetail(phraseId) {
+            fetch(`/api/negotiation-phrase/${phraseId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        currentPhrase = data.phrase;
+                        displayPhraseModal(data.phrase, data.related_phrases);
+                    } else {
+                        showError('加载话术详情失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('网络错误');
+                });
+        }
+
+        function displayPhraseModal(phrase, relatedPhrases) {
+            const category = getCategoryById(phrase.category);
+
+            let html = `
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-${category.color} mb-2">${category.name}</span>
+                            <span class="badge bg-${getDifficultyColor(phrase.difficulty)} ms-2">${phrase.difficulty}</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="success-rate-badge badge">${phrase.success_rate}% 成功率</span>
+                            <div class="usage-count mt-1">${phrase.usage_count} 人使用</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mb-3">${phrase.title}</h4>
+                    
+                    <div class="mb-3">
+                        ${phrase.tags.map(tag =>
+                `<span class="badge tag-badge">${tag}</span>`
+            ).join('')}
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="mb-2"><i class="fas fa-comment-dots me-2 text-primary"></i>话术内容</h6>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <pre class="mb-0" style="white-space: pre-wrap; font-family: inherit;" id="phraseContent">${phrase.content.trim()}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="mb-2"><i class="fas fa-lightbulb me-2 text-warning"></i>关键要点</h6>
+                    <div>
+                        ${phrase.key_points.map(point =>
+                `<div class="key-point">${point}</div>`
+            ).join('')}
+                    </div>
+                </div>
+            `;
+
+            if (relatedPhrases.length > 0) {
+                html += `
+                    <div>
+                        <h6 class="mb-2"><i class="fas fa-link me-2 text-info"></i>相关话术</h6>
+                        <div class="row g-2">
+                            ${relatedPhrases.map(related => `
+                                <div class="col-12">
+                                    <div class="card phrase-card" onclick="showPhraseDetail(${related.id})">
+                                        <div class="card-body py-2">
+                                            <h6 class="card-title small mb-1">${related.title}</h6>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="badge bg-${getDifficultyColor(related.difficulty)} small">${related.difficulty}</span>
+                                                <span class="success-rate-badge badge small">${related.success_rate}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('phraseModalTitle').textContent = phrase.title;
+            document.getElementById('phraseModalContent').innerHTML = html;
+
+            const modal = new bootstrap.Modal(document.getElementById('phraseModal'));
+            modal.show();
+        }
+
+        function copyPhraseContent() {
+            const content = document.getElementById('phraseContent').textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                showSuccess('话术已复制到剪贴板');
+            }).catch(() => {
+                showError('复制失败，请手动选择复制');
+            });
+        }
+
+        function filterByCategory(categoryId) {
+            const filteredPhrases = allPhrases.filter(p => p.category === categoryId);
+            updatePhrases(filteredPhrases);
+
+            // 滚动到话术列表
+            document.getElementById('phrasesContainer').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function searchPhrases() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                updatePhrases(allPhrases);
+                return;
+            }
+
+            const filteredPhrases = allPhrases.filter(phrase =>
+                phrase.title.toLowerCase().includes(searchTerm) ||
+                phrase.content.toLowerCase().includes(searchTerm) ||
+                phrase.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+
+            updatePhrases(filteredPhrases);
+        }
+
+        function startLearningPath() {
+            // 这里可以实现开始学习路径的功能
+            showSuccess('学习路径开始！请按顺序学习每个步骤');
+        }
+
+        // 工具函数
+        function getCategoryById(categoryId) {
+            const categories = {
+                'bank': { name: '银行协商', color: 'primary' },
+                'online_loan': { name: '网贷平台', color: 'info' },
+                'legal': { name: '法律依据', color: 'warning' },
+                'psychological': { name: '心理技巧', color: 'success' }
+            };
+            return categories[categoryId] || { name: '未知', color: 'secondary' };
+        }
+
+        function getDifficultyColor(difficulty) {
+            const colors = {
+                '初级': 'success',
+                '中级': 'warning',
+                '高级': 'danger'
+            };
+            return colors[difficulty] || 'secondary';
+        }
+
+        function showSuccess(message) {
+            // 简单的成功提示
+            alert('✅ ' + message);
+        }
+
+        function showError(message) {
+            // 简单的错误提示
+            alert('❌ ' + message);
+        }
+
+        // 回车搜索
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchPhrases();
+            }
+        });
+    </script>
+</body>
+
+</html>
