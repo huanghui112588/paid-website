@@ -659,6 +659,16 @@
             </div>
         </nav>
 
+        <!-- 免责声明 -->
+        <div class="container mt-3">
+            <div class="alert alert-warning">
+                <h6><i class="fas fa-exclamation-triangle me-2"></i>重要声明</h6>
+                <p class="mb-2"><strong>本平台提供的信息仅供参考，不构成专业的金融、法律或医疗建议。</strong></p>
+                <p class="mb-2">用户应自行判断并承担相关风险，建议咨询相关持牌专业人士。</p>
+                <p class="mb-0">债务计算器仅为估算工具，实际还款情况请以金融机构确认为准。</p>
+            </div>
+        </div>
+
         <!-- 紧急工具箱 -->
         <div class="crisis-toolkit">
             <h3><i class="fas fa-toolbox me-2"></i>紧急应对工具箱</h3>
@@ -2155,5 +2165,26 @@
                 });
 
                 console.log("✅ 会员页面初始化完成");
-            });
+            }); // 添加这个缺失的大括号
+
         </script>
+
+        <!-- 页脚 -->
+        <footer class="bg-dark text-white py-4 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-life-ring me-2"></i>上岸翻身营</h5>
+                        <p class="text-muted">专为负债人群打造的翻身平台</p>
+                        <div class="mt-2">
+                            <a href="{{ url_for('terms') }}" class="text-light me-3">服务条款</a>
+                            <a href="{{ url_for('privacy') }}" class="text-light me-3">隐私政策</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="text-muted mb-0">&copy; 2025 上岸翻身营. 保留所有权利.</p>
+                        <p class="text-muted small mt-1">会员专属服务 - 信息仅供参考</p>
+                    </div>
+                </div>
+            </div>
+        </footer>

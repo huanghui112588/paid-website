@@ -44,12 +44,34 @@
                     <input type="password" id="password" name="password" required>
                 </div>
 
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
-                    <label class="form-check-label" for="agreeTerms">
-                        我已阅读并同意 <a href="{{ url_for('terms') }}" target="_blank">服务条款</a>
-                        和 <a href="{{ url_for('privacy') }}" target="_blank">隐私政策</a>
-                    </label>
+                <!-- 条款同意 -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agree_terms" name="agree_terms"
+                                required>
+                            <label class="form-check-label" for="agree_terms">
+                                我已阅读并同意
+                                <a href="{{ url_for('terms') }}" target="_blank">《服务条款》</a>
+                                和
+                                <a href="{{ url_for('privacy') }}" target="_blank">《隐私政策》</a>
+                            </label>
+                            <div class="invalid-feedback">
+                                请阅读并同意服务条款和隐私政策
+                            </div>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" id="age_confirm" name="age_confirm"
+                                required>
+                            <label class="form-check-label" for="age_confirm">
+                                我确认已年满18周岁
+                            </label>
+                            <div class="invalid-feedback">
+                                请确认您已年满18周岁
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="cta-button">注册</button>

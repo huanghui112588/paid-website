@@ -224,6 +224,28 @@ class PasswordReset(db.Model):
     def is_valid(self):
         """检查令牌是否有效"""
         return not self.used and self.expires_at > datetime.now()
+    
+class AdminLog(db.Model):
+    __tablename__ = "admin_log"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    admin_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    action = db.Column(db.String(200), nullable=False)
+    target_type = db.Column(db.String(50), nullable=True)  # 改为 nullable=True
+    target_id = db.Column(db.Integer, nullable=True)       # 改为 nullable=True
+    ip_address = db.Column(db.String(45), nullable=True)   # 改为 nullable=True
+    user_agent = db.Column(db.Text, nullable=True)         # 改为 nullable=True
+    create_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
+    
+    # 添加构造函数
+    def __init__(self, admin_id, action, target_type=None, target_id=None, 
+                 ip_address=None, user_agent=None):
+        self.admin_id = admin_id
+        self.action = action
+        self.target_type = target_type
+        self.target_id = target_id
+        self.ip_address = ip_address
+        self.user_agent = user_agent
 
 # ============ 优化查询方法 ============
 
@@ -330,9 +352,17 @@ def register():
         username = request.form.get('username', '').strip()
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
+
+        # 新增：检查条款同意
+        agree_terms = request.form.get('agree_terms')
+        age_confirm = request.form.get('age_confirm')
         
         if not all([username, email, password]):
             return render_template('register.html', error="请填写所有字段")
+        
+        # 新增：检查是否同意条款
+        if not agree_terms or not age_confirm:
+            return render_template('register.html', error="请阅读并同意服务条款，并确认年龄要求")
         
         # 检查用户是否已存在
         if User.query.filter_by(username=username).first():
@@ -783,13 +813,37 @@ def admin_users():
 @app.route('/admin/delete-user/<int:user_id>', methods=['DELETE'])
 @admin_required
 def delete_user(user_id):
-    """删除用户"""
+    """删除用户 - 修复会话版本"""
     try:
+        print(f"🔍 开始删除用户 {user_id}")
+        
+        # 调试：检查会话状态
+        print(f"🔍 会话状态检查:")
+        print(f"  - session.get('user_id'): {session.get('user_id')}")
+        print(f"  - session.get('admin_logged_in'): {session.get('admin_logged_in')}")
+        print(f"  - session.get('admin_username'): {session.get('admin_username')}")
+        
+        # 获取当前管理员ID - 修复版本
+        admin_id = session.get('user_id')
+        if not admin_id:
+            # 如果 user_id 不存在，尝试通过管理员用户名查找
+            admin_username = session.get('admin_username')
+            if admin_username:
+                admin_user = User.query.filter_by(username=admin_username, is_admin=True).first()
+                if admin_user:
+                    admin_id = admin_user.id
+                    print(f"🔍 通过用户名找到管理员ID: {admin_id}")
+        
+        if not admin_id:
+            return jsonify({'success': False, 'message': '管理员会话无效，请重新登录'})
+        
         # 防止删除自己
-        if user_id == session.get('user_id'):
+        if user_id == admin_id:
             return jsonify({'success': False, 'message': '不能删除自己的账户'})
         
-        user = User.query.get_or_404(user_id)
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({'success': False, 'message': '用户不存在'})
         
         # 防止删除最后一个管理员
         if user.is_admin:
@@ -797,14 +851,32 @@ def delete_user(user_id):
             if admin_count <= 1:
                 return jsonify({'success': False, 'message': '不能删除最后一个管理员'})
         
-        # 删除用户相关的所有数据
+        # 删除关联数据
         Payment.query.filter_by(user_id=user_id).delete()
         Question.query.filter_by(user_id=user_id).delete()
+        
+        # 删除用户
         db.session.delete(user)
+        
+        # 修复：使用正确的admin_id
+        log = AdminLog(
+            admin_id=admin_id,  # 使用修复后的admin_id
+            action=f'删除用户: {user.username} (ID: {user_id})',
+            target_type='user',
+            target_id=user_id,
+            ip_address=request.remote_addr or 'unknown',
+            user_agent=request.headers.get('User-Agent', 'unknown')
+        )
+        db.session.add(log)
+        
         db.session.commit()
+        
+        print(f"✅ 用户 {user_id} 删除成功")
         return jsonify({'success': True, 'message': '用户已删除'})
+        
     except Exception as e:
         db.session.rollback()
+        print(f"❌ 删除异常: {str(e)}")
         return jsonify({'success': False, 'message': f'删除失败: {str(e)}'})
 
 # ============ 初始化应用 ============
@@ -817,6 +889,12 @@ def init_db():
             # 创建所有表
             db.create_all()
             print("✅ 数据库表创建完成")
+
+            # 检查AdminLog表是否存在
+            from sqlalchemy import inspect
+            inspector = inspect(db.engine)
+            tables = inspector.get_table_names()
+            print(f"📊 数据库中的表: {tables}")
             
             # 创建默认管理员账户
             admin_user = User.query.filter_by(username='huang').first()
