@@ -8,6 +8,8 @@ from sqlalchemy import desc
 from typing import Optional, List
 from io import BytesIO, StringIO
 from flask import Flask, render_template
+import smtplib
+from email.message import EmailMessage
 
 app = Flask(__name__)
 
@@ -76,6 +78,75 @@ CONTENT_MODULES = [
     {"id": 2, "category_id": 1, "title": "支付流程说明", "content": "在此处添加支付流程..."},
     {"id": 3, "category_id": 2, "title": "优化技巧", "content": "在此处添加高级技巧..."},
 ]
+
+def send_reset_email(user_email, reset_url):
+    """使用替代方法的邮件发送函数"""
+    try:
+        # 获取邮件配置
+        smtp_server = os.environ.get('MAIL_SERVER', '')
+        smtp_port_str = os.environ.get('MAIL_PORT', '587')
+        smtp_user = os.environ.get('MAIL_USERNAME', '')
+        smtp_pass = os.environ.get('MAIL_PASSWORD', '')
+        
+        # 检查必要的配置是否存在
+        if not smtp_server or not smtp_user or not smtp_pass:
+            print("❌ 邮件配置不完整，无法发送邮件")
+            return False
+        
+        # 确保端口是整数
+        try:
+            smtp_port = int(smtp_port_str)
+        except (ValueError, TypeError):
+            smtp_port = 587
+        
+        # 创建邮件消息
+        msg = EmailMessage()
+        msg['Subject'] = '上岸翻身营 - 密码重置'
+        msg['From'] = f'上岸翻身营 <{smtp_user}>'
+        msg['To'] = user_email
+        
+        # 邮件内容
+        body = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h3 style="color: #4361ee;">上岸翻身营 - 密码重置</h3>
+            <p>您请求重置密码，请点击以下链接：</p>
+            <p>
+                <a href="{reset_url}" style="background: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                    重置密码
+                </a>
+            </p>
+            <p>或者复制以下链接到浏览器：</p>
+            <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; word-break: break-all;">
+                {reset_url}
+            </p>
+            <p><strong>该链接1小时内有效。</strong></p>
+            <p style="color: #6c757d; font-size: 14px;">
+                如果不是您本人操作，请忽略此邮件。
+            </p>
+        </div>
+        """
+        
+        msg.set_content(body, subtype='html')
+        
+        print(f"📧 尝试发送邮件到: {user_email}")
+        
+        # 发送邮件
+        if smtp_port == 465:
+            server = smtplib.SMTP_SSL(smtp_server, smtp_port)
+        else:
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+        
+        server.login(smtp_user, smtp_pass)
+        server.send_message(msg)
+        server.quit()
+        
+        print(f"✅ 密码重置邮件已发送至: {user_email}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ 邮件发送失败: {str(e)}")
+        return False
 
 # ============ 数据模型（兼容版本） ============
 class User(db.Model):
