@@ -1172,7 +1172,7 @@
             <!-- 问答功能卡片 -->
             <div class="content-card">
                 <div class="card-header">
-                    <h2 class="card-title">专家问答</h2>
+                    <h2 class="card-title">专员问答</h2>
                     <span class="card-badge">实时</span>
                 </div>
                 <div class="card-content">
@@ -1261,18 +1261,18 @@
         <!-- 问答功能区域 -->
         <div class="qa-container" id="qaSection">
             <h3><i class="fas fa-question-circle me-2"></i>我的问答</h3>
-            <p class="text-muted mb-4">有任何关于债务、协商、心理压力的问题，都可以在这里向专家提问，我们将在24小时内回复。</p>
+            <p class="text-muted mb-4">有任何关于债务、协商、心理压力的问题，都可以在这里向专员提问，我们将在24小时内回复。</p>
 
             <!-- 提问表单 -->
             <div class="question-form">
                 <div class="form-group">
-                    <label class="form-label">向专家提问</label>
+                    <label class="form-label">向专员提问</label>
                     <textarea class="form-textarea" id="questionContent" placeholder="请详细描述您的问题，例如：
 • 具体的债务情况
 • 遇到的催收问题  
 • 协商过程中遇到的困难
 • 心理压力方面的困扰
-专家将在24小时内给您专业的解答..."></textarea>
+专员将在24小时内给您专业的解答..."></textarea>
                 </div>
                 <button class="btn btn-primary" id="submitQuestionBtn">
                     <i class="fas fa-paper-plane me-2"></i> 提交问题
@@ -1352,7 +1352,7 @@
             <div class="text-center py-4">
                 <i class="fas fa-comments fa-2x text-muted mb-3"></i>
                 <p class="text-muted">您还没有提问过任何问题</p>
-                <p class="text-muted small">有什么问题可以随时向专家提问，我们将在24小时内回复</p>
+                <p class="text-muted small">有什么问题可以随时向专员提问，我们将在24小时内回复</p>
             </div>
         `;
                     return;
@@ -1377,13 +1377,13 @@
                 </p>
                 ${q.answered ? `
                     <div class="answer-content mt-3 p-3 bg-light rounded">
-                        <strong><i class="fas fa-reply me-1 text-success"></i>专家回答:</strong>
+                        <strong><i class="fas fa-reply me-1 text-success"></i>专员回答:</strong>
                         <p class="mb-2 mt-2">${q.answer || '暂无回答内容'}</p>
                         ${answerTime ? `<small class="text-muted"><i class="fas fa-check-circle me-1"></i>回答时间: ${answerTime}</small>` : ''}
                     </div>
                 ` : `
                     <div class="alert alert-info mt-2 mb-0">
-                        <i class="fas fa-clock me-1"></i>问题已提交，专家将在24小时内回复，请耐心等待
+                        <i class="fas fa-clock me-1"></i>问题已提交，专员将在24小时内回复，请耐心等待
                     </div>
                 `}
                 <hr class="my-3">
@@ -2067,7 +2067,7 @@
                     })
                     .then(data => {
                         if (data.success) {
-                            showAlert('问题已提交成功！专家将在24小时内回复。', 'success');
+                            showAlert('问题已提交成功！专员将在24小时内回复。', 'success');
                             document.getElementById('questionContent').value = '';
                             // 重新加载问题列表
                             loadMyQuestions();

@@ -679,7 +679,7 @@ def admin_dashboard():
     
     return render_template('admin_dashboard.html', **stats) 
 
-# ============ 专家问答路由 ============
+# ============ 专员问答路由 ============
 
 @app.route('/submit-question', methods=['POST'])
 @payment_required
@@ -710,7 +710,7 @@ def submit_question():
         db.session.commit()
         
         print(f"✅ 问题提交成功，ID: {new_question.id}")  # 调试日志
-        return jsonify({'success': True, 'message': '问题提交成功！专家将在24小时内回复'})
+        return jsonify({'success': True, 'message': '问题提交成功！专员将在24小时内回复'})
         
     except Exception as e:
         db.session.rollback()
@@ -1239,7 +1239,7 @@ def api_submit_question():
         db.session.add(new_question)
         db.session.commit()
         
-        return jsonify({'success': True, 'message': '问题提交成功！专家将在24小时内回复'})
+        return jsonify({'success': True, 'message': '问题提交成功！专员将在24小时内回复'})
         
     except Exception as e:
         db.session.rollback()
@@ -1997,7 +1997,7 @@ def download_debt_template():
                 ["📞 紧急求助"],
                 ["银保监会投诉热线：12378"],
                 ["心理援助热线：12320"],
-                ["上岸翻身营专家咨询：会员专属"],
+                ["上岸翻身营专员咨询：会员专属"],
                 [""],
                 ["生成时间：{}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))],
                 ["上岸翻身营 - 专业的债务管理指导"]
@@ -2093,9 +2093,9 @@ def create_professional_csv_template():
 📞 紧急求助
 银保监会投诉热线：12378
 心理援助热线：12320
-上岸翻身营专家咨询：会员专属
+上岸翻身营专员咨询：会员专属
 
-上岸翻身营 - 专业的债务管理指导
+上岸翻身营 - 专业的债务管理分享
 为您提供全方位的债务解决方案
 """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     
@@ -2128,7 +2128,7 @@ class LearningProgress(db.Model):
 # 债务管理课程结构
 DEBT_MANAGEMENT_COURSE = {
     'id': 'debt-management',
-    'title': '债务管理专家课程',
+    'title': '债务管理专员课程',
     'description': '系统学习债务管理，科学制定还款计划',
     'total_steps': 10,
     'estimated_time': '8-12小时',
