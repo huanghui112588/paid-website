@@ -684,6 +684,12 @@ def admin_dashboard():
 @app.route('/submit-question', methods=['POST'])
 @payment_required
 def submit_question():
+    disclaimer = """
+    <div class="alert alert-info">
+        <strong>注意：</strong>专员回答仅为个人经验分享，
+        不构成专业建议，请谨慎参考。
+    </div>
+    """
     """用户提交问题 - 修复版本"""
     try:
         # 同时支持表单数据和JSON数据
@@ -1083,35 +1089,35 @@ def generate_debt_advice(total_debt, monthly_payment, months):
     if months <= 12:
         return {
             'level': 'success',
-            'title': '恭喜！还款计划很合理',
-            'content': '您的还款计划很合理，坚持执行很快就能上岸！继续保持。',
+            'title': '计算示例，仅供参考',
+            'content': '此为模拟计算，实际请咨询金融机构。',
             'suggestions': [
-                '坚持当前还款计划',
-                '建立紧急备用金',
-                '学习理财知识预防再次负债'
+                '建议咨询正规金融机构',
+                '计算结果仅供参考',
+                '请以实际合同为准'
             ]
         }
     elif months <= 36:
         return {
             'level': 'warning',
-            'title': '还款计划可行，建议优化',
-            'content': '还款计划可行，但周期较长。建议寻找增加收入的机会，加速还款进程。',
+            'title': '计算示例，仅供参考',
+            'content': '此为模拟计算，实际请咨询金融机构。',
             'suggestions': [
                 '寻找兼职或副业增加收入',
-                '优化日常开支',
+                '建议优化日常开支',
                 '与债权人协商降低利率'
             ]
         }
     else:
         return {
             'level': 'danger',
-            'title': '需要调整还款计划',
-            'content': '还款周期较长，建议积极调整还款策略，避免长期负担。',
+            'title': '计算示例，仅供参考',
+            'content': '此为模拟计算，实际请咨询金融机构。',
             'suggestions': [
-                '与所有债权人协商还款方案',
+                '建议与所有债权人协商还款方案',
                 '寻求专业债务咨询服务',
                 '制定严格的预算计划',
-                '优先偿还高利率债务'
+                '请以实际合同为准'
             ]
         }
 
@@ -2377,24 +2383,24 @@ NEGOTIATION_PHRASES = {
     'categories': [
         {
             'id': 'bank',
-            'name': '银行协商',
+            'name': '银行协商经验',
             'icon': 'university',
             'color': 'primary',
-            'description': '信用卡、银行贷款等银行机构协商话术'
+            'description': '信用卡、银行贷款等银行机构协商经验分享'
         },
         {
             'id': 'online_loan',
             'name': '网贷平台',
             'icon': 'mobile-alt',
             'color': 'info',
-            'description': '各类网贷平台协商还款话术'
+            'description': '各类网贷平台协商还款经验'
         },
         {
             'id': 'legal',
             'name': '法律依据',
             'icon': 'balance-scale',
             'color': 'warning',
-            'description': '法律法规依据和维权话术'
+            'description': '法律法规依据和维权经验'
         },
         {
             'id': 'psychological',
