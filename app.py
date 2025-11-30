@@ -63,7 +63,7 @@ app.config.update(
 db = SQLAlchemy(app)
 
 # ============ 配置常量 ============
-MEMBERSHIP_PRICE = 99
+MEMBERSHIP_PRICE = 00
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "942521233@qq.com")  # 从环境变量获取
 
 # 默认的内容分类和模块（防止未定义错误），可以根据实际内容替换为数据库或配置加载

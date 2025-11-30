@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>支付会员费</title>
+    <title>新站首发免费注册</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -20,7 +20,7 @@
 
     <main class="container">
         <div class="payment-container">
-            <h2>支付会员费</h2>
+            <h2>新站首发免费注册</h2>
             <p class="price">费用: ¥{{ price }}</p>
 
             {% if error %}
@@ -30,38 +30,38 @@
             {% endif %}
 
             <div class="payment-instructions">
-                <h3>支付步骤:</h3>
+                <h3>注册步骤:</h3>
                 <ol>
-                    <li>使用支付宝或微信扫描下方二维码支付 ¥{{ price }}</li>
-                    <li>支付完成后，请截图支付成功页面</li>
-                    <li>在下方表单中提交您的支付截图或交易尾号尾数</li>
-                    <li>我们会24小时内审核并开通您的会员权限</li>
+                    <li>使用微信扫描下方二维码添加，备注“注册”</li>
+                    <li>或微信搜索添加 sp10086abc 备注“注册”</li>
+                    <li>在下方表单中提交您的微信昵称或输入数字，如1234</li>
+                    <li>我们会审核后开通您的账号</li>
                 </ol>
             </div>
 
             <div class="qr-codes">
                 <div class="qr-code">
-                    <h4>支付宝收款码</h4>
-                    <img src="{{ url_for('static', filename='alipay_qr.png') }}" alt="支付宝收款码" class="qr-img">
-                    <p>请支付 ¥{{ price }}</p>
+                    <h4>微信添加码</h4>
+                    <img src="{{ url_for('static', filename='alipay_qr.jpg') }}" alt="支付宝收款码" class="qr-img">
+                    <p>请添加</p>
                 </div>
 
                 <div class="qr-code">
-                    <h4>微信支付收款码</h4>
-                    <img src="{{ url_for('static', filename='wechat_qr.png') }}" alt="微信支付收款码" class="qr-img">
-                    <p>请支付 ¥{{ price }}</p>
+                    <h4>微信搜索 sp10086abc</h4>
+                    <img src="{{ url_for('static', filename='wechat_qr.jpg') }}" alt="微信支付收款码" class="qr-img">
+                    <p>请添加</p>
                 </div>
             </div>
 
             <div class="payment-proof-form">
-                <h3>提交支付凭证</h3>
+                <h3>提交添加凭证</h3>
                 <form action="{{ url_for('submit_payment_proof') }}" method="POST">
                     <div class="form-group">
-                        <label for="payment_proof">支付截图或说明:</label>
+                        <label for="payment_proof">添加微信昵称或说明:</label>
                         <textarea id="payment_proof" name="payment_proof" rows="4" required
-                            placeholder="请描述您的支付信息，例如: '支付宝转账¥99，或交易号尾数如1234'"></textarea>
+                            placeholder="请描述您的添加信息，例如: '微信昵称，或输入数字如1234'"></textarea>
                     </div>
-                    <button type="submit" class="cta-button">提交支付凭证</button>
+                    <button type="submit" class="cta-button">提交添加凭证</button>
                 </form>
             </div>
 
