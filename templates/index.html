@@ -416,52 +416,7 @@
             font-family: Georgia, serif;
         }
 
-        /* ===== 专业团队 ===== */
-        .team-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-
-        .team-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .team-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto 20px;
-            border: 5px solid #eef2f7;
-        }
-
-        .team-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .team-specialties {
-            margin-top: 15px;
-        }
-
-        .team-specialty {
-            background: #f0f7ff;
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            margin: 5px;
-            display: inline-block;
-        }
-
-        /* ===== 资源下载 ===== */
+        /* ===== 专业合作资源 ===== */
         .resource-card {
             background: white;
             border-radius: 15px;
@@ -651,6 +606,103 @@
             font-weight: 600;
             font-size: 0.85rem;
         }
+
+        /* ===== 新增：专业合作资源卡片 ===== */
+        .collaboration-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            border-top: 4px solid var(--secondary);
+            position: relative;
+        }
+
+        .collaboration-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .collaboration-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            box-shadow: 0 5px 15px rgba(26, 54, 93, 0.2);
+        }
+
+        .collaboration-tags {
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .collaboration-tag {
+            background: #f0f7ff;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        .disclaimer-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* ===== 重要声明样式 ===== */
+        .important-notice {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .important-notice h5 {
+            color: #1976d2;
+        }
+
+        .important-notice ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .important-notice li {
+            margin-bottom: 8px;
+        }
+
+        /* ===== 经验分享卡片 ===== */
+        .experience-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            border-left: 4px solid var(--success);
+        }
+
+        .experience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -680,10 +732,10 @@
                         <a class="nav-link" href="#income">赚钱项目</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#success">成功案例</a>
+                        <a class="nav-link" href="#success">经验分享</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#team">专业团队</a>
+                        <a class="nav-link" href="#collaboration">合作资源</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#resources">免费资源</a>
@@ -719,8 +771,8 @@
                     <i class="fas fa-exclamation-triangle text-danger fs-3"></i>
                 </div>
                 <div class="col">
-                    <strong class="text-dark">紧急提醒：</strong>
-                    <span class="text-dark">如果你正在被催收困扰、面临逾期压力，请立即停止以贷养贷！我们的专业团队为您提供一站式解决方案。</span>
+                    <strong class="text-dark">重要提醒：</strong>
+                    <span class="text-dark">本平台所有内容均为经验分享和信息交流，如果你正在被催收困扰、面临逾期压力，请立即停止以贷养贷！</span>
                 </div>
             </div>
         </div>
@@ -732,26 +784,26 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="expertise-badges mb-4">
-                        <span class="expertise-badge">专业债务管理</span>
-                        <span class="expertise-badge">法律咨询支持</span>
-                        <span class="expertise-badge">心理疏导服务</span>
+                        <span class="expertise-badge">债务管理经验分享</span>
+                        <span class="expertise-badge">法律知识交流</span>
+                        <span class="expertise-badge">心理调适经验</span>
                     </div>
 
-                    <h1 class="display-4 fw-bold mb-4">从负债累累到财务自由的专业指导</h1>
-                    <p class="lead mb-4">我们提供全面的债务管理解决方案、专业的法律支持、有效的心理疏导和经过验证的赚钱项目，助您科学上岸。</p>
+                    <h1 class="display-4 fw-bold mb-4">从负债到翻身的经验分享平台</h1>
+                    <p class="lead mb-4">我们提供全面的债务管理经验分享、法律知识交流、心理调适方法和经过验证的创收项目经验，助您科学上岸。</p>
 
                     <div class="d-flex flex-wrap gap-3 mb-4">
                         <a href="{{ url_for('register') }}"
                             class="btn btn-light btn-lg px-4 py-3 fw-bold touch-friendly">
-                            <i class="fas fa-user-plus me-2"></i>立即开始翻身
+                            <i class="fas fa-user-plus me-2"></i>立即加入交流
                         </a>
                         <a href="#solution" class="btn btn-outline-light btn-lg px-4 py-3 touch-friendly">
-                            <i class="fas fa-play-circle me-2"></i>查看解决方案
+                            <i class="fas fa-play-circle me-2"></i>查看经验分享
                         </a>
                     </div>
 
                     <div class="text-light opacity-75">
-                        <i class="fas fa-shield-alt me-2"></i>已帮助超过15000人成功改善财务状况
+                        <i class="fas fa-shield-alt me-2"></i>已与超过15000人分享债务管理经验
                     </div>
                 </div>
                 <div class="col-lg-6 text-center mt-5 mt-lg-0">
@@ -759,8 +811,8 @@
                         <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                             alt="财务自由" class="img-fluid rounded-3 shadow-lg">
                         <div class="position-absolute bottom-0 start-0 bg-white rounded-3 p-3 m-3 shadow-sm">
-                            <div class="text-primary fw-bold">专家团队在线指导</div>
-                            <div class="text-muted small">24小时内响应</div>
+                            <div class="text-primary fw-bold">经验交流社区</div>
+                            <div class="text-muted small">与有经验人士交流</div>
                         </div>
                     </div>
                 </div>
@@ -775,25 +827,25 @@
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
                         <div class="stat-number text-primary">15,000+</div>
-                        <div class="stat-text">注册用户学习</div>
+                        <div class="stat-text">用户加入交流</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
                         <div class="stat-number text-success">87%</div>
-                        <div class="stat-text">成功改善财务状况</div>
+                        <div class="stat-text">反馈有帮助</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
                         <div class="stat-number text-warning">64%</div>
-                        <div class="stat-text">通过副业增加收入</div>
+                        <div class="stat-text">尝试副业增收</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
                         <div class="stat-number text-info">92%</div>
-                        <div class="stat-text">压力得到有效缓解</div>
+                        <div class="stat-text">压力得到缓解</div>
                     </div>
                 </div>
             </div>
@@ -804,18 +856,18 @@
     <section class="section-padding bg-light-gradient">
         <div class="container">
             <div class="section-title">
-                <h2>为什么选择上岸翻身营</h2>
-                <p>我们提供全方位、专业、科学的债务管理和翻身指导服务</p>
+                <h2>为什么加入上岸翻身营</h2>
+                <p>我们提供全方位、实用的债务管理和翻身经验分享</p>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-user-tie"></i>
+                            <i class="fas fa-users"></i>
                         </div>
-                        <h4>专业团队指导</h4>
-                        <p>拥有10年以上经验的债务管理专家、执业律师、心理咨询师组成专业团队，为您提供全方位的指导和支持。</p>
+                        <h4>经验分享社区</h4>
+                        <p>与有债务管理经验的人士交流，分享成功经验和实用方法，获得真实可信的参考信息。</p>
                     </div>
                 </div>
 
@@ -824,8 +876,8 @@
                         <div class="feature-icon">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <h4>系统科学方案</h4>
-                        <p>基于行为经济学和心理学原理，结合上千成功案例，制定科学有效的债务管理和增收方案。</p>
+                        <h4>系统经验分享</h4>
+                        <p>基于大量成功案例的经验总结，分享科学有效的债务管理思路和增收方法。</p>
                     </div>
                 </div>
 
@@ -834,8 +886,8 @@
                         <div class="feature-icon">
                             <i class="fas fa-hand-holding-usd"></i>
                         </div>
-                        <h4>实用赚钱项目</h4>
-                        <p>分享经过验证的副业和赚钱项目，从线上内容创作到技能变现，帮助您建立稳定的收入来源。</p>
+                        <h4>实用创收经验</h4>
+                        <p>分享经过验证的副业和创收项目经验，帮助您了解建立稳定收入来源的可能性。</p>
                     </div>
                 </div>
             </div>
@@ -846,8 +898,8 @@
     <section id="solution" class="section-padding">
         <div class="container">
             <div class="section-title">
-                <h2>6步科学上岸方案</h2>
-                <p>基于心理学和行为经济学的科学方法，助您系统解决债务问题</p>
+                <h2>6步上岸经验分享</h2>
+                <p>基于大量成功案例总结的经验分享，供您参考</p>
             </div>
 
             <div class="solution-steps">
@@ -856,24 +908,24 @@
                         <div class="step-item">
                             <div class="step-number">1</div>
                             <div class="step-content">
-                                <h5>心理建设与认知调整</h5>
-                                <p>接受现状，停止自责，建立正确的债务认知。学习压力管理技巧，避免焦虑情绪影响决策。</p>
+                                <h5>心理调适与认知调整</h5>
+                                <p>接受现状，停止自责，建立正确的债务认知。分享压力管理经验，避免焦虑情绪影响决策。</p>
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-number">2</div>
                             <div class="step-content">
-                                <h5>全面债务清点与评估</h5>
-                                <p>使用专业工具全面梳理所有债务，按紧急程度、利率高低、法律风险进行分类评估。</p>
+                                <h5>全面债务清点经验</h5>
+                                <p>分享全面梳理债务的经验，按紧急程度、利率高低、法律风险进行分类评估的方法。</p>
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-number">3</div>
                             <div class="step-content">
-                                <h5>停止以贷养贷恶性循环</h5>
-                                <p>制定具体计划切断以贷养贷，建立应急备用金，避免债务雪球越滚越大。</p>
+                                <h5>停止以贷养贷经验</h5>
+                                <p>分享切断以贷养贷恶性循环的经验，建立应急备用金的实用方法。</p>
                             </div>
                         </div>
                     </div>
@@ -882,24 +934,24 @@
                         <div class="step-item">
                             <div class="step-number">4</div>
                             <div class="step-content">
-                                <h5>专业协商与法律维权</h5>
-                                <p>由专业团队指导债务协商，运用法律武器维护合法权益，争取最优还款方案。</p>
+                                <h5>债务协商经验交流</h5>
+                                <p>交流债务协商的经验，了解如何与债权人沟通，争取更合理的还款方案。</p>
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-number">5</div>
                             <div class="step-content">
-                                <h5>增收计划与财务重建</h5>
-                                <p>制定个性化的增收计划，优化支出结构，建立健康的财务习惯和信用记录。</p>
+                                <h5>增收经验与财务重建</h5>
+                                <p>分享增收经验，优化支出结构，建立健康的财务习惯和信用记录。</p>
                             </div>
                         </div>
 
                         <div class="step-item">
                             <div class="step-number">6</div>
                             <div class="step-content">
-                                <h5>长期跟踪与持续支持</h5>
-                                <p>提供长期跟踪服务，定期复盘调整计划，确保持续进步直至完全上岸。</p>
+                                <h5>长期跟踪与持续交流</h5>
+                                <p>提供长期交流社区，定期分享调整计划的经验，确保持续进步直至完全上岸。</p>
                             </div>
                         </div>
                     </div>
@@ -908,12 +960,12 @@
                 <div class="text-center mt-5">
                     {% if not session.user %}
                     <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
-                        <i class="fas fa-user-plus me-2"></i>获取完整解决方案
+                        <i class="fas fa-user-plus me-2"></i>加入经验交流
                     </a>
                     {% else %}
                     <a href="{{ url_for('debt_management_course') }}"
                         class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
-                        <i class="fas fa-play-circle me-2"></i>开始学习课程
+                        <i class="fas fa-play-circle me-2"></i>开始经验学习
                     </a>
                     {% endif %}
                 </div>
@@ -925,8 +977,8 @@
     <section id="tools" class="section-padding bg-light-gradient">
         <div class="container">
             <div class="section-title">
-                <h2>专业实用工具</h2>
-                <p>使用我们的专业工具，科学管理债务，提高翻身效率</p>
+                <h2>实用经验分享</h2>
+                <p>分享实用经验，科学管理债务，提高翻身效率</p>
             </div>
 
             <div class="row">
@@ -935,11 +987,11 @@
                         <div class="tool-icon">
                             <i class="fas fa-calculator"></i>
                         </div>
-                        <h4>智能债务计算器</h4>
-                        <p class="text-muted">精确计算还款周期、利息成本，智能推荐最优还款方案，支持多债务同时计算。</p>
+                        <h4>债务计算经验</h4>
+                        <p class="text-muted">分享计算还款周期、利息成本的经验，了解制定还款方案的思路。</p>
                         <div class="mt-3">
-                            <span class="badge bg-primary me-1">精确计算</span>
-                            <span class="badge bg-primary">方案优化</span>
+                            <span class="badge bg-primary me-1">计算思路</span>
+                            <span class="badge bg-primary">方案参考</span>
                         </div>
                     </div>
                 </div>
@@ -949,11 +1001,11 @@
                         <div class="tool-icon">
                             <i class="fas fa-file-excel"></i>
                         </div>
-                        <h4>专业债务管理表</h4>
-                        <p class="text-muted">Excel专业模板，自动生成债务清单、还款计划、进度跟踪图表，支持数据导入导出。</p>
+                        <h4>债务管理经验</h4>
+                        <p class="text-muted">分享制作债务清单、还款计划、进度跟踪的经验和实用模板。</p>
                         <div class="mt-3">
-                            <span class="badge bg-success me-1">专业模板</span>
-                            <span class="badge bg-success">自动分析</span>
+                            <span class="badge bg-success me-1">模板分享</span>
+                            <span class="badge bg-success">经验交流</span>
                         </div>
                     </div>
                 </div>
@@ -963,11 +1015,11 @@
                         <div class="tool-icon">
                             <i class="fas fa-comments"></i>
                         </div>
-                        <h4>协商话术与法律库</h4>
-                        <p class="text-muted">完整的协商话术模板、法律依据库、投诉维权指南，提高协商成功率。</p>
+                        <h4>协商经验交流</h4>
+                        <p class="text-muted">交流债务协商的经验，了解与不同债权人沟通的方法和注意事项。</p>
                         <div class="mt-3">
-                            <span class="badge bg-info me-1">专业话术</span>
-                            <span class="badge bg-info">法律支持</span>
+                            <span class="badge bg-info me-1">经验分享</span>
+                            <span class="badge bg-info">沟通技巧</span>
                         </div>
                     </div>
                 </div>
@@ -979,11 +1031,11 @@
                         <div class="tool-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
-                        <h4>进度跟踪系统</h4>
-                        <p class="text-muted">可视化跟踪还款进度、学习进度，提供成就激励和实时反馈。</p>
+                        <h4>进度跟踪经验</h4>
+                        <p class="text-muted">分享跟踪还款进度、学习进度的经验，了解保持动力的方法。</p>
                         <div class="mt-3">
-                            <span class="badge bg-warning me-1">进度可视化</span>
-                            <span class="badge bg-warning">成就激励</span>
+                            <span class="badge bg-warning me-1">进度管理</span>
+                            <span class="badge bg-warning">动力保持</span>
                         </div>
                     </div>
                 </div>
@@ -993,11 +1045,11 @@
                         <div class="tool-icon">
                             <i class="fas fa-balance-scale"></i>
                         </div>
-                        <h4>法律权益指南</h4>
-                        <p class="text-muted">全面的债务相关法律法规指南，违规催收识别与投诉维权方法。</p>
+                        <h4>法律知识交流</h4>
+                        <p class="text-muted">交流债务相关法律法规知识，了解维权方法和注意事项。</p>
                         <div class="mt-3">
                             <span class="badge bg-danger me-1">法律知识</span>
-                            <span class="badge bg-danger">维权指南</span>
+                            <span class="badge bg-danger">维权经验</span>
                         </div>
                     </div>
                 </div>
@@ -1007,10 +1059,10 @@
                         <div class="tool-icon">
                             <i class="fas fa-brain"></i>
                         </div>
-                        <h4>心理支持工具箱</h4>
-                        <p class="text-muted">压力管理技巧、心理调适方法、情绪疏导工具，帮助保持积极心态。</p>
+                        <h4>心理调适经验</h4>
+                        <p class="text-muted">分享债务压力下的心理调适经验，了解保持积极心态的方法。</p>
                         <div class="mt-3">
-                            <span class="badge bg-secondary me-1">心理疏导</span>
+                            <span class="badge bg-secondary me-1">心理调适</span>
                             <span class="badge bg-secondary">压力管理</span>
                         </div>
                     </div>
@@ -1023,15 +1075,15 @@
     <section id="income" class="section-padding">
         <div class="container">
             <div class="section-title">
-                <h2>经过验证的赚钱项目</h2>
-                <p>真实可行的副业机会，帮助您建立稳定的收入来源，零基础也可带你入门</p>
+                <h2>创收项目经验分享</h2>
+                <p>真实可行的创收项目经验分享，了解建立收入来源的可能性</p>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-4">
                     <div class="project-card">
-                        <h4 class="fw-bold mb-3">线上内容创作与自媒体</h4>
-                        <p class="text-muted mb-3">利用短视频、公众号、知乎等平台，通过内容创作建立个人品牌和收入渠道。</p>
+                        <h4 class="fw-bold mb-3">线上内容创作经验</h4>
+                        <p class="text-muted mb-3">分享利用短视频、公众号、知乎等平台进行内容创作的经验。</p>
 
                         <div class="project-tags">
                             <span class="project-tag">低门槛起步</span>
@@ -1042,12 +1094,12 @@
 
                         <div class="project-stats">
                             <div>
-                                <div class="text-muted small">月收入潜力</div>
-                                <div class="fw-bold text-success">2000 - 10000元</div>
+                                <div class="text-muted small">参考收入范围</div>
+                                <div class="fw-bold text-success">经验分享交流</div>
                             </div>
                             <div>
                                 <span class="badge-certified">
-                                    <i class="fas fa-check-circle me-1"></i>已验证
+                                    <i class="fas fa-check-circle me-1"></i>经验分享
                                 </span>
                             </div>
                         </div>
@@ -1056,24 +1108,24 @@
 
                 <div class="col-md-6 mb-4">
                     <div class="project-card">
-                        <h4 class="fw-bold mb-3">学习技能兼职变现</h4>
-                        <p class="text-muted mb-3">可学python、网站开发、人工智能、自动生成热门视频工作流、AI等领域</p>
+                        <h4 class="fw-bold mb-3">技能兼职经验分享</h4>
+                        <p class="text-muted mb-3">分享学习python、网站开发、人工智能等领域技能并进行兼职的经验。</p>
 
                         <div class="project-tags">
                             <span class="project-tag">专业性强</span>
-                            <span class="project-tag">单价高</span>
+                            <span class="project-tag">单价较高</span>
                             <span class="project-tag">可持续</span>
                             <span class="project-tag">可积累</span>
                         </div>
 
                         <div class="project-stats">
                             <div>
-                                <div class="text-muted small">月收入潜力</div>
-                                <div class="fw-bold text-success">3000 - 15000元</div>
+                                <div class="text-muted small">参考收入范围</div>
+                                <div class="fw-bold text-success">经验分享交流</div>
                             </div>
                             <div>
                                 <span class="badge-certified">
-                                    <i class="fas fa-check-circle me-1"></i>已验证
+                                    <i class="fas fa-check-circle me-1"></i>经验分享
                                 </span>
                             </div>
                         </div>
@@ -1082,8 +1134,8 @@
 
                 <div class="col-md-6 mb-4">
                     <div class="project-card">
-                        <h4 class="fw-bold mb-3">电商运营与代运营</h4>
-                        <p class="text-muted mb-3">通过电商平台销售产品或提供店铺代运营服务，抓住线上商业机会。</p>
+                        <h4 class="fw-bold mb-3">电商运营经验</h4>
+                        <p class="text-muted mb-3">分享通过电商平台销售产品或提供店铺代运营服务的经验。</p>
 
                         <div class="project-tags">
                             <span class="project-tag">市场需求大</span>
@@ -1094,8 +1146,8 @@
 
                         <div class="project-stats">
                             <div>
-                                <div class="text-muted small">月收入潜力</div>
-                                <div class="fw-bold text-success">5000 - 20000元</div>
+                                <div class="text-muted small">参考收入范围</div>
+                                <div class="fw-bold text-success">经验分享交流</div>
                             </div>
                             <div>
                                 <span class="badge bg-warning text-white">
@@ -1108,8 +1160,8 @@
 
                 <div class="col-md-6 mb-4">
                     <div class="project-card">
-                        <h4 class="fw-bold mb-3">本地服务与跑腿业务</h4>
-                        <p class="text-muted mb-3">利用本地资源提供各种便民服务和跑腿业务，立即获得现金收入。</p>
+                        <h4 class="fw-bold mb-3">本地服务经验分享</h4>
+                        <p class="text-muted mb-3">分享利用本地资源提供各种便民服务和跑腿业务的经验。</p>
 
                         <div class="project-tags">
                             <span class="project-tag">立即变现</span>
@@ -1120,12 +1172,12 @@
 
                         <div class="project-stats">
                             <div>
-                                <div class="text-muted small">月收入潜力</div>
-                                <div class="fw-bold text-success">3000 - 8000元</div>
+                                <div class="text-muted small">参考收入范围</div>
+                                <div class="fw-bold text-success">经验分享交流</div>
                             </div>
                             <div>
                                 <span class="badge-certified">
-                                    <i class="fas fa-check-circle me-1"></i>已验证
+                                    <i class="fas fa-check-circle me-1"></i>经验分享
                                 </span>
                             </div>
                         </div>
@@ -1134,44 +1186,49 @@
             </div>
 
             <div class="text-center mt-5">
-                <p class="text-muted mb-4">注册后即可查看更多项目和成功案例</p>
+                <p class="text-muted mb-4">加入后即可查看更多项目经验和交流</p>
                 {% if not session.user %}
                 <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
-                    <i class="fas fa-user-plus me-2"></i>立即注册查看详情
+                    <i class="fas fa-user-plus me-2"></i>立即加入查看
                 </a>
                 {% else %}
                 <a href="{{ url_for('income_projects') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
-                    <i class="fas fa-arrow-right me-2"></i>查看完整赚钱项目
+                    <i class="fas fa-arrow-right me-2"></i>查看完整经验
                 </a>
                 {% endif %}
             </div>
         </div>
     </section>
 
-    <!-- ===== 成功案例 ===== -->
+    <!-- ===== 经验分享 ===== -->
     <section id="success" class="section-padding bg-light-gradient">
         <div class="container">
             <div class="section-title">
-                <h2>成功案例分享</h2>
-                <p>以下为学员个人经验分享，仅供参考</p>
+                <h2>经验分享交流</h2>
+                <p>以下为社区成员经验分享，仅供参考交流</p>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <div class="success-card">
-                        <div class="client-avatar">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="张先生">
+                    <div class="experience-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="client-avatar me-3">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                    alt="用户头像">
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">匿名用户A</h6>
+                                <small class="text-muted">32岁，曾负债35万</small>
+                            </div>
                         </div>
 
                         <div class="testimonial-text">
-                            通过学习债务管理知识，成功协商了60期分期还款，月还款压力从5000降到1500，生活终于有了希望。现在兼职做内容创作，每月还能增加3000元收入。
+                            通过与社区成员交流债务管理经验，成功协商了分期还款，月还款压力从5000降到1500，生活终于有了希望。现在兼职做内容创作，每月还能增加收入。
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center mt-3">
                             <div>
-                                <h6 class="fw-bold mb-0">张先生，32岁</h6>
-                                <small class="text-muted">原负债35万，现月还款1500元</small>
+                                <small class="text-muted">分享时间：2024-03-15</small>
                             </div>
                             <div class="text-warning">
                                 <i class="fas fa-star"></i>
@@ -1185,20 +1242,25 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="success-card">
-                        <div class="client-avatar">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="李女士">
+                    <div class="experience-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="client-avatar me-3">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                    alt="用户头像">
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">匿名用户B</h6>
+                                <small class="text-muted">28岁，通过副业增收</small>
+                            </div>
                         </div>
 
                         <div class="testimonial-text">
-                            平台分享的副业项目很靠谱，我学习了电商运营，现在每月稳定收入5000+，加上本职工作，预计2年就能还清所有债务。最感谢的是心理疏导，让我不再焦虑。
+                            社区分享的创收项目经验很实用，我学习了电商运营经验，现在每月有稳定收入。加上本职工作，预计2年就能还清债务。最感谢的是心理调适经验的分享，让我不再焦虑。
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center mt-3">
                             <div>
-                                <h6 class="fw-bold mb-0">李女士，28岁</h6>
-                                <small class="text-muted">通过副业月增收5000元</small>
+                                <small class="text-muted">分享时间：2024-03-10</small>
                             </div>
                             <div class="text-warning">
                                 <i class="fas fa-star"></i>
@@ -1212,20 +1274,25 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="success-card">
-                        <div class="client-avatar">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="王先生">
+                    <div class="experience-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="client-avatar me-3">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                    alt="用户头像">
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">匿名用户C</h6>
+                                <small class="text-muted">35岁，已还清70%债务</small>
+                            </div>
                         </div>
 
                         <div class="testimonial-text">
-                            心理疏导技巧真的很有用，不再每天焦虑失眠了。法律顾问帮我成功应对违规催收，现在能冷静面对债务问题，一步步按照计划执行，已经还清了70%的债务。
+                            心理调适经验分享真的很有用，不再每天焦虑失眠了。法律知识交流帮我了解应对违规催收的方法，现在能冷静面对债务问题，一步步按照计划执行。
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center mt-3">
                             <div>
-                                <h6 class="fw-bold mb-0">王先生，35岁</h6>
-                                <small class="text-muted">成功调整心态，已还清70%债务</small>
+                                <small class="text-muted">分享时间：2024-03-05</small>
                             </div>
                             <div class="text-warning">
                                 <i class="fas fa-star"></i>
@@ -1241,77 +1308,71 @@
         </div>
     </section>
 
-    <!-- ===== 专业团队 ===== -->
-    <section id="team" class="section-padding">
+    <!-- ===== 专业合作资源 ===== -->
+    <section id="collaboration" class="section-padding">
         <div class="container">
             <div class="section-title">
-                <h2>专业合作团队</h2>
-                <p>我们的专业合作团队为您提供全方位的债务管理和翻身指导</p>
+                <h2>专业合作资源</h2>
+                <p>我们与相关领域的专业人士合作，为您提供经验分享和支持</p>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="张明">
+                    <div class="collaboration-card">
+                        <div class="disclaimer-badge">经验分享</div>
+                        <div class="collaboration-icon">
+                            <i class="fas fa-gavel"></i>
                         </div>
-
-                        <h4 class="fw-bold mb-1">张明</h4>
-                        <p class="text-primary fw-bold mb-3">财务规划专家</p>
-
-                        <p class="text-muted small mb-3">
-                            10年债务管理经验，CFA持证人。曾任职于知名金融机构，帮助超过5000人成功制定债务管理方案。
+                        <h4 class="fw-bold mb-3">法律知识分享</h4>
+                        <p class="text-muted mb-3">
+                            我们与执业律师合作，分享债务相关的法律知识和消费者权益保护经验，帮助您了解自己的合法权益。
                         </p>
-
-                        <div class="team-specialties">
-                            <span class="team-specialty">债务协商</span>
-                            <span class="team-specialty">财务规划</span>
-                            <span class="team-specialty">预算管理</span>
+                        <div class="collaboration-tags">
+                            <span class="collaboration-tag">法律知识分享</span>
+                            <span class="collaboration-tag">权益保护经验</span>
+                        </div>
+                        <div class="disclaimer-text mt-3">
+                            <small class="text-muted"><i class="fas fa-info-circle me-1"></i>仅限知识分享，不提供法律建议</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="李静">
+                    <div class="collaboration-card">
+                        <div class="disclaimer-badge">经验分享</div>
+                        <div class="collaboration-icon">
+                            <i class="fas fa-brain"></i>
                         </div>
-
-                        <h4 class="fw-bold mb-1">李静</h4>
-                        <p class="text-primary fw-bold mb-3">执业律师</p>
-
-                        <p class="text-muted small mb-3">
-                            8年法律从业经验，专注于消费者权益保护和债务纠纷。精通债务相关法律法规，擅长处理违规催收案件。
+                        <h4 class="fw-bold mb-3">心理支持分享</h4>
+                        <p class="text-muted mb-3">
+                            我们与心理咨询师合作，分享债务压力下的心理调适方法和情绪管理经验，帮助保持积极心态。
                         </p>
-
-                        <div class="team-specialties">
-                            <span class="team-specialty">法律咨询</span>
-                            <span class="team-specialty">权益保护</span>
-                            <span class="team-specialty">合规指导</span>
+                        <div class="collaboration-tags">
+                            <span class="collaboration-tag">压力管理经验</span>
+                            <span class="collaboration-tag">情绪调节分享</span>
+                        </div>
+                        <div class="disclaimer-text mt-3">
+                            <small class="text-muted"><i class="fas fa-info-circle me-1"></i>仅限经验分享，不提供心理治疗</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4 mb-4">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="王丽">
+                    <div class="collaboration-card">
+                        <div class="disclaimer-badge">经验分享</div>
+                        <div class="collaboration-icon">
+                            <i class="fas fa-handshake"></i>
                         </div>
-
-                        <h4 class="fw-bold mb-1">王丽</h4>
-                        <p class="text-primary fw-bold mb-3">心理咨询师</p>
-
-                        <p class="text-muted small mb-3">
-                            国家二级心理咨询师，7年心理咨询经验。擅长债务压力下的心理调适、焦虑管理和情绪疏导。
+                        <h4 class="fw-bold mb-3">债务协商经验</h4>
+                        <p class="text-muted mb-3">
+                            我们与有丰富债务协商经验的人士合作，分享协商技巧和沟通经验，帮助您了解协商的基本流程。
                         </p>
-
-                        <div class="team-specialties">
-                            <span class="team-specialty">心理疏导</span>
-                            <span class="team-specialty">压力管理</span>
-                            <span class="team-specialty">情绪调节</span>
+                        <div class="collaboration-tags">
+                            <span class="collaboration-tag">协商经验分享</span>
+                            <span class="collaboration-tag">沟通技巧交流</span>
+                        </div>
+                        <div class="disclaimer-text mt-3">
+                            <small class="text-muted"><i class="fas fa-info-circle me-1"></i>仅限经验交流，不提供协商代理</small>
                         </div>
                     </div>
                 </div>
@@ -1319,59 +1380,72 @@
 
             <div class="row mt-4">
                 <div class="col-md-6 mb-4">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="陈强">
+                    <div class="collaboration-card">
+                        <div class="collaboration-icon">
+                            <i class="fas fa-user-friends"></i>
                         </div>
-
-                        <h4 class="fw-bold mb-1">陈强</h4>
-                        <p class="text-primary fw-bold mb-3">副业项目导师</p>
-
-                        <p class="text-muted small mb-3">
-                            连续创业者，拥有多个成功副业项目经验。擅长从0到1指导学员建立稳定的收入来源。
+                        <h4 class="fw-bold mb-3">债务管理经验</h4>
+                        <p class="text-muted mb-3">
+                            我们与成功管理债务的人士合作，分享他们的经验和方法，帮助您建立科学的债务管理思路。
                         </p>
-
-                        <div class="team-specialties">
-                            <span class="team-specialty">副业指导</span>
-                            <span class="team-specialty">项目孵化</span>
-                            <span class="team-specialty">收入优化</span>
+                        <div class="collaboration-tags">
+                            <span class="collaboration-tag">管理经验分享</span>
+                            <span class="collaboration-tag">还款策略交流</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-6 mb-4">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <img src="https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="赵伟">
+                    <div class="collaboration-card">
+                        <div class="collaboration-icon">
+                            <i class="fas fa-lightbulb"></i>
                         </div>
-
-                        <h4 class="fw-bold mb-1">赵伟</h4>
-                        <p class="text-primary fw-bold mb-3">债务协商专家</p>
-
-                        <p class="text-muted small mb-3">
-                            5年债务协商经验，熟悉各大银行和网贷平台的协商流程。成功帮助3000+用户达成有利的还款协议。
+                        <h4 class="fw-bold mb-3">副业创收经验</h4>
+                        <p class="text-muted mb-3">
+                            我们与有副业增收经验的人士合作，分享适合负债人群的创收思路和项目经验。
                         </p>
-
-                        <div class="team-specialties">
-                            <span class="team-specialty">银行协商</span>
-                            <span class="team-specialty">网贷协商</span>
-                            <span class="team-specialty">方案制定</span>
+                        <div class="collaboration-tags">
+                            <span class="collaboration-tag">创收经验分享</span>
+                            <span class="collaboration-tag">项目交流</span>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- 重要声明 -->
+            <div class="important-notice mt-5">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="fas fa-exclamation-circle fs-3 text-primary"></i>
+                    </div>
+                    <div class="col">
+                        <h5 class="alert-heading">重要声明</h5>
+                        <p class="mb-0">
+                            本平台所有内容均为经验分享和信息交流，不构成任何专业建议。我们与合作人士的关系仅限于经验分享，不提供以下专业服务：
+                        </p>
+                        <ul class="mb-0 mt-2">
+                            <li>❌ 不提供金融投资建议</li>
+                            <li>❌ 不提供法律咨询或代理服务</li>
+                            <li>❌ 不提供心理治疗或诊断</li>
+                            <li>❌ 不提供债务协商代理服务</li>
+                            <li>❌ 不提供任何形式的担保或承诺</li>
+                        </ul>
+                        <p class="mb-0 mt-2">
+                            如有专业需求，请咨询持牌金融机构、执业律师、专业心理咨询师等合法持牌机构。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div class="text-center mt-5">
-                <p class="text-muted mb-4">注册后即可预约专家一对一咨询，获得个性化指导</p>
+                <p class="text-muted mb-4">加入我们，与其他负债朋友一起交流经验，相互支持</p>
                 {% if not session.user %}
                 <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
-                    <i class="fas fa-user-plus me-2"></i>立即注册预约专家
+                    <i class="fas fa-user-plus me-2"></i>立即加入交流
                 </a>
                 {% else %}
                 <a href="{{ url_for('members') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
-                    <i class="fas fa-calendar-check me-2"></i>预约专家咨询
+                    <i class="fas fa-comments me-2"></i>进入经验交流区
                 </a>
                 {% endif %}
             </div>
@@ -1382,8 +1456,8 @@
     <section id="resources" class="section-padding bg-light-gradient">
         <div class="container">
             <div class="section-title">
-                <h2>专业资源下载</h2>
-                <p>立即下载专业工具和资料，开始您的翻身之旅</p>
+                <h2>经验分享资源</h2>
+                <p>下载实用经验和模板，开始您的翻身之旅</p>
             </div>
 
             <div class="row">
@@ -1392,16 +1466,16 @@
                         <div class="resource-icon">
                             <i class="fas fa-table"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">债务管理专业表格</h4>
-                        <p class="text-muted mb-3">专业Excel债务管理模板，包含债务清单、还款计划、进度跟踪，自动计算分析功能。</p>
+                        <h4 class="fw-bold mb-3">债务管理经验模板</h4>
+                        <p class="text-muted mb-3">分享债务管理经验模板，包含债务清单、还款计划、进度跟踪参考。</p>
                         {% if session.user %}
                         <a href="{{ url_for('download_debt_template') }}"
                             class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
-                            <i class="fas fa-download me-2"></i>立即下载
+                            <i class="fas fa-download me-2"></i>下载参考模板
                         </a>
                         {% else %}
                         <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
-                            <i class="fas fa-download me-2"></i>注册后下载
+                            <i class="fas fa-download me-2"></i>加入后下载
                         </a>
                         {% endif %}
                     </div>
@@ -1412,16 +1486,16 @@
                         <div class="resource-icon">
                             <i class="fas fa-book"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">协商话术与法律指南</h4>
-                        <p class="text-muted mb-3">完整的债务协商话术、法律法规指南、投诉维权模板，提高协商成功率。</p>
+                        <h4 class="fw-bold mb-3">协商经验分享</h4>
+                        <p class="text-muted mb-3">分享债务协商经验、法律法规知识、投诉维权经验参考。</p>
                         {% if session.user %}
                         <a href="{{ url_for('negotiation_guide') }}"
                             class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
-                            <i class="fas fa-download me-2"></i>立即下载
+                            <i class="fas fa-download me-2"></i>查看经验分享
                         </a>
                         {% else %}
                         <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
-                            <i class="fas fa-download me-2"></i>注册后下载
+                            <i class="fas fa-download me-2"></i>加入后查看
                         </a>
                         {% endif %}
                     </div>
@@ -1432,16 +1506,16 @@
                         <div class="resource-icon">
                             <i class="fas fa-brain"></i>
                         </div>
-                        <h4 class="fw-bold mb-3">心理疏导与压力管理手册</h4>
-                        <p class="text-muted mb-3">债务压力下的心理调适方法、压力管理技巧、情绪疏导工具，帮助保持积极心态。</p>
+                        <h4 class="fw-bold mb-3">心理调适经验</h4>
+                        <p class="text-muted mb-3">分享债务压力下的心理调适经验、压力管理技巧、情绪疏导方法。</p>
                         {% if session.user %}
                         <a href="{{ url_for('psychological_support') }}"
                             class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
-                            <i class="fas fa-download me-2"></i>立即下载
+                            <i class="fas fa-download me-2"></i>查看经验分享
                         </a>
                         {% else %}
                         <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
-                            <i class="fas fa-download me-2"></i>注册后下载
+                            <i class="fas fa-download me-2"></i>加入后查看
                         </a>
                         {% endif %}
                     </div>
@@ -1455,17 +1529,17 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 mb-4 mb-lg-0">
-                    <h3 class="fw-bold mb-3">立即注册，开始您的专业翻身之旅</h3>
-                    <p class="mb-0 opacity-90">获取完整的债务管理方案、专业工具和经过验证的赚钱项目，专业团队为您提供全方位指导！</p>
+                    <h3 class="fw-bold mb-3">立即加入，开始您的经验交流之旅</h3>
+                    <p class="mb-0 opacity-90">获取债务管理经验分享、实用模板和有经验人士的交流机会！</p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     {% if not session.user %}
                     <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 touch-friendly">
-                        <i class="fas fa-user-plus me-2"></i>立即注册
+                        <i class="fas fa-user-plus me-2"></i>立即加入
                     </a>
                     {% else %}
                     <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-5 py-3 touch-friendly">
-                        <i class="fas fa-tachometer-alt me-2"></i>进入会员区
+                        <i class="fas fa-tachometer-alt me-2"></i>进入交流区
                     </a>
                     {% endif %}
                 </div>
@@ -1479,7 +1553,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5><i class="fas fa-life-ring me-2"></i>上岸翻身营</h5>
-                    <p class="opacity-80 mb-3">专为负债人群打造的专业翻身平台，提供债务管理、法律支持、心理疏导和赚钱项目全方位服务。</p>
+                    <p class="opacity-80 mb-3">专为负债人群打造的经验分享平台，提供债务管理、法律知识、心理调适和创收项目经验分享。</p>
                     <div class="d-flex gap-3">
                         <a href="#" class="text-white fs-5"><i class="fab fa-weixin"></i></a>
                         <a href="#" class="text-white fs-5"><i class="fab fa-qq"></i></a>
@@ -1492,9 +1566,9 @@
                     <ul class="footer-links">
                         <li><a href="#solution">解决方案</a></li>
                         <li><a href="#tools">实用工具</a></li>
-                        <li><a href="#income">赚钱项目</a></li>
-                        <li><a href="#success">成功案例</a></li>
-                        <li><a href="#team">专业团队</a></li>
+                        <li><a href="#income">创收项目</a></li>
+                        <li><a href="#success">经验分享</a></li>
+                        <li><a href="#collaboration">合作资源</a></li>
                         <li><a href="#resources">免费资源</a></li>
                     </ul>
                 </div>
@@ -1513,7 +1587,7 @@
 
             <div class="footer-bottom">
                 <p class="mb-0">&copy; 2025 上岸翻身营. 保留所有权利.</p>
-                <p class="mb-0 small">本平台提供专业信息分享服务，不提供专业金融、法律、医疗建议。债务问题请咨询持牌金融机构，法律问题请咨询执业律师，心理健康问题请寻求专业医生帮助。</p>
+                <p class="mb-0 small">本平台提供经验分享和信息交流服务，不提供专业金融、法律、医疗建议。债务问题请咨询持牌金融机构，法律问题请咨询执业律师，心理健康问题请寻求专业医生帮助。</p>
             </div>
         </div>
     </footer>
@@ -1639,7 +1713,7 @@
             }
 
             // ===== 页面加载动画 =====
-            const fadeInElements = document.querySelectorAll('.feature-card, .project-card, .success-card, .team-card, .resource-card');
+            const fadeInElements = document.querySelectorAll('.feature-card, .project-card, .experience-card, .collaboration-card, .resource-card');
             fadeInElements.forEach((element, index) => {
                 element.style.opacity = '0';
                 element.style.transform = 'translateY(20px)';
