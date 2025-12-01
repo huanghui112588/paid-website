@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>上岸翻身营 - 专业的负债管理与翻身指导平台</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -14,8 +14,6 @@
             --primary-light: #2d4a7c;
             --secondary: #0d9488;
             --accent: #d97706;
-            --light: #f8fafc;
-            --dark: #1e293b;
             --success: #059669;
             --warning: #d97706;
             --danger: #dc2626;
@@ -26,245 +24,69 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             line-height: 1.6;
-            color: var(--dark);
+            color: #333;
             background-color: #f8fafc;
             -webkit-font-smoothing: antialiased;
-            -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden;
-            /* 防止水平滚动 */
+            padding-top: 70px;
+            /* 为固定导航栏留出空间 */
         }
 
-        /* 确保页面可以滚动 */
-        html,
-        body {
-            height: 100%;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            /* 启用iOS惯性滚动 */
-        }
-
-        /* 移动端优化 */
-        .hero-section {
-            background: var(--gradient);
-            color: white;
-            padding: 60px 0 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 40px 0 30px;
-            }
-
-            .hero-section h1 {
-                font-size: 1.8rem !important;
-                line-height: 1.3;
-            }
-
-            .hero-section .lead {
-                font-size: 1rem !important;
-            }
-        }
-
-        .crisis-alert {
-            background: linear-gradient(135deg, #fef3c7, #f59e0b);
-            border-left: 4px solid #dc2626;
-            padding: 12px;
-            margin: 15px 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            font-size: 0.9rem;
-        }
-
-        .solution-steps {
+        /* ===== 导航栏样式 ===== */
+        .main-navbar {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 15px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-        }
-
-        @media (max-width: 768px) {
-            .solution-steps {
-                padding: 15px;
-                margin: 10px 0;
-            }
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 12px;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        @media (max-width: 768px) {
-            .step-number {
-                width: 36px;
-                height: 36px;
-                margin-right: 10px;
-            }
-        }
-
-        .urgency-badge {
-            background: #dc2626;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.03);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .testimonial-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 10px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--primary);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-        }
-
-        .debt-stats {
-            background: var(--gradient);
-            color: white;
-            padding: 40px 0;
-            border-radius: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .debt-stats {
-                padding: 30px 0;
-            }
-
-            .debt-stats .h1 {
-                font-size: 2rem !important;
-            }
-
-            .debt-stats .text-light {
-                font-size: 0.9rem;
-            }
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-            height: 100%;
-            border-top: 4px solid var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-light);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 1.5rem;
-        }
-
-        .tool-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-            height: 100%;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 15px;
-        }
-
-        .tool-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--secondary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        /* 导航栏优化 - 移动端更好用 */
-        .navbar {
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
             padding: 10px 0;
+            transition: all 0.3s ease;
         }
 
-        .navbar-toggler {
-            border: none;
-            padding: 10px;
-            background: transparent;
+        .main-navbar.scrolled {
+            padding: 5px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
         }
 
-        .navbar-toggler:focus {
-            box-shadow: none;
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
         }
 
-        .navbar-toggler-icon {
-            width: 24px;
-            height: 24px;
+        .navbar-brand i {
+            margin-right: 8px;
+            color: var(--secondary);
         }
 
-        /* 移动端导航菜单样式 */
+        /* 移动端导航菜单 */
         @media (max-width: 992px) {
             .navbar-collapse {
                 background: white;
                 border-radius: 10px;
                 padding: 15px;
                 margin-top: 10px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                max-height: 70vh;
+                overflow-y: auto;
             }
 
             .navbar-nav {
-                padding: 0;
+                padding: 10px 0;
             }
 
             .nav-item {
-                margin-bottom: 8px;
+                margin-bottom: 5px;
             }
 
             .nav-link {
                 padding: 12px 15px !important;
                 border-radius: 8px;
                 transition: all 0.3s ease;
+                font-weight: 500;
             }
 
             .nav-link:hover,
@@ -273,7 +95,6 @@
                 color: white !important;
             }
 
-            /* 移动端注册按钮更突出 */
             .navbar-nav .btn-primary {
                 margin: 10px 0;
                 padding: 12px 20px;
@@ -282,537 +103,817 @@
             }
         }
 
+        /* 桌面端导航菜单 */
+        @media (min-width: 992px) {
+            .navbar-nav .nav-link {
+                padding: 8px 15px !important;
+                margin: 0 5px;
+                font-weight: 500;
+                position: relative;
+            }
+
+            .navbar-nav .nav-link:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 15px;
+                right: 15px;
+                height: 2px;
+                background: var(--primary);
+                transform: scaleX(0);
+                transition: transform 0.3s ease;
+            }
+
+            .navbar-nav .nav-link:hover:after,
+            .navbar-nav .nav-link.active:after {
+                transform: scaleX(1);
+            }
+        }
+
+        .nav-link {
+            color: #444 !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        /* ===== 按钮样式 ===== */
         .btn-primary {
             background: var(--primary);
             border: none;
-            padding: 12px 24px;
+            padding: 10px 25px;
             font-weight: 600;
             transition: all 0.3s ease;
             border-radius: 8px;
-            font-size: 1rem;
         }
 
-        @media (max-width: 768px) {
-
-            .btn-primary,
-            .btn-outline-primary {
-                padding: 12px 20px;
-                font-size: 0.95rem;
-                margin-bottom: 10px;
-            }
-
-            .btn-group-mobile {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .btn-outline-primary {
             color: var(--primary);
             border-color: var(--primary);
             font-weight: 600;
+            padding: 10px 25px;
             transition: all 0.3s ease;
-            border-radius: 8px;
-            padding: 12px 24px;
         }
 
-        .section-title {
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ===== 英雄区域 ===== */
+        .hero-section {
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0 60px;
             position: relative;
-            padding-bottom: 12px;
-            margin-bottom: 25px;
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.5rem;
+            overflow: hidden;
         }
 
         @media (max-width: 768px) {
-            .section-title {
-                font-size: 1.3rem;
-                margin-bottom: 20px;
+            .hero-section {
+                padding: 60px 0 40px;
             }
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
+        .hero-section h1 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        .text-center .section-title::after {
-            left: 50%;
-            transform: translateX(-50%);
+        .hero-section .lead {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
         }
 
-        .free-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 6px 16px;
+        .expertise-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .expertise-badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
+            padding: 8px 18px;
             font-size: 0.9rem;
+            font-weight: 500;
         }
 
-        .income-project-card {
+        /* ===== 统计卡片 ===== */
+        .stats-section {
+            padding: 40px 0;
             background: white;
-            border-radius: 12px;
+            position: relative;
+            z-index: 1;
+            margin-top: -30px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card {
+            text-align: center;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .stat-text {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ===== 功能卡片 ===== */
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid #eef2f7;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-light);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        /* ===== 解决方案步骤 ===== */
+        .solution-steps {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(26, 54, 93, 0.2);
+        }
+
+        .step-content h5 {
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .step-content p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        /* ===== 赚钱项目 ===== */
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             height: 100%;
             border-left: 4px solid var(--accent);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-tags {
             margin-bottom: 15px;
         }
 
         .project-tag {
-            background: var(--accent);
-            color: white;
-            padding: 4px 10px;
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
             border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-right: 6px;
-            margin-bottom: 6px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
             display: inline-block;
+            font-weight: 500;
         }
 
-        .resource-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .resource-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--secondary);
-            color: white;
-            border-radius: 50%;
+        .project-stats {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 1.3rem;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
         }
 
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 30px 0 15px;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            footer {
-                padding: 20px 0 10px;
-                text-align: center;
-            }
-
-            footer .col-md-6 {
-                margin-bottom: 15px;
-            }
-        }
-
-        .expert-section {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
-        }
-
-        @media (max-width: 768px) {
-            .expert-section {
-                padding: 20px;
-                margin: 20px 0;
-            }
-        }
-
-        .expert-card {
+        /* ===== 成功案例 ===== */
+        .success-card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             height: 100%;
-            text-align: center;
-            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .expert-avatar {
-            width: 80px;
-            height: 80px;
+        .success-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .success-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .client-avatar {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            margin: 0 auto 15px;
-            border: 3px solid var(--primary);
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 3px solid #eef2f7;
+        }
+
+        .client-avatar img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
-        .guarantee-badge {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 20px;
         }
 
-        /* 提高按钮点击区域 */
-        .btn-tappable {
-            min-height: 44px;
-            min-width: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        .testimonial-text:before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -10px;
+            font-size: 2rem;
+            color: var(--secondary);
+            opacity: 0.3;
+            font-family: Georgia, serif;
         }
 
-        /* 优化触控反馈 */
-        .touch-feedback:active {
-            transform: scale(0.98);
-            opacity: 0.8;
+        /* ===== 专业团队 ===== */
+        .team-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
         }
 
-        /* 优化滚动体验 */
-        .smooth-scroll {
-            scroll-behavior: smooth;
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
         }
 
-        /* 确保内容不会超出屏幕 */
-        .container {
-            max-width: 100%;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-
-        /* 微信优化 */
-        .wechat-optimized img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* 隐藏滚动条但保持滚动功能 */
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* 移动端优化间距 */
-        @media (max-width: 768px) {
-            .mobile-spacing {
-                margin-bottom: 20px !important;
-            }
-
-            .mobile-padding {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
-        }
-
-        /* 锚点跳转时避免被导航栏遮挡 */
-        :target:before {
-            content: "";
-            display: block;
-            height: 70px;
-            margin: -70px 0 0;
-        }
-
-        /* 快速导航 - 固定在底部 */
-        .quick-nav {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .quick-nav {
-                display: block;
-            }
-        }
-
-        .quick-nav-btn {
-            width: 50px;
-            height: 50px;
+        .team-avatar {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background: var(--primary);
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 5px solid #eef2f7;
+        }
+
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-specialties {
+            margin-top: 15px;
+        }
+
+        .team-specialty {
+            background: #f0f7ff;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        /* ===== 资源下载 ===== */
+        .resource-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--secondary), #0bb8a9);
             color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
         }
 
-        .quick-nav-btn:active {
-            transform: scale(0.95);
+        /* ===== 页面通用样式 ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 50px 0;
+            }
+
+            .section-title {
+                margin-bottom: 30px;
+            }
+        }
+
+        /* ===== 页脚样式 ===== */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        footer h5 {
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* ===== 移动端优化 ===== */
+        .mobile-optimized {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .touch-friendly {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== 危机警报 ===== */
+        .crisis-alert {
+            background: linear-gradient(135deg, #fef3c7, #f59e0b);
+            border-left: 4px solid #dc2626;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2);
+        }
+
+        /* ===== 工具卡片 ===== */
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            text-align: center;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+        }
+
+        /* ===== 通用类 ===== */
+        .bg-light-gradient {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge-certified {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 
-<body class="wechat-optimized smooth-scroll">
-    <!-- 导航栏 - 移动端优化 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" style="top: 0; z-index: 1030;">
+<body class="mobile-optimized">
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar navbar-expand-lg main-navbar">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="{{ url_for('index') }}">
-                <i class="fas fa-life-ring me-2"></i>
-                上岸翻身营
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-life-ring"></i>
+                <span>上岸翻身营</span>
             </a>
-            <button class="navbar-toggler touch-feedback" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="切换导航">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="切换导航">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link touch-feedback" href="#solution">解决方案</a>
+                        <a class="nav-link" href="#solution">解决方案</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link touch-feedback" href="#tools">实用工具</a>
+                        <a class="nav-link" href="#tools">实用工具</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link touch-feedback" href="#income">赚钱项目</a>
+                        <a class="nav-link" href="#income">赚钱项目</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link touch-feedback" href="#resources">免费资源</a>
+                        <a class="nav-link" href="#success">成功案例</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#team">专业团队</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#resources">免费资源</a>
                     </li>
                 </ul>
+
                 <div class="navbar-nav">
                     {% if session.user %}
-                    <a class="nav-link touch-feedback" href="{{ url_for('members') }}">会员专区</a>
-                    <a class="nav-link text-danger touch-feedback" href="{{ url_for('logout') }}">退出</a>
+                    <a class="nav-link me-3" href="{{ url_for('members') }}">
+                        <i class="fas fa-user-circle me-1"></i>会员专区
+                    </a>
+                    <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+                        <i class="fas fa-sign-out-alt me-1"></i>退出
+                    </a>
                     {% else %}
-                    <a class="nav-link touch-feedback" href="{{ url_for('login') }}">登录</a>
-                    <a class="nav-link btn btn-primary text-white px-3 ms-2 btn-tappable touch-feedback"
-                        href="{{ url_for('register') }}">免费注册</a>
+                    <a class="nav-link me-3" href="{{ url_for('login') }}">
+                        <i class="fas fa-sign-in-alt me-1"></i>登录
+                    </a>
+                    <a class="btn btn-primary touch-friendly" href="{{ url_for('register') }}">
+                        <i class="fas fa-user-plus me-2"></i>免费注册
+                    </a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- 快速导航按钮（移动端） -->
-    <div class="quick-nav">
-        <button class="quick-nav-btn touch-feedback" id="quickMenuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-
-    <!-- 紧急警示区域 -->
-    <div class="container mt-2">
+    <!-- ===== 紧急警示 ===== -->
+    <div class="container mt-4">
         <div class="crisis-alert">
-            <div class="d-flex align-items-start">
-                <i class="fas fa-exclamation-triangle text-danger me-2 fs-5 mt-1"></i>
-                <div>
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <i class="fas fa-exclamation-triangle text-danger fs-3"></i>
+                </div>
+                <div class="col">
                     <strong class="text-dark">紧急提醒：</strong>
-                    <span class="text-dark">如果你正在被催收困扰、面临逾期压力，建议立即停止以贷养贷！专业指导助您走出困境。</span>
+                    <span class="text-dark">如果你正在被催收困扰、面临逾期压力，请立即停止以贷养贷！我们的专业团队为您提供一站式解决方案。</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 英雄区域 - 移动端优化 -->
+    <!-- ===== 英雄区域 ===== -->
     <section class="hero-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 order-2 order-lg-1 mt-4 mt-lg-0">
-                    <span class="urgency-badge mb-3">🚨 专为负债人群设计</span>
-                    <h1 class="display-5 fw-bold mb-3">从负债累累到财务自由</h1>
-                    <p class="lead mb-4">专业债务管理方案 + 实用赚钱项目 + 一对一指导</p>
-
-                    <div class="mb-4">
-                        <span class="guarantee-badge me-2 mb-2 d-inline-block"><i
-                                class="fas fa-shield-alt me-1"></i>专业可靠</span>
-                        <span class="guarantee-badge me-2 mb-2 d-inline-block"><i
-                                class="fas fa-users me-1"></i>万人验证</span>
-                        <span class="guarantee-badge mb-2 d-inline-block"><i class="fas fa-clock me-1"></i>实时更新</span>
+                <div class="col-lg-6">
+                    <div class="expertise-badges mb-4">
+                        <span class="expertise-badge">专业债务管理</span>
+                        <span class="expertise-badge">法律咨询支持</span>
+                        <span class="expertise-badge">心理疏导服务</span>
                     </div>
 
-                    <div class="btn-group-mobile">
-                        {% if not session.user %}
+                    <h1 class="display-4 fw-bold mb-4">从负债累累到财务自由的专业指导</h1>
+                    <p class="lead mb-4">我们提供全面的债务管理解决方案、专业的法律支持、有效的心理疏导和经过验证的赚钱项目，助您科学上岸。</p>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4">
                         <a href="{{ url_for('register') }}"
-                            class="btn btn-light btn-lg px-4 py-3 fw-bold btn-tappable touch-feedback">
-                            <i class="fas fa-user-plus me-2"></i>立即注册
+                            class="btn btn-light btn-lg px-4 py-3 fw-bold touch-friendly">
+                            <i class="fas fa-user-plus me-2"></i>立即开始翻身
                         </a>
-                        <a href="#solution" class="btn btn-outline-light btn-lg px-4 py-3 btn-tappable touch-feedback">
-                            <i class="fas fa-play-circle me-2"></i>查看方案
+                        <a href="#solution" class="btn btn-outline-light btn-lg px-4 py-3 touch-friendly">
+                            <i class="fas fa-play-circle me-2"></i>查看解决方案
                         </a>
-                        {% else %}
-                        <a href="{{ url_for('members') }}"
-                            class="btn btn-light btn-lg px-4 py-3 fw-bold btn-tappable touch-feedback">
-                            <i class="fas fa-tachometer-alt me-2"></i>会员专区
-                        </a>
-                        {% endif %}
+                    </div>
+
+                    <div class="text-light opacity-75">
+                        <i class="fas fa-shield-alt me-2"></i>已帮助超过15000人成功改善财务状况
                     </div>
                 </div>
-                <div class="col-lg-6 order-1 order-lg-2 text-center">
+                <div class="col-lg-6 text-center mt-5 mt-lg-0">
                     <div class="position-relative">
                         <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="财务自由" class="img-fluid rounded-3 shadow-lg" loading="lazy">
+                            alt="财务自由" class="img-fluid rounded-3 shadow-lg">
+                        <div class="position-absolute bottom-0 start-0 bg-white rounded-3 p-3 m-3 shadow-sm">
+                            <div class="text-primary fw-bold">专家团队在线指导</div>
+                            <div class="text-muted small">24小时内响应</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 债务统计 - 移动端优化 -->
-    <section class="debt-stats mt-4">
+    <!-- ===== 统计数据 ===== -->
+    <section class="stats-section">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-6 col-md-3 mb-3">
-                    <div class="h1 fw-bold text-warning">87%</div>
-                    <div class="text-light">改善财务状况</div>
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number text-primary">15,000+</div>
+                        <div class="stat-text">注册用户学习</div>
+                    </div>
                 </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <div class="h1 fw-bold text-success">64%</div>
-                    <div class="text-light">副业增加收入</div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number text-success">87%</div>
+                        <div class="stat-text">成功改善财务状况</div>
+                    </div>
                 </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <div class="h1 fw-bold text-info">92%</div>
-                    <div class="text-light">压力有效缓解</div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number text-warning">64%</div>
+                        <div class="stat-text">通过副业增加收入</div>
+                    </div>
                 </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <div class="h1 fw-bold text-primary">5000+</div>
-                    <div class="text-light">注册用户学习</div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number text-info">92%</div>
+                        <div class="stat-text">压力得到有效缓解</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 平台特色 - 移动端优化 -->
-    <section class="py-4 bg-light">
+    <!-- ===== 平台特色 ===== -->
+    <section class="section-padding bg-light-gradient">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title display-6 fw-bold">为什么选择我们</h2>
-                <p class="text-muted">专业团队为您提供全方位的债务管理和增收指导</p>
+            <div class="section-title">
+                <h2>为什么选择上岸翻身营</h2>
+                <p>我们提供全方位、专业、科学的债务管理和翻身指导服务</p>
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-user-tie"></i>
                         </div>
-                        <h5>专业团队</h5>
-                        <p class="text-muted small">拥有丰富经验的债务管理专家和财务顾问团队</p>
+                        <h4>专业团队指导</h4>
+                        <p>拥有10年以上经验的债务管理专家、执业律师、心理咨询师组成专业团队，为您提供全方位的指导和支持。</p>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <h5>系统课程</h5>
-                        <p class="text-muted small">基于真实案例的专业债务管理方案，避免踩坑</p>
+                        <h4>系统科学方案</h4>
+                        <p>基于行为经济学和心理学原理，结合上千成功案例，制定科学有效的债务管理和增收方案。</p>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-hand-holding-usd"></i>
                         </div>
-                        <h5>赚钱项目</h5>
-                        <p class="text-muted small">分享经过验证的副业和赚钱项目，帮助增加收入</p>
+                        <h4>实用赚钱项目</h4>
+                        <p>分享经过验证的副业和赚钱项目，从线上内容创作到技能变现，帮助您建立稳定的收入来源。</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 解决方案 - 移动端优化 -->
-    <section id="solution" class="py-4">
+    <!-- ===== 解决方案 ===== -->
+    <section id="solution" class="section-padding">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title display-6 fw-bold">6步科学上岸方案</h2>
-                <p class="text-muted">跟着专业步骤，告别债务困扰</p>
+            <div class="section-title">
+                <h2>6步科学上岸方案</h2>
+                <p>基于心理学和行为经济学的科学方法，助您系统解决债务问题</p>
             </div>
 
             <div class="solution-steps">
                 <div class="row">
-                    <div class="col-12 mb-3">
-                        <div class="d-flex align-items-start">
+                    <div class="col-lg-6">
+                        <div class="step-item">
                             <div class="step-number">1</div>
-                            <div>
-                                <h6 class="fw-bold mb-1">停止以贷养贷</h6>
-                                <p class="text-muted small mb-1">切断债务恶性循环，避免雪球越滚越大</p>
+                            <div class="step-content">
+                                <h5>心理建设与认知调整</h5>
+                                <p>接受现状，停止自责，建立正确的债务认知。学习压力管理技巧，避免焦虑情绪影响决策。</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <div class="d-flex align-items-start">
+
+                        <div class="step-item">
                             <div class="step-number">2</div>
-                            <div>
-                                <h6 class="fw-bold mb-1">全面清点债务</h6>
-                                <p class="text-muted small mb-1">制作详细债务清单，明确还款优先级</p>
+                            <div class="step-content">
+                                <h5>全面债务清点与评估</h5>
+                                <p>使用专业工具全面梳理所有债务，按紧急程度、利率高低、法律风险进行分类评估。</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <div class="d-flex align-items-start">
+
+                        <div class="step-item">
                             <div class="step-number">3</div>
-                            <div>
-                                <h6 class="fw-bold mb-1">主动协商还款</h6>
-                                <p class="text-muted small mb-1">与银行/平台协商，争取最优还款方案</p>
+                            <div class="step-content">
+                                <h5>停止以贷养贷恶性循环</h5>
+                                <p>制定具体计划切断以贷养贷，建立应急备用金，避免债务雪球越滚越大。</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 mb-3">
-                        <div class="d-flex align-items-start">
+
+                    <div class="col-lg-6">
+                        <div class="step-item">
                             <div class="step-number">4</div>
-                            <div>
-                                <h6 class="fw-bold mb-1">应对催收保护权益</h6>
-                                <p class="text-muted small mb-1">合法应对催收，维护个人合法权益</p>
+                            <div class="step-content">
+                                <h5>专业协商与法律维权</h5>
+                                <p>由专业团队指导债务协商，运用法律武器维护合法权益，争取最优还款方案。</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <div class="d-flex align-items-start">
+
+                        <div class="step-item">
                             <div class="step-number">5</div>
-                            <div>
-                                <h6 class="fw-bold mb-1">提升收入开源节流</h6>
-                                <p class="text-muted small mb-1">增加收入渠道，合理控制支出</p>
+                            <div class="step-content">
+                                <h5>增收计划与财务重建</h5>
+                                <p>制定个性化的增收计划，优化支出结构，建立健康的财务习惯和信用记录。</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <div class="d-flex align-items-start">
+
+                        <div class="step-item">
                             <div class="step-number">6</div>
-                            <div>
-                                <h6 class="fw-bold mb-1">心理建设保持信心</h6>
-                                <p class="text-muted small mb-1">调整心态，债务不是人生的终点</p>
+                            <div class="step-content">
+                                <h5>长期跟踪与持续支持</h5>
+                                <p>提供长期跟踪服务，定期复盘调整计划，确保持续进步直至完全上岸。</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="text-center mt-3">
+                <div class="text-center mt-5">
                     {% if not session.user %}
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-tappable touch-feedback">
-                        <i class="fas fa-user-plus me-2"></i>获取完整方案
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
+                        <i class="fas fa-user-plus me-2"></i>获取完整解决方案
                     </a>
                     {% else %}
                     <a href="{{ url_for('debt_management_course') }}"
-                        class="btn btn-primary btn-lg btn-tappable touch-feedback">
-                        <i class="fas fa-arrow-right me-2"></i>查看完整课程
+                        class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
+                        <i class="fas fa-play-circle me-2"></i>开始学习课程
                     </a>
                     {% endif %}
                 </div>
@@ -820,167 +921,527 @@
         </div>
     </section>
 
-    <!-- 实用工具 - 移动端优化 -->
-    <section id="tools" class="py-4 bg-light">
+    <!-- ===== 实用工具 ===== -->
+    <section id="tools" class="section-padding bg-light-gradient">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title display-6 fw-bold">专业实用工具</h2>
-                <p class="text-muted">使用我们的专业工具，科学管理债务</p>
+            <div class="section-title">
+                <h2>专业实用工具</h2>
+                <p>使用我们的专业工具，科学管理债务，提高翻身效率</p>
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-4">
                     <div class="tool-card">
                         <div class="tool-icon">
                             <i class="fas fa-calculator"></i>
                         </div>
-                        <h6>债务计算器</h6>
-                        <p class="text-muted small">精确计算还款周期、利息成本，制定最优还款方案</p>
+                        <h4>智能债务计算器</h4>
+                        <p class="text-muted">精确计算还款周期、利息成本，智能推荐最优还款方案，支持多债务同时计算。</p>
+                        <div class="mt-3">
+                            <span class="badge bg-primary me-1">精确计算</span>
+                            <span class="badge bg-primary">方案优化</span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4 mb-4">
                     <div class="tool-card">
                         <div class="tool-icon">
                             <i class="fas fa-file-excel"></i>
                         </div>
-                        <h6>债务管理表</h6>
-                        <p class="text-muted small">专业Excel模板，自动计算、图表分析、进度跟踪</p>
+                        <h4>专业债务管理表</h4>
+                        <p class="text-muted">Excel专业模板，自动生成债务清单、还款计划、进度跟踪图表，支持数据导入导出。</p>
+                        <div class="mt-3">
+                            <span class="badge bg-success me-1">专业模板</span>
+                            <span class="badge bg-success">自动分析</span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4 mb-4">
                     <div class="tool-card">
                         <div class="tool-icon">
                             <i class="fas fa-comments"></i>
                         </div>
-                        <h6>协商话术库</h6>
-                        <p class="text-muted small">专业协商话术、法律依据、应对策略全套方案</p>
+                        <h4>协商话术与法律库</h4>
+                        <p class="text-muted">完整的协商话术模板、法律依据库、投诉维权指南，提高协商成功率。</p>
+                        <div class="mt-3">
+                            <span class="badge bg-info me-1">专业话术</span>
+                            <span class="badge bg-info">法律支持</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4 mb-4">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>进度跟踪系统</h4>
+                        <p class="text-muted">可视化跟踪还款进度、学习进度，提供成就激励和实时反馈。</p>
+                        <div class="mt-3">
+                            <span class="badge bg-warning me-1">进度可视化</span>
+                            <span class="badge bg-warning">成就激励</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h4>法律权益指南</h4>
+                        <p class="text-muted">全面的债务相关法律法规指南，违规催收识别与投诉维权方法。</p>
+                        <div class="mt-3">
+                            <span class="badge bg-danger me-1">法律知识</span>
+                            <span class="badge bg-danger">维权指南</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4>心理支持工具箱</h4>
+                        <p class="text-muted">压力管理技巧、心理调适方法、情绪疏导工具，帮助保持积极心态。</p>
+                        <div class="mt-3">
+                            <span class="badge bg-secondary me-1">心理疏导</span>
+                            <span class="badge bg-secondary">压力管理</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 赚钱项目 - 移动端优化 -->
-    <section id="income" class="py-4">
+    <!-- ===== 赚钱项目 ===== -->
+    <section id="income" class="section-padding">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title display-6 fw-bold">经过验证的赚钱项目</h2>
-                <p class="text-muted">真实可行的副业机会，帮助您增加收入来源，零基础也可带你入门</p>
+            <div class="section-title">
+                <h2>经过验证的赚钱项目</h2>
+                <p>真实可行的副业机会，帮助您建立稳定的收入来源，零基础也可带你入门</p>
             </div>
 
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <div class="income-project-card">
-                        <h6>线上内容创作，不懂可教技术</h6>
-                        <p class="text-muted small">利用空闲时间进行写作、视频制作、自媒体运营，自动生成视频等</p>
-                        <div class="mb-3">
-                            <span class="project-tag">低门槛，可教技术</span>
+                <div class="col-md-6 mb-4">
+                    <div class="project-card">
+                        <h4 class="fw-bold mb-3">线上内容创作与自媒体</h4>
+                        <p class="text-muted mb-3">利用短视频、公众号、知乎等平台，通过内容创作建立个人品牌和收入渠道。</p>
+
+                        <div class="project-tags">
+                            <span class="project-tag">低门槛起步</span>
                             <span class="project-tag">时间灵活</span>
                             <span class="project-tag">长期收益</span>
+                            <span class="project-tag">技能提升</span>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">月收入：2000-10000元</small>
-                            <span class="badge bg-success small">已验证</span>
+
+                        <div class="project-stats">
+                            <div>
+                                <div class="text-muted small">月收入潜力</div>
+                                <div class="fw-bold text-success">2000 - 10000元</div>
+                            </div>
+                            <div>
+                                <span class="badge-certified">
+                                    <i class="fas fa-check-circle me-1"></i>已验证
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <div class="income-project-card">
-                        <h6>学习技能变现、不懂可教技术</h6>
-                        <p class="text-muted small">可学编程、网站搭建、python、人工智能AI等领域</p>
-                        <div class="mb-3">
+
+                <div class="col-md-6 mb-4">
+                    <div class="project-card">
+                        <h4 class="fw-bold mb-3">学习技能兼职变现</h4>
+                        <p class="text-muted mb-3">可学python、网站开发、人工智能、自动生成热门视频工作流、AI等领域</p>
+
+                        <div class="project-tags">
                             <span class="project-tag">专业性强</span>
                             <span class="project-tag">单价高</span>
-                            <span class="project-tag">可持续发展的副业</span>
+                            <span class="project-tag">可持续</span>
+                            <span class="project-tag">可积累</span>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">月收入：3000-15000元</small>
-                            <span class="badge bg-success small">已验证</span>
+
+                        <div class="project-stats">
+                            <div>
+                                <div class="text-muted small">月收入潜力</div>
+                                <div class="fw-bold text-success">3000 - 15000元</div>
+                            </div>
+                            <div>
+                                <span class="badge-certified">
+                                    <i class="fas fa-check-circle me-1"></i>已验证
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="project-card">
+                        <h4 class="fw-bold mb-3">电商运营与代运营</h4>
+                        <p class="text-muted mb-3">通过电商平台销售产品或提供店铺代运营服务，抓住线上商业机会。</p>
+
+                        <div class="project-tags">
+                            <span class="project-tag">市场需求大</span>
+                            <span class="project-tag">学习曲线陡</span>
+                            <span class="project-tag">收益可观</span>
+                            <span class="project-tag">可扩展</span>
+                        </div>
+
+                        <div class="project-stats">
+                            <div>
+                                <div class="text-muted small">月收入潜力</div>
+                                <div class="fw-bold text-success">5000 - 20000元</div>
+                            </div>
+                            <div>
+                                <span class="badge bg-warning text-white">
+                                    <i class="fas fa-book me-1"></i>需学习
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="project-card">
+                        <h4 class="fw-bold mb-3">本地服务与跑腿业务</h4>
+                        <p class="text-muted mb-3">利用本地资源提供各种便民服务和跑腿业务，立即获得现金收入。</p>
+
+                        <div class="project-tags">
+                            <span class="project-tag">立即变现</span>
+                            <span class="project-tag">现金收入</span>
+                            <span class="project-tag">稳定可靠</span>
+                            <span class="project-tag">需求稳定</span>
+                        </div>
+
+                        <div class="project-stats">
+                            <div>
+                                <div class="text-muted small">月收入潜力</div>
+                                <div class="fw-bold text-success">3000 - 8000元</div>
+                            </div>
+                            <div>
+                                <span class="badge-certified">
+                                    <i class="fas fa-check-circle me-1"></i>已验证
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center mt-3">
-                <p class="text-muted small">注册后即可查看更多项目和成功案例</p>
+            <div class="text-center mt-5">
+                <p class="text-muted mb-4">注册后即可查看更多项目和成功案例</p>
                 {% if not session.user %}
-                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-tappable touch-feedback">
-                    <i class="fas fa-user-plus me-2"></i>查看详情
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
+                    <i class="fas fa-user-plus me-2"></i>立即注册查看详情
                 </a>
                 {% else %}
-                <a href="{{ url_for('income_projects') }}" class="btn btn-primary btn-lg btn-tappable touch-feedback">
-                    <i class="fas fa-arrow-right me-2"></i>查看完整项目
+                <a href="{{ url_for('income_projects') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
+                    <i class="fas fa-arrow-right me-2"></i>查看完整赚钱项目
                 </a>
                 {% endif %}
             </div>
         </div>
     </section>
 
-    <!-- 免费资源 - 移动端优化 -->
-    <section id="resources" class="py-4 bg-light">
+    <!-- ===== 成功案例 ===== -->
+    <section id="success" class="section-padding bg-light-gradient">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title display-6 fw-bold">专业资源下载</h2>
-                <p class="text-muted">立即下载专业工具和资料，开始您的翻身之旅</p>
+            <div class="section-title">
+                <h2>成功案例分享</h2>
+                <p>以下为学员个人经验分享，仅供参考</p>
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-4">
+                    <div class="success-card">
+                        <div class="client-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="张先生">
+                        </div>
+
+                        <div class="testimonial-text">
+                            通过学习债务管理知识，成功协商了60期分期还款，月还款压力从5000降到1500，生活终于有了希望。现在兼职做内容创作，每月还能增加3000元收入。
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-0">张先生，32岁</h6>
+                                <small class="text-muted">原负债35万，现月还款1500元</small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="success-card">
+                        <div class="client-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="李女士">
+                        </div>
+
+                        <div class="testimonial-text">
+                            平台分享的副业项目很靠谱，我学习了电商运营，现在每月稳定收入5000+，加上本职工作，预计2年就能还清所有债务。最感谢的是心理疏导，让我不再焦虑。
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-0">李女士，28岁</h6>
+                                <small class="text-muted">通过副业月增收5000元</small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="success-card">
+                        <div class="client-avatar">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="王先生">
+                        </div>
+
+                        <div class="testimonial-text">
+                            心理疏导技巧真的很有用，不再每天焦虑失眠了。法律顾问帮我成功应对违规催收，现在能冷静面对债务问题，一步步按照计划执行，已经还清了70%的债务。
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-0">王先生，35岁</h6>
+                                <small class="text-muted">成功调整心态，已还清70%债务</small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 专业团队 ===== -->
+    <section id="team" class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>专业合作团队</h2>
+                <p>我们的专业合作团队为您提供全方位的债务管理和翻身指导</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="张明">
+                        </div>
+
+                        <h4 class="fw-bold mb-1">张明</h4>
+                        <p class="text-primary fw-bold mb-3">财务规划专家</p>
+
+                        <p class="text-muted small mb-3">
+                            10年债务管理经验，CFA持证人。曾任职于知名金融机构，帮助超过5000人成功制定债务管理方案。
+                        </p>
+
+                        <div class="team-specialties">
+                            <span class="team-specialty">债务协商</span>
+                            <span class="team-specialty">财务规划</span>
+                            <span class="team-specialty">预算管理</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="李静">
+                        </div>
+
+                        <h4 class="fw-bold mb-1">李静</h4>
+                        <p class="text-primary fw-bold mb-3">执业律师</p>
+
+                        <p class="text-muted small mb-3">
+                            8年法律从业经验，专注于消费者权益保护和债务纠纷。精通债务相关法律法规，擅长处理违规催收案件。
+                        </p>
+
+                        <div class="team-specialties">
+                            <span class="team-specialty">法律咨询</span>
+                            <span class="team-specialty">权益保护</span>
+                            <span class="team-specialty">合规指导</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="王丽">
+                        </div>
+
+                        <h4 class="fw-bold mb-1">王丽</h4>
+                        <p class="text-primary fw-bold mb-3">心理咨询师</p>
+
+                        <p class="text-muted small mb-3">
+                            国家二级心理咨询师，7年心理咨询经验。擅长债务压力下的心理调适、焦虑管理和情绪疏导。
+                        </p>
+
+                        <div class="team-specialties">
+                            <span class="team-specialty">心理疏导</span>
+                            <span class="team-specialty">压力管理</span>
+                            <span class="team-specialty">情绪调节</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="陈强">
+                        </div>
+
+                        <h4 class="fw-bold mb-1">陈强</h4>
+                        <p class="text-primary fw-bold mb-3">副业项目导师</p>
+
+                        <p class="text-muted small mb-3">
+                            连续创业者，拥有多个成功副业项目经验。擅长从0到1指导学员建立稳定的收入来源。
+                        </p>
+
+                        <div class="team-specialties">
+                            <span class="team-specialty">副业指导</span>
+                            <span class="team-specialty">项目孵化</span>
+                            <span class="team-specialty">收入优化</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <img src="https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="赵伟">
+                        </div>
+
+                        <h4 class="fw-bold mb-1">赵伟</h4>
+                        <p class="text-primary fw-bold mb-3">债务协商专家</p>
+
+                        <p class="text-muted small mb-3">
+                            5年债务协商经验，熟悉各大银行和网贷平台的协商流程。成功帮助3000+用户达成有利的还款协议。
+                        </p>
+
+                        <div class="team-specialties">
+                            <span class="team-specialty">银行协商</span>
+                            <span class="team-specialty">网贷协商</span>
+                            <span class="team-specialty">方案制定</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <p class="text-muted mb-4">注册后即可预约专家一对一咨询，获得个性化指导</p>
+                {% if not session.user %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
+                    <i class="fas fa-user-plus me-2"></i>立即注册预约专家
+                </a>
+                {% else %}
+                <a href="{{ url_for('members') }}" class="btn btn-primary btn-lg px-5 py-3 touch-friendly">
+                    <i class="fas fa-calendar-check me-2"></i>预约专家咨询
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 免费资源 ===== -->
+    <section id="resources" class="section-padding bg-light-gradient">
+        <div class="container">
+            <div class="section-title">
+                <h2>专业资源下载</h2>
+                <p>立即下载专业工具和资料，开始您的翻身之旅</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
                     <div class="resource-card">
                         <div class="resource-icon">
                             <i class="fas fa-table"></i>
                         </div>
-                        <h6>债务管理表格</h6>
-                        <p class="text-muted small">专业Excel债务管理模板，自动计算还款计划</p>
+                        <h4 class="fw-bold mb-3">债务管理专业表格</h4>
+                        <p class="text-muted mb-3">专业Excel债务管理模板，包含债务清单、还款计划、进度跟踪，自动计算分析功能。</p>
                         {% if session.user %}
                         <a href="{{ url_for('download_debt_template') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
-                            <i class="fas fa-download me-1"></i>立即下载
+                            class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
+                            <i class="fas fa-download me-2"></i>立即下载
                         </a>
                         {% else %}
-                        <a href="{{ url_for('register') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
-                            <i class="fas fa-download me-1"></i>注册后下载
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
+                            <i class="fas fa-download me-2"></i>注册后下载
                         </a>
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4 mb-4">
                     <div class="resource-card">
                         <div class="resource-icon">
                             <i class="fas fa-book"></i>
                         </div>
-                        <h6>协商话术指南</h6>
-                        <p class="text-muted small">完整的债务协商话术和法律法规指南</p>
+                        <h4 class="fw-bold mb-3">协商话术与法律指南</h4>
+                        <p class="text-muted mb-3">完整的债务协商话术、法律法规指南、投诉维权模板，提高协商成功率。</p>
                         {% if session.user %}
                         <a href="{{ url_for('negotiation_guide') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
-                            <i class="fas fa-download me-1"></i>立即下载
+                            class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
+                            <i class="fas fa-download me-2"></i>立即下载
                         </a>
                         {% else %}
-                        <a href="{{ url_for('register') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
-                            <i class="fas fa-download me-1"></i>注册后下载
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
+                            <i class="fas fa-download me-2"></i>注册后下载
                         </a>
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+
+                <div class="col-md-4 mb-4">
                     <div class="resource-card">
                         <div class="resource-icon">
                             <i class="fas fa-brain"></i>
                         </div>
-                        <h6>心理疏导手册</h6>
-                        <p class="text-muted small">债务压力下的心理调适方法和技巧</p>
+                        <h4 class="fw-bold mb-3">心理疏导与压力管理手册</h4>
+                        <p class="text-muted mb-3">债务压力下的心理调适方法、压力管理技巧、情绪疏导工具，帮助保持积极心态。</p>
                         {% if session.user %}
                         <a href="{{ url_for('psychological_support') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
-                            <i class="fas fa-download me-1"></i>立即下载
+                            class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
+                            <i class="fas fa-download me-2"></i>立即下载
                         </a>
                         {% else %}
-                        <a href="{{ url_for('register') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
-                            <i class="fas fa-download me-1"></i>注册后下载
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-2 touch-friendly">
+                            <i class="fas fa-download me-2"></i>注册后下载
                         </a>
                         {% endif %}
                     </div>
@@ -989,103 +1450,22 @@
         </div>
     </section>
 
-    <!-- 经验分享 - 移动端优化 -->
-    <section class="py-4">
-        <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title display-6 fw-bold">学员经验分享</h2>
-                <p class="text-muted">以下为学员个人经验分享，仅供参考</p>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="testimonial-card">
-                        <div class="text-warning mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="card-text small">"通过学习债务管理知识，成功协商了60期分期还款，月还款压力从5000降到1500，生活终于有了希望。"</p>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
-                                style="width: 40px; height: 40px;">
-                                <i class="fas fa-user text-white"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 small">张先生，32岁</h6>
-                                <small class="text-muted">原负债35万，现月还款1500元</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <div class="testimonial-card">
-                        <div class="text-warning mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="card-text small">"平台分享的副业项目很靠谱，现在每月兼职收入3000+，加上本职工作，预计2年就能还清所有债务。"</p>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-2"
-                                style="width: 40px; height: 40px;">
-                                <i class="fas fa-user text-white"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 small">李女士，28岁</h6>
-                                <small class="text-muted">通过副业月增收3000元</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <div class="testimonial-card">
-                        <div class="text-warning mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="card-text small">"心理疏导技巧真的很有用，不再每天焦虑失眠了。现在能冷静面对债务问题，一步步按照计划执行。"</p>
-                        <div class="d-flex align-items-center mt-3">
-                            <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-2"
-                                style="width: 40px; height: 40px;">
-                                <i class="fas fa-user text-white"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-0 small">王先生，35岁</h6>
-                                <small class="text-muted">成功调整心态，积极面对</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 注册区域 - 移动端优化 -->
-    <section class="py-4 bg-primary text-white">
+    <!-- ===== 行动召唤 ===== -->
+    <section class="py-5 bg-primary text-white">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-8 mb-3 mb-lg-0">
-                    <h5 class="fw-bold mb-2">立即注册，开始您的专业翻身之旅</h5>
-                    <p class="mb-0 small opacity-90">获取完整的债务管理方案、专业工具和经过验证的赚钱项目！</p>
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <h3 class="fw-bold mb-3">立即注册，开始您的专业翻身之旅</h3>
+                    <p class="mb-0 opacity-90">获取完整的债务管理方案、专业工具和经过验证的赚钱项目，专业团队为您提供全方位指导！</p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     {% if not session.user %}
-                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-4 btn-tappable touch-feedback">
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5 py-3 touch-friendly">
                         <i class="fas fa-user-plus me-2"></i>立即注册
                     </a>
                     {% else %}
-                    <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-4 btn-tappable touch-feedback">
-                        <i class="fas fa-tachometer-alt me-2"></i>会员专区
+                    <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-5 py-3 touch-friendly">
+                        <i class="fas fa-tachometer-alt me-2"></i>进入会员区
                     </a>
                     {% endif %}
                 </div>
@@ -1093,137 +1473,203 @@
         </div>
     </section>
 
-    <!-- 页脚 - 移动端优化 -->
+    <!-- ===== 页脚 ===== -->
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <h6><i class="fas fa-life-ring me-2"></i>上岸翻身营</h6>
-                    <p class="text-muted small">专为负债人群打造的专业翻身平台</p>
-                    <div class="mt-2">
-                        <a href="{{ url_for('terms') }}" class="text-light me-3 small">服务条款</a>
-                        <a href="{{ url_for('privacy') }}" class="text-light me-3 small">隐私政策</a>
-                        <a href="#" class="text-light small">联系我们</a>
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="fas fa-life-ring me-2"></i>上岸翻身营</h5>
+                    <p class="opacity-80 mb-3">专为负债人群打造的专业翻身平台，提供债务管理、法律支持、心理疏导和赚钱项目全方位服务。</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white fs-5"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-qq"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-weibo"></i></a>
                     </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="text-muted mb-0 small">&copy; 2025 上岸翻身营. 保留所有权利.</p>
-                    <p class="text-muted small mt-1">本平台提供专业信息分享服务，不提供专业金融、法律建议</p>
+
+                <div class="col-lg-4 mb-4">
+                    <h5>快速链接</h5>
+                    <ul class="footer-links">
+                        <li><a href="#solution">解决方案</a></li>
+                        <li><a href="#tools">实用工具</a></li>
+                        <li><a href="#income">赚钱项目</a></li>
+                        <li><a href="#success">成功案例</a></li>
+                        <li><a href="#team">专业团队</a></li>
+                        <li><a href="#resources">免费资源</a></li>
+                    </ul>
                 </div>
+
+                <div class="col-lg-4 mb-4">
+                    <h5>重要信息</h5>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('terms') }}">服务条款</a></li>
+                        <li><a href="{{ url_for('privacy') }}">隐私政策</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">免责声明</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2025 上岸翻身营. 保留所有权利.</p>
+                <p class="mb-0 small">本平台提供专业信息分享服务，不提供专业金融、法律、医疗建议。债务问题请咨询持牌金融机构，法律问题请咨询执业律师，心理健康问题请寻求专业医生帮助。</p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 移动端优化脚本 - 修复版本
+        // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function () {
-            console.log("页面加载完成，移动端优化已启用");
+            console.log('页面加载完成，开始初始化...');
 
-            // 提高按钮点击体验
-            const buttons = document.querySelectorAll('.btn-tappable, .touch-feedback');
-            buttons.forEach(button => {
-                button.addEventListener('touchstart', function () {
-                    this.style.opacity = '0.8';
-                });
-
-                button.addEventListener('touchend', function () {
-                    this.style.opacity = '1';
-                });
+            // ===== 导航栏滚动效果 =====
+            const navbar = document.querySelector('.main-navbar');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             });
 
-            // 优化导航菜单点击
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function () {
-                    // 点击导航链接后自动关闭移动端菜单
-                    if (window.innerWidth < 992) {
-                        const navbarToggler = document.querySelector('.navbar-toggler');
-                        const navbarCollapse = document.querySelector('.navbar-collapse');
-                        if (navbarCollapse.classList.contains('show')) {
-                            navbarToggler.click();
+            // ===== 平滑滚动和锚点跳转 =====
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // 计算偏移量（考虑固定导航栏的高度）
+                        const navbarHeight = navbar.offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 10;
+
+                        // 平滑滚动到目标位置
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // 如果是移动端，点击后关闭导航菜单
+                        if (window.innerWidth < 992) {
+                            const navbarToggler = document.querySelector('.navbar-toggler');
+                            const navbarCollapse = document.querySelector('.navbar-collapse');
+                            if (navbarCollapse.classList.contains('show')) {
+                                navbarToggler.click();
+                            }
                         }
+
+                        // 更新URL hash（不触发页面跳转）
+                        history.pushState(null, null, targetId);
                     }
                 });
             });
 
-            // 防止iOS双击缩放 - 但不要阻止正常滚动
+            // ===== 导航栏高亮当前部分 =====
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            function highlightNavLink() {
+                let currentSectionId = '';
+                const scrollPosition = window.scrollY + 100;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href');
+                    if (href && href.includes(currentSectionId)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', highlightNavLink);
+            highlightNavLink(); // 初始化时执行一次
+
+            // ===== 触摸反馈效果 =====
+            const touchElements = document.querySelectorAll('.touch-friendly, .btn, .nav-link');
+            touchElements.forEach(element => {
+                element.addEventListener('touchstart', function () {
+                    this.style.transform = 'scale(0.98)';
+                    this.style.opacity = '0.9';
+                });
+
+                element.addEventListener('touchend', function () {
+                    this.style.transform = '';
+                    this.style.opacity = '';
+                });
+            });
+
+            // ===== 初始化工具提示 =====
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // ===== 移动端优化：防止双击缩放 =====
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function (event) {
-                const now = (new Date()).getTime();
+                const now = Date.now();
                 if (now - lastTouchEnd <= 300) {
                     event.preventDefault();
                 }
                 lastTouchEnd = now;
             }, { passive: false });
 
-            // 快速导航按钮功能
-            const quickMenuBtn = document.getElementById('quickMenuBtn');
-            if (quickMenuBtn) {
-                quickMenuBtn.addEventListener('click', function () {
-                    // 展开导航菜单
-                    const navbarToggler = document.querySelector('.navbar-toggler');
-                    if (navbarToggler) {
-                        navbarToggler.click();
-                    }
+            // ===== 微信环境优化 =====
+            if (typeof WeixinJSBridge !== 'undefined' && WeixinJSBridge.invoke) {
+                // 禁止微信调整字体大小
+                WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
+                // 禁用分享菜单
+                document.addEventListener('WeixinJSBridgeReady', function () {
+                    WeixinJSBridge.call('hideOptionMenu');
                 });
             }
 
-            // 监听滚动，显示/隐藏快速导航按钮
-            let lastScrollTop = 0;
-            window.addEventListener('scroll', function () {
-                const st = window.pageYOffset || document.documentElement.scrollTop;
-                if (quickMenuBtn) {
-                    if (st > lastScrollTop && st > 100) {
-                        // 向下滚动且超过100px时显示快速导航
-                        quickMenuBtn.style.display = 'block';
-                    } else if (st <= 100) {
-                        // 接近顶部时隐藏
-                        quickMenuBtn.style.display = 'none';
-                    }
-                }
-                lastScrollTop = st <= 0 ? 0 : st;
+            // ===== 页面加载动画 =====
+            const fadeInElements = document.querySelectorAll('.feature-card, .project-card, .success-card, .team-card, .resource-card');
+            fadeInElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
             });
 
-            // 微信内禁止字体放大
-            if (typeof WeixinJSBridge !== "undefined" && WeixinJSBridge.invoke) {
-                WeixinJSBridge.on('menu:setfont', function () {
-                    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
-                });
-            }
-
-            // 优化锚点跳转，考虑固定导航栏的高度
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    const href = this.getAttribute('href');
-                    if (href === '#') return;
-
-                    const targetElement = document.querySelector(href);
-                    if (targetElement) {
-                        e.preventDefault();
-                        const offset = 70; // 导航栏高度
-                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
-
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-
-            // 优化移动端触摸滚动
-            document.body.style.overflow = 'auto';
-            document.body.style.position = 'relative';
-
-            // 禁用可能导致滚动问题的touchmove事件监听器
-            // 注意：这里我们不添加任何阻止默认滚动的监听器
+            console.log('页面初始化完成');
         });
 
-        // 确保页面加载时滚动正常工作
+        // ===== 页面加载进度 =====
         window.addEventListener('load', function () {
-            document.body.style.overflowY = 'auto';
-            document.documentElement.style.overflowY = 'auto';
+            // 确保所有资源加载完成
+            document.body.style.visibility = 'visible';
+
+            // 移除加载状态
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 500);
+            }
+
+            // 触发滚动事件，确保导航高亮正确
+            window.dispatchEvent(new Event('scroll'));
         });
     </script>
 </body>
