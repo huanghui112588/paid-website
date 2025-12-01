@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>上岸翻身营 - 专业的负债管理与翻身指导平台</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -30,6 +30,17 @@
             background-color: #f8fafc;
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+            /* 防止水平滚动 */
+        }
+
+        /* 确保页面可以滚动 */
+        html,
+        body {
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            /* 启用iOS惯性滚动 */
         }
 
         /* 移动端优化 */
@@ -212,20 +223,62 @@
             font-size: 1.3rem;
         }
 
-        .nav-link {
-            font-weight: 500;
-            color: var(--dark);
-            transition: color 0.3s ease;
-            padding: 8px 12px !important;
+        /* 导航栏优化 - 移动端更好用 */
+        .navbar {
+            padding: 10px 0;
         }
 
-        @media (max-width: 768px) {
+        .navbar-toggler {
+            border: none;
+            padding: 10px;
+            background: transparent;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* 移动端导航菜单样式 */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background: white;
+                border-radius: 10px;
+                padding: 15px;
+                margin-top: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
             .navbar-nav {
-                padding: 10px 0;
+                padding: 0;
+            }
+
+            .nav-item {
+                margin-bottom: 8px;
             }
 
             .nav-link {
-                padding: 10px 15px !important;
+                padding: 12px 15px !important;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-link:hover,
+            .nav-link.active {
+                background: var(--primary);
+                color: white !important;
+            }
+
+            /* 移动端注册按钮更突出 */
+            .navbar-nav .btn-primary {
+                margin: 10px 0;
+                padding: 12px 20px;
+                width: 100%;
+                text-align: center;
             }
         }
 
@@ -245,8 +298,13 @@
             .btn-outline-primary {
                 padding: 12px 20px;
                 font-size: 0.95rem;
-                width: 100%;
                 margin-bottom: 10px;
+            }
+
+            .btn-group-mobile {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
@@ -412,16 +470,6 @@
             font-size: 0.85rem;
         }
 
-        /* 微信优化 */
-        .wechat-optimized {
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .wechat-optimized img {
-            max-width: 100%;
-            height: auto;
-        }
-
         /* 提高按钮点击区域 */
         .btn-tappable {
             min-height: 44px;
@@ -429,24 +477,31 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
 
-        /* 优化列表项 */
-        .mobile-friendly-list {
-            padding-left: 1.2rem;
+        /* 优化触控反馈 */
+        .touch-feedback:active {
+            transform: scale(0.98);
+            opacity: 0.8;
         }
 
-        .mobile-friendly-list li {
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
+        /* 优化滚动体验 */
+        .smooth-scroll {
+            scroll-behavior: smooth;
         }
 
-        /* 优化表单元素 */
-        input,
-        textarea,
-        select {
-            font-size: 16px !important;
-            /* 防止iOS自动放大 */
+        /* 确保内容不会超出屏幕 */
+        .container {
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        /* 微信优化 */
+        .wechat-optimized img {
+            max-width: 100%;
+            height: auto;
         }
 
         /* 隐藏滚动条但保持滚动功能 */
@@ -459,54 +514,108 @@
             display: none;
         }
 
-        /* 优化动画性能 */
-        .performance-optimized {
-            will-change: transform;
-            backface-visibility: hidden;
+        /* 移动端优化间距 */
+        @media (max-width: 768px) {
+            .mobile-spacing {
+                margin-bottom: 20px !important;
+            }
+
+            .mobile-padding {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+        }
+
+        /* 锚点跳转时避免被导航栏遮挡 */
+        :target:before {
+            content: "";
+            display: block;
+            height: 70px;
+            margin: -70px 0 0;
+        }
+
+        /* 快速导航 - 固定在底部 */
+        .quick-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .quick-nav {
+                display: block;
+            }
+        }
+
+        .quick-nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .quick-nav-btn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 
-<body class="wechat-optimized">
+<body class="wechat-optimized smooth-scroll">
     <!-- 导航栏 - 移动端优化 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" style="top: 0; z-index: 1030;">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="{{ url_for('index') }}">
                 <i class="fas fa-life-ring me-2"></i>
                 上岸翻身营
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler touch-feedback" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="切换导航">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#solution">解决方案</a>
+                        <a class="nav-link touch-feedback" href="#solution">解决方案</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#tools">实用工具</a>
+                        <a class="nav-link touch-feedback" href="#tools">实用工具</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#income">赚钱项目</a>
+                        <a class="nav-link touch-feedback" href="#income">赚钱项目</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#resources">免费资源</a>
+                        <a class="nav-link touch-feedback" href="#resources">免费资源</a>
                     </li>
                 </ul>
-                <div class="navbar-nav mt-2 mt-lg-0">
+                <div class="navbar-nav">
                     {% if session.user %}
-                    <a class="nav-link btn btn-outline-primary btn-sm me-2" href="{{ url_for('members') }}">会员专区</a>
-                    <a class="nav-link text-danger" href="{{ url_for('logout') }}">退出</a>
+                    <a class="nav-link touch-feedback" href="{{ url_for('members') }}">会员专区</a>
+                    <a class="nav-link text-danger touch-feedback" href="{{ url_for('logout') }}">退出</a>
                     {% else %}
-                    <a class="nav-link" href="{{ url_for('login') }}">登录</a>
-                    <a class="nav-link btn btn-primary text-white px-3 ms-2 btn-tappable"
+                    <a class="nav-link touch-feedback" href="{{ url_for('login') }}">登录</a>
+                    <a class="nav-link btn btn-primary text-white px-3 ms-2 btn-tappable touch-feedback"
                         href="{{ url_for('register') }}">免费注册</a>
                     {% endif %}
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- 快速导航按钮（移动端） -->
+    <div class="quick-nav">
+        <button class="quick-nav-btn touch-feedback" id="quickMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
 
     <!-- 紧急警示区域 -->
     <div class="container mt-2">
@@ -538,16 +647,18 @@
                         <span class="guarantee-badge mb-2 d-inline-block"><i class="fas fa-clock me-1"></i>实时更新</span>
                     </div>
 
-                    <div class="d-flex flex-column flex-sm-row gap-3">
+                    <div class="btn-group-mobile">
                         {% if not session.user %}
-                        <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-4 py-3 fw-bold btn-tappable">
+                        <a href="{{ url_for('register') }}"
+                            class="btn btn-light btn-lg px-4 py-3 fw-bold btn-tappable touch-feedback">
                             <i class="fas fa-user-plus me-2"></i>立即注册
                         </a>
-                        <a href="#solution" class="btn btn-outline-light btn-lg px-4 py-3 btn-tappable">
+                        <a href="#solution" class="btn btn-outline-light btn-lg px-4 py-3 btn-tappable touch-feedback">
                             <i class="fas fa-play-circle me-2"></i>查看方案
                         </a>
                         {% else %}
-                        <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-4 py-3 fw-bold btn-tappable">
+                        <a href="{{ url_for('members') }}"
+                            class="btn btn-light btn-lg px-4 py-3 fw-bold btn-tappable touch-feedback">
                             <i class="fas fa-tachometer-alt me-2"></i>会员专区
                         </a>
                         {% endif %}
@@ -556,7 +667,7 @@
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
                     <div class="position-relative">
                         <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="财务自由" class="img-fluid rounded-3 shadow-lg performance-optimized" loading="lazy">
+                            alt="财务自由" class="img-fluid rounded-3 shadow-lg" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -695,11 +806,12 @@
 
                 <div class="text-center mt-3">
                     {% if not session.user %}
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-tappable">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-tappable touch-feedback">
                         <i class="fas fa-user-plus me-2"></i>获取完整方案
                     </a>
                     {% else %}
-                    <a href="{{ url_for('debt_management_course') }}" class="btn btn-primary btn-lg btn-tappable">
+                    <a href="{{ url_for('debt_management_course') }}"
+                        class="btn btn-primary btn-lg btn-tappable touch-feedback">
                         <i class="fas fa-arrow-right me-2"></i>查看完整课程
                     </a>
                     {% endif %}
@@ -792,11 +904,11 @@
             <div class="text-center mt-3">
                 <p class="text-muted small">注册后即可查看详细的操作指南和成功案例</p>
                 {% if not session.user %}
-                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-tappable">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-tappable touch-feedback">
                     <i class="fas fa-user-plus me-2"></i>查看详情
                 </a>
                 {% else %}
-                <a href="{{ url_for('income_projects') }}" class="btn btn-primary btn-lg btn-tappable">
+                <a href="{{ url_for('income_projects') }}" class="btn btn-primary btn-lg btn-tappable touch-feedback">
                     <i class="fas fa-arrow-right me-2"></i>查看完整项目
                 </a>
                 {% endif %}
@@ -822,11 +934,12 @@
                         <p class="text-muted small">专业Excel债务管理模板，自动计算还款计划</p>
                         {% if session.user %}
                         <a href="{{ url_for('download_debt_template') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable">
+                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
                             <i class="fas fa-download me-1"></i>立即下载
                         </a>
                         {% else %}
-                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm mt-2 btn-tappable">
+                        <a href="{{ url_for('register') }}"
+                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
                             <i class="fas fa-download me-1"></i>注册后下载
                         </a>
                         {% endif %}
@@ -840,11 +953,13 @@
                         <h6>协商话术指南</h6>
                         <p class="text-muted small">完整的债务协商话术和法律法规指南</p>
                         {% if session.user %}
-                        <a href="{{ url_for('negotiation_guide') }}" class="btn btn-primary btn-sm mt-2 btn-tappable">
+                        <a href="{{ url_for('negotiation_guide') }}"
+                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
                             <i class="fas fa-download me-1"></i>立即下载
                         </a>
                         {% else %}
-                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm mt-2 btn-tappable">
+                        <a href="{{ url_for('register') }}"
+                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
                             <i class="fas fa-download me-1"></i>注册后下载
                         </a>
                         {% endif %}
@@ -859,11 +974,12 @@
                         <p class="text-muted small">债务压力下的心理调适方法和技巧</p>
                         {% if session.user %}
                         <a href="{{ url_for('psychological_support') }}"
-                            class="btn btn-primary btn-sm mt-2 btn-tappable">
+                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
                             <i class="fas fa-download me-1"></i>立即下载
                         </a>
                         {% else %}
-                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm mt-2 btn-tappable">
+                        <a href="{{ url_for('register') }}"
+                            class="btn btn-primary btn-sm mt-2 btn-tappable touch-feedback">
                             <i class="fas fa-download me-1"></i>注册后下载
                         </a>
                         {% endif %}
@@ -964,11 +1080,11 @@
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     {% if not session.user %}
-                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-4 btn-tappable">
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-4 btn-tappable touch-feedback">
                         <i class="fas fa-user-plus me-2"></i>立即注册
                     </a>
                     {% else %}
-                    <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-4 btn-tappable">
+                    <a href="{{ url_for('members') }}" class="btn btn-light btn-lg px-4 btn-tappable touch-feedback">
                         <i class="fas fa-tachometer-alt me-2"></i>会员专区
                     </a>
                     {% endif %}
@@ -1000,10 +1116,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 移动端优化脚本
+        // 移动端优化脚本 - 修复版本
         document.addEventListener('DOMContentLoaded', function () {
+            console.log("页面加载完成，移动端优化已启用");
+
             // 提高按钮点击体验
-            const buttons = document.querySelectorAll('.btn-tappable');
+            const buttons = document.querySelectorAll('.btn-tappable, .touch-feedback');
             buttons.forEach(button => {
                 button.addEventListener('touchstart', function () {
                     this.style.opacity = '0.8';
@@ -1017,12 +1135,19 @@
             // 优化导航菜单点击
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
-                link.addEventListener('touchstart', function () {
-                    this.classList.add('active');
+                link.addEventListener('click', function () {
+                    // 点击导航链接后自动关闭移动端菜单
+                    if (window.innerWidth < 992) {
+                        const navbarToggler = document.querySelector('.navbar-toggler');
+                        const navbarCollapse = document.querySelector('.navbar-collapse');
+                        if (navbarCollapse.classList.contains('show')) {
+                            navbarToggler.click();
+                        }
+                    }
                 });
             });
 
-            // 防止iOS双击缩放
+            // 防止iOS双击缩放 - 但不要阻止正常滚动
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function (event) {
                 const now = (new Date()).getTime();
@@ -1030,17 +1155,75 @@
                     event.preventDefault();
                 }
                 lastTouchEnd = now;
-            }, false);
-
-            // 优化滚动性能
-            document.addEventListener('touchmove', function (e) {
-                e.preventDefault();
             }, { passive: false });
 
-            // 微信内禁止字体放大
-            if (typeof WeixinJSBridge != "undefined" && typeof WeixinJSBridge.invoke == "function") {
-                WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
+            // 快速导航按钮功能
+            const quickMenuBtn = document.getElementById('quickMenuBtn');
+            if (quickMenuBtn) {
+                quickMenuBtn.addEventListener('click', function () {
+                    // 展开导航菜单
+                    const navbarToggler = document.querySelector('.navbar-toggler');
+                    if (navbarToggler) {
+                        navbarToggler.click();
+                    }
+                });
             }
+
+            // 监听滚动，显示/隐藏快速导航按钮
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function () {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                if (quickMenuBtn) {
+                    if (st > lastScrollTop && st > 100) {
+                        // 向下滚动且超过100px时显示快速导航
+                        quickMenuBtn.style.display = 'block';
+                    } else if (st <= 100) {
+                        // 接近顶部时隐藏
+                        quickMenuBtn.style.display = 'none';
+                    }
+                }
+                lastScrollTop = st <= 0 ? 0 : st;
+            });
+
+            // 微信内禁止字体放大
+            if (typeof WeixinJSBridge !== "undefined" && WeixinJSBridge.invoke) {
+                WeixinJSBridge.on('menu:setfont', function () {
+                    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize': 0 });
+                });
+            }
+
+            // 优化锚点跳转，考虑固定导航栏的高度
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+
+                    const targetElement = document.querySelector(href);
+                    if (targetElement) {
+                        e.preventDefault();
+                        const offset = 70; // 导航栏高度
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 优化移动端触摸滚动
+            document.body.style.overflow = 'auto';
+            document.body.style.position = 'relative';
+
+            // 禁用可能导致滚动问题的touchmove事件监听器
+            // 注意：这里我们不添加任何阻止默认滚动的监听器
+        });
+
+        // 确保页面加载时滚动正常工作
+        window.addEventListener('load', function () {
+            document.body.style.overflowY = 'auto';
+            document.documentElement.style.overflowY = 'auto';
         });
     </script>
 </body>

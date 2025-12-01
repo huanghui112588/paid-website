@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新站首发免费注册</title>
+    <title>新站限时免费注册</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -20,7 +20,7 @@
 
     <main class="container">
         <div class="payment-container">
-            <h2>新站首发免费注册</h2>
+            <h2>新站限时免费注册</h2>
             <p class="price">费用: ¥{{ price }}</p>
 
             {% if error %}
@@ -35,21 +35,21 @@
                     <li>按住下方微信二维码添加好友，备注“注册”</li>
                     <li>或微信搜索添加 sp10086abc 备注“注册”</li>
                     <li>在下方表单中提交您的微信昵称或输入数字，如1234</li>
-                    <li>点击提交、审核后将开通您的VIP账号</li>
+                    <li>点击提交、审核后将开通您的账号</li>
                 </ol>
             </div>
 
             <div class="qr-codes">
                 <div class="qr-code">
-                    <h4>微信添加码</h4>
+                    <h4>长按二维码添加好友</h4>
                     <img src="{{ url_for('static', filename='alipay_qr.jpg') }}" alt="支付宝收款码" class="qr-img">
-                    <p>请添加</p>
+                    <p>如不行请截图保存添加好友</p>
                 </div>
 
                 <div class="qr-code">
-                    <h4>微信搜索 sp10086abc</h4>
+                    <h4>或微信搜索 sp10086abc 添加好友</h4>
                     <img src="{{ url_for('static', filename='wechat_qr.jpg') }}" alt="微信支付收款码" class="qr-img">
-                    <p>请添加</p>
+                    <p>或微信搜索 sp10086abc 添加好友</p>
                 </div>
             </div>
 
